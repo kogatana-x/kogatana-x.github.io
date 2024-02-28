@@ -47,11 +47,6 @@
         </div> 
         <div id="blogContainer">
         </div>
-        <div class="blog-post">
-            <h2>Blog Post Title</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec erat at libero lacinia interdum.</p>
-        </div>
-
     </div>
 </body>
 
@@ -93,7 +88,7 @@ Promise.all(postUrls.map(fetchPost))
 
             const descriptionElement = document.createElement('p');
             descriptionElement.textContent = post.description;
-            
+
             const contentElement = document.createElement('div');
             contentElement.innerHTML = post.content;
             postElement.appendChild(contentElement);

@@ -81,6 +81,9 @@ Promise.all(postUrls.map(fetchPost))
             const linkElement = document.createElement('a');
             linkElement.href = postUrls[index]; // Set the href to the post URL
             linkElement.textContent = post.title;
+            linkElement.style.color = 'inherit'; // Inherit the color from the h2
+            linkElement.style.textDecoration = 'none'; // Remove the underline
+            
             titleElement.appendChild(linkElement); // Append the link to the h2
             
             postElement.appendChild(titleElement);
@@ -93,9 +96,7 @@ Promise.all(postUrls.map(fetchPost))
             descriptionElement.textContent = post.description;
             postElement.appendChild(descriptionElement);
 
-            const contentElement = document.createElement('div');
-            contentElement.innerHTML = post.content;
-            postElement.appendChild(contentElement);
+
 
             blogContainer.appendChild(postElement);
         });

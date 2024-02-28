@@ -73,7 +73,7 @@ function fetchPost(url) {
 Promise.all(postUrls.map(fetchPost))
     .then(posts => {
         const blogContainer = document.querySelector('#blogContainer');
-        posts.forEach(post => {
+        posts.forEach((post, index) => {
             const postElement = document.createElement('div');
             postElement.classList.add('blog-post');
             

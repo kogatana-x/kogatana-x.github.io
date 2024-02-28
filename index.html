@@ -82,7 +82,8 @@ Promise.all(postUrls.map(fetchPost))
             const linkElement = document.createElement('a');
             linkElement.href = postUrls[index]; // Set the href to the post URL
             linkElement.textContent = post.title;
-            titleElement.appendChild(linkElement);
+            titleElement.appendChild(linkElement); // Append the link to the h2
+            
             postElement.appendChild(titleElement);
 
             const timeElement = document.createElement('p');

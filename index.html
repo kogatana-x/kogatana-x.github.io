@@ -81,7 +81,8 @@ Promise.all(postUrls.map(fetchPost))
             const titleElement = document.createElement('h2');
             const linkElement = document.createElement('a');
             linkElement.href = postUrls[index]; // Set the href to the post URL
-            titleElement.textContent = post.title;
+            linkElement.textContent = post.title;
+            titleElement.appendChild(linkElement);
             postElement.appendChild(titleElement);
 
             const timeElement = document.createElement('p');
@@ -95,7 +96,7 @@ Promise.all(postUrls.map(fetchPost))
             const contentElement = document.createElement('div');
             contentElement.innerHTML = post.content;
             postElement.appendChild(contentElement);
-            
+
             blogContainer.appendChild(postElement);
         });
     })

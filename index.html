@@ -79,6 +79,8 @@ Promise.all(postUrls.map(fetchPost))
             postElement.classList.add('blog-post');
 
             const titleElement = document.createElement('h2');
+            const linkElement = document.createElement('a');
+            linkElement.href = postUrls[index]; // Set the href to the post URL
             titleElement.textContent = post.title;
             postElement.appendChild(titleElement);
 

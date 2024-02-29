@@ -5,12 +5,9 @@
     <meta name="description" content="A few years back I did a deep dive in Reverse Engineering Malware and wanted to share what I learned and to refresh my knowledge on the Assembly language."> 
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../kogatana-x.css">
-    <link
-    rel="stylesheet"
-    href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css"
-  />
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
 </head>
 <body>
 
@@ -947,7 +944,7 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
         } return x-y; 
         else: 
             return y-x; 
-</pre></code>
+        </code></pre>
 <p>EX - </p>
 <pre><code>
         movq %rdi, %rax #x
@@ -957,7 +954,8 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
         cmpq %rsi, %rdi # x<=y
         cmovle %rdx, %rax #if <=, result = eval
         ret
-</pre></code>
+    </code>
+    </pre>
 
 <pre>
 
@@ -969,7 +967,7 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
 <p>
     This guide provides a glimpse into the fascinating world of x86 assembly language. Dive deeper, explore more instructions, and experiment with your own programs. Happy coding! 
 </p>
-</div>
+        </div>
     </div>
 </body>
 

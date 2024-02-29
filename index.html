@@ -88,11 +88,11 @@ Promise.all(postUrls.map(fetchPost))
             
             postElement.appendChild(titleElement);
 
-            const timeElement = document.createElement('p');
+            const timeElement = document.createElement('span');
             timeElement.textContent = post.time;
             postElement.appendChild(timeElement);
 
-            const descriptionElement = document.createElement('p');
+            const descriptionElement = document.createElement('span');
             descriptionElement.textContent = post.description;
             postElement.appendChild(descriptionElement);
 

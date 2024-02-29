@@ -89,11 +89,13 @@ Promise.all(postUrls.map(fetchPost))
             postElement.appendChild(titleElement);
 
             const timeElement = document.createElement('span');
-            timeElement.textContent = post.time;
+            const strongElement = document.createElement('strong'); // Create a strong tag to bold the time
+            strongElement.textContent = post.time;
+            timeElement.appendChild(strongElement);
             postElement.appendChild(timeElement);
 
             const descriptionElement = document.createElement('span');
-            descriptionElement.textContent = post.description;
+            descriptionElement.textContent = ' - ' + post.description; // Add a dash before the description
             postElement.appendChild(descriptionElement);
 
 

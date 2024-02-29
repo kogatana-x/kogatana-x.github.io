@@ -14,7 +14,7 @@
   <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
   <!-- and it's easy to individually load additional languages -->
   <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
-  </script></head>
+</head>
 <body>
 
     <div class="navbar">
@@ -62,12 +62,12 @@
 
             </pre>
             <h1>Introduction</h1>
-            <p>After I failed one too many times to get competitive reservations over the years, I decided enough was enough and to dig into how I can compete with all of the ticket-gouging bots out there.  In this blog post, I’ll walk you through the process of how I created a Python Selenium bot that automates the reservation process with the Kirby Cafe in Japan. </p>
+            <p>After I failed one too many times to get a competitive reservation, I decided enough was enough and to figure out how I can compete with all of the ticket-gouging bots out there.  I ultimately settled on using Python and Selenium, since that's what I was most familiar with. In this blog post, I’ll walk you through the process of how I created a Python Selenium bot that automates the reservation process with the Kirby Cafe in Japan. </p>
             
             <h3>Understanding The Booking System</h3>
             <p>Most reservation systems are made up of components that allow the user to select the date, time, and package to reserve, as well as billing information upon confirmation.</p>
             <img style="width: 25%;float: right;" src="../images/Reservation-Bot-With-Selenium/kirby.png" alt="Kirby Drawing">
-            <p>Often times for the more competitive tickets and reservations, reservations open at a specific date and time</p>
+            <p>Often times for the more competitive tickets and reservations, reservations open at a specific date and time. </p>
             <ul><strong>Selecting Dates and Times:</strong> Guests choose their desired dates, times, and services.</ul>
             <ul><strong>Availability Check:</strong> The system checks real-time availability. Is that concert ticket still up for grabs? Are there rooms available on your preferred travel dates?</ul>
             <ul><strong>Form Filling:</strong> Guests provide necessary details—names, contact information, preferences.</ul>
@@ -178,6 +178,7 @@ driver.find_element(By.XPATH,"//div[contains(text(),'2名様')]").click()
     def create_rez(day_of_month, num_of_guests):
     
         website = "https://kirbycafe-reserve.com/guest/tokyo/"
+
         service=webdriver.chrome.service.Service('chromedriver/chromedriver.exe')
         chrome_options = Options()
         chrome_options.binary_location = "C:\\Program Files\\chrome-win64\\chrome.exe"
@@ -224,7 +225,9 @@ driver.find_element(By.XPATH,"//div[contains(text(),'2名様')]").click()
 
 </code></pre>
 
-<p>Et voila. I set up a scheduled task and an alarm to wake up to do the reservation right on the hour and I was able to get the time and date I wanted. Good luck in your future reservations!</p>
+<h1>Conclusion</h1>
+<p>Et voila. I set up a scheduled task and an alarm to wake up to do the reservation right on the hour and I was able to get the time and date I wanted. I did try this for a different site, but I was not able to get past the rate limit, so I advise changing the code to have the bot wait for the reservations to release instead.</p>
+<p>Good luck in your future reservations!</p>
 </div>
     </div>
 </body>

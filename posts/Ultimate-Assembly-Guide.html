@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultimate Assembly Guide</title>
+    <meta name="description" content="A few years back I did a deep dive in Reverse Engineering Malware and wanted to share what I learned and to refresh my knowledge on the Assembly language."> 
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../kogatana-x.css">
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css"
+  />
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="../images/22989723.png" alt="Profile"> 
+        </a>
+        <h1>kogatana-x</h1>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>My Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>My linkedin</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h2>Ultimate Assembly Guide</h2> 
+            <time datetime="2024-02-29T11:33:42">Feburary 29th, 2024</time> 
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Introduction</h1>
+            <p>A few years back I did a deep dive in Reverse Engineering Malware and wanted to share what I learned and to refresh my knowledge on the Assembly language.</p>
+            <p>For those of you that don't know, Assembly language is a low-level programming language that provides a direct interface with the computer’s hardware. Assembly is a low-level programming language that computers use to interpret high level programming langauges such as Python or Java. Of course, at the end of the day computers speak in 0s and 1s (binary!), and ons and offs (electric current!), but when you reverse an executable or binary, you are most likely going to be seeing Assembly.</p>
+            <p>There are many many other reasons why knowing some Assembly as a computer nerd is useful, such as for debugging and optimizing code, and even directly programming embedded systems in Assembly.</p>
+            <p>So, lets get right to it!</p>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                
+            </pre>            
+            <h1>Data Types (in C)</h1>
+            <p>High level programming languages use data types to store information temporarily in memory, these data types effect how Assembly processes information. Knowing each types size and flags can be pretty handy later on.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bytes</th>
+                        <th>Bits</th>
+                        <th>Data Types</th>
+                        <th>Instruction Suffix</th>
+                        <th>Suffix Name</th>
+                        <th>Register Naming Scheme</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>8</td>
+                        <td>char, byte</td>
+                        <td>-b</td>
+                        <td>byte</td>
+                        <td>-l or -h</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>16</td>
+                        <td>short</td>
+                        <td>-w</td>
+                        <td>word</td>
+                        <td>-x or nothing</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>32</td>
+                        <td>int</td>
+                        <td>-l</td>
+                        <td>long</td>
+                        <td>e-</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>64</td>
+                        <td>address, float, long</td>
+                        <td>-q</td>
+                        <td>quad word</td>
+                        <td>r-</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+                                
+            </pre> 
+            <h1>Operand Types</h1>
+            <p>
+            <strong>Immediate</strong> - constant integer data
+            <ul>$0x400, $-533</ul>
+            <ul>encoded with 1, 2, or 4 bytes.</ul>
+            <strong>Register</strong> - one of 16 integer registers 
+            <ul>%rax, %r13 {{%rsp is reserved for special use}}</ul>
+            <strong>Memory</strong> - 8 consecutive bytes of memory at address given by register.
+            <ul>(%rax)</ul>
+            </p> 
+            <pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+                    
+            </pre> 
+            <h1>Address Modes</h1>
+<p>* Translation Formula:</p>  
+<pre><code>instr D(Rb, Ri, S), %rax  ->   %rax=Rb + Ri * S + D</code></pre>
+<p>
+<strong>D:</strong> Constant “displacement”- 1,2, or 4 byte value<br>
+<strong>Rb:</strong> Base Register<br>
+<strong>Ri:</strong> Index register {{except %rsp}}<br>
+<strong>S:</strong> Scale - 1, 2, 4, or 8 <br>
+</p>
+<h2>Possible Formats</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Example syntax</th>
+            <th>Value used</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Register</td>
+            <td>%rbp</td>
+            <td>Contents of %rbp</td>
+        </tr>
+        <tr>
+            <td>Immediate</td>
+            <td>$0x4</td>
+            <td>0x4</td>
+        </tr>
+        <tr>
+            <td>Memory</td>
+            <td>0x4</td>
+            <td>Value stored at address</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>symbol_name</td>
+            <td>Value stored in global symbol_name.</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>symbol_name(%rip)</td>
+            <td>%rip-relative addressing for global (see below)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>(%rax)</td>
+            <td>Value stored at address in %rax</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>0x4(%rax)</td>
+            <td>Value stored at address %rax + 4</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>(%rax,%rbx)</td>
+            <td>Value stored at address %rax + %rbx</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>(%rax,%rbx,4)</td>
+            <td>Value stored at address %rax + %rbx*4</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>0x18(%rax,%rbx,4)</td>
+            <td>Value stored at address %rax + 0x18 + %rbx*4</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong><i>*jumps and function call instructions use the following format:</i></strong></p>
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Example syntax</th>
+            <th>Value used</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Register</td>
+            <td>*%rax</td>
+            <td>Contents of %rax</td>
+        </tr>
+        <tr>
+            <td>Immediate</td>
+            <td>.L3</td>
+            <td>Address of .L3 (compiler-generated assembly)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>400410 or 0x400410</td>
+            <td>Given address</td>
+        </tr>
+        <tr>
+            <td>Memory</td>
+            <td>*0x200b96(%rip)</td>
+            <td>Value stored at address %rip + 0x200b96</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>*(%r12,%rbp,8)</td>
+            <td>Other address modes accepted</td>
+        </tr>
+    </tbody>
+</table>
+<pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+
+</pre>
+<h1>Registers 101</h1>
+<p>A register is a small storage space available as part of the CPU & are typically addressed by other mechanisms than main memory & are much faster to access. Registers are used to store values for future usage by the CPU and they can be divided into the following classes.</p>
+<p><br><strong>General Purpose Registers:</strong></p>
+<table>
+    <tbody>
+        <tr>
+            <td>EAX) Extended Accumulator Register</td>
+            <td>ESI) Extended Source Index </td>
+        </tr>
+        <tr>
+            <td>EBX) Extended Base Register</td>
+            <td>EDI) Extended Destination Index</td>
+        </tr>
+        <tr>
+            <td>ECD) Extended Counter Register</td>
+            <td>EBP) Extended Base Pointer</td>
+        </tr>
+        <tr>
+            <td>EDX) Extended Data Register</td>
+            <td>ESP) Extended Stack Pointer</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<p><strong>Segment Registers: </strong></p>
+<p>Segment registers are used to make segmental distinctions in the binary. The hexadecimal value 0x90 can either represent an instruction or a data value. The CPU knows which one thanks to segment registers.</p>
+
+<p><strong>Status Flag Registers</strong></p>
+<p><i>Set to 1 or 0. If signed - FF= -1 (rather than 255)</i></p>
+<p>
+    &emsp;<strong>z</strong> - zero flag, set when the result of the last operation is zero.<br>
+&emsp;<strong>s</strong> - signed flag {for signed}, set to determine if values should be intercepted as signed or unsigned.<br>
+&emsp;<strong>o</strong> - overflow flag {for signed}, set when the result of the last operation switches the most significant bit from either F to 0 or 0 to F.<br>
+&emsp;<strong>c</strong>- carry flag {for unsigned}, set when the result of the last operation changes the most significant bit.<br>
+</p>
+<p>
+EX - <strong>addq src,dest <-> t=a+b</strong><br>
+&emsp;<strong>CF</strong> set if carry out from most significant bit (unsigned overflow)<br>
+&emsp;<strong>ZF</strong> set if t==0<br>
+&emsp;<strong>SF</strong> set if t < 0 (as signed)<br>
+&emsp;<strong>OF</strong> set if two’s complement (signed) overflow (a>0 && b>0 && t < 0) || (a<0 && b<0 && t>=0)<br>
+</p>
+<p>
+**NOT SET BY leaq<br>
+EX - <strong>cmpq src2,src1 <-> src1-src2</strong><br>
+&emsp;<strong>CF</strong> set if carry out from most significant bit (unsigned comparisions)<br>
+&emsp;<strong>ZF</strong> set if (src1-src2) == 0<br>
+&emsp;<strong>SF</strong> set if (src1-src2) < 0 (as signed)<br>
+&emsp;<strong>OF</strong> set if two’s complement (signed) overflow (s1>0 && s2>0 && (s1-s2) < 0) || (s1<0 && s2<0 && (s1-s2) >=0)<br>
+    &emsp;&emsp;&emsp; (src1-src2) # 0 ==  (a # b) -- where # is <, >, ==, !=, >=, or <=  
+</p>
+<p>
+<strong>EIP - Extended Instruction Pointer</strong><br>
+It points to the next instruction to be executed.
+</p>
+<pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+    
+</pre>
+<h1>Registers Overview</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Full register name (64-bit)</th>
+            <th>32-bit</th>
+            <th>16-bit</th>
+            <th>8-bit-low</th>
+            <th>8-bit high</th>
+            <th>use in calling convention</th>
+            <th>callee-saved?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>General Purpose Registers:</td></tr>
+        <tr>
+            <td>%rax</td>
+            <td>%eax</td>
+            <td>%ax</td>
+            <td>%al</td>
+            <td>%ah</td>
+            <td>Return value (accumulator)</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%rbx</td>
+            <td>%ebx</td>
+            <td>%bx</td>
+            <td>%bl</td>
+            <td>%bh</td>
+            <td>–</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>%rcx</td>
+            <td>%ecx</td>
+            <td>%cx</td>
+            <td>%cl</td>
+            <td>%ch</td>
+            <td>4th function argument</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%rdx</td>
+            <td>%edx</td>
+            <td>%dx</td>
+            <td>%dl</td>
+            <td>%dh</td>
+            <td>3rd function argument</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%rsi</td>
+            <td>%esi</td>
+            <td>%si</td>
+            <td>%sil</td>
+            <td>–</td>
+            <td>2nd function argument</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%rdi</td>
+            <td>%edi</td>
+            <td>%di</td>
+            <td>%dil</td>
+            <td>–</td>
+            <td>1st function argument</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%r8</td>
+            <td>%r8d</td>
+            <td>%r8w</td>
+            <td>%r8b</td>
+            <td>–</td>
+            <td>5th function argument</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%r9</td>
+            <td>%r9d</td>
+            <td>%r9w</td>
+            <td>%r9b</td>
+            <td>–</td>
+            <td>6th function argument</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%r10</td>
+            <td>%r10d</td>
+            <td>%r10w</td>
+            <td>%r10b</td>
+            <td>–</td>
+            <td>–</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%r11</td>
+            <td>%r11d</td>
+            <td>%r11w</td>
+            <td>%r11b</td>
+            <td>–</td>
+            <td>–</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>%r12</td>
+            <td>%r12d</td>
+            <td>%r12w</td>
+            <td>%r12b</td>
+            <td>–</td>
+            <td>–</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>%r13</td>
+            <td>%r13d</td>
+            <td>%r13w</td>
+            <td>%r13b</td>
+            <td>–</td>
+            <td>–</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>%r14</td>
+            <td>%r14d</td>
+            <td>%r14w</td>
+            <td>%r14b</td>
+            <td>–</td>
+            <td>–</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>%r15</td>
+            <td>%r15d</td>
+            <td>%r15w</td>
+            <td>%r15b</td>
+            <td>–</td>
+            <td>–</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr><td>Special-purpose registers:</td></tr>
+        <tr>
+            <td>%rsp</td>
+            <td>%esp</td>
+            <td>%sp</td>
+            <td>%spl</td>
+            <td>–</td>
+            <td>Stack pointer</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>%rbp</td>
+            <td>%ebp</td>
+            <td>%bp</td>
+            <td>%bpl</td>
+            <td>–</td>
+            <td>Base pointer</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>%rip</td>
+            <td>%eip</td>
+            <td>%ip</td>
+            <td>–</td>
+            <td>–</td>
+            <td>Instruction pointer</td>
+            <td>*</td>
+        </tr>
+        <tr>
+            <td>%rflags</td>
+            <td>%eflags</td>
+            <td>%flags</td>
+            <td>–</td>
+            <td>–</td>
+            <td>Flags and condition codes</td>
+            <td>No</td>
+        </tr>
+    </tbody>
+</table>
+<pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+        
+</pre>        
+<h1>Instructions!</h1>
+<p>Instructions are the basic commands that a CPU executes. They are the building blocks of a program. There are three main types of instructions:</p>
+<ol>
+    <li>Computation:   instructions are executed on values (that are usually stored in registers) . Instructions are broken out by the destination and source? operand, with the flow being source -> destination (left->right)</li>
+    <li>Data movement: instructions move data between registers and memory. source operand is listed first.</li>
+    <li>Control Flow: CPU executes instructions in sequence. After each command is executed the program pointer is moved (set to a new value on the stack)</li>
+</ol>
+<p>*AT&T Syntax is used    {{Intel puts destination registers before source like most}}</p>
+<h2>Instructions</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Instruction</th>
+            <th>Example syntax</th>
+            <th>C   Equivalent</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>mov( src, dest);</td>
+            <td>movl</td>
+            <td>dest = src;</td>
+        </tr>
+        <tr>
+            <td>lea( src, dest);</td>
+            <td>leaq (%rax, %rbx,2), %rcx</td>
+            <td>dest = x+y*k</td>
+        </tr>
+        <tr>
+            <td>add( src, dest);</td>
+            <td>addq %rax, %rbx</td>
+            <td>dest += src;</td>
+        </tr>
+        <tr>
+            <td>sub( src, dest);</td>
+            <td>dest -= src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>imul( src, dest);</td>
+            <td>dest *= src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>inc( dest);</td>
+            <td>dest = ++dest;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>dec( dest);</td>
+            <td>dest = --dest;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>sal( src, dest);</td>
+            <td>sal $2, %rax</td>
+            <td>dest << src;</td>
+        </tr>
+        <tr>
+            <td>sar( src, dest);</td>
+            <td>dest >> src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>shr( src, dest);</td>
+            <td>dest >> src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>neg( dest);</td>
+            <td>dest = -dest;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>not( dest);</td>
+            <td>dest = ~src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>xor( src, dest);</td>
+            <td>dest ^= src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>and( src, dest);</td>
+            <td>dest &= src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>or( src, dest);</td>
+            <td>dest |= src;</td>
+            <td>&emsp;</td>
+        </tr>
+        <tr>
+            <td>cmp(p1,p2)</td>
+            <td>cmpq %rsi, %rcx</td>
+            <td>rcx - rsi <= 0  {true>jmp}</td>
+        </tr>
+        <tr>
+            <td>&emsp;</td>
+            <td>&emsp;</td>
+            <td>rcx <= rsi</td>
+        </tr>
+    </tbody>
+</table>
+<h2>Instruction Types</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Instruction</th>
+            <th>Purpose</th>
+            <th>Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><ins/reg>b</td>
+            <td>byte</td>
+            <td>1 byte  == 8 bits</td>
+        </tr>
+        <tr>
+            <td><ins/reg>w</td>
+            <td>word</td>
+            <td>2 bytes == 16 bits</td>
+        </tr>
+        <tr>
+            <td><ins/reg>l</td>
+            <td>double word</td>
+            <td>4 bytes == 32 bits</td>
+        </tr>
+        <tr>
+            <td><ins/reg>q</td>
+            <td>quad word</td>
+            <td>8 bytes == 64 bits</td>
+        </tr>
+    </tbody>
+</table>
+<h2>Combinations Types  {{ex. Move}}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Instruction</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Types</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>movl</td>
+            <td>$0x4050</td>
+            <td>%eax</td>
+            <td>Immediate - Register</td>
+        </tr>
+        <tr>
+            <td>movw</td>
+            <td>%bp</td>
+            <td>%sp</td>
+            <td>Register - Register</td>
+        </tr>
+        <tr>
+            <td>movb</td>
+            <td>(%rdi, %rcx)</td>
+            <td>%al</td>
+            <td>Memory - Register</td>
+        </tr>
+        <tr>
+            <td>movb</td>
+            <td>$-17</td>
+            <td>(%esp)</td>
+            <td>Immediate - Memory</td>
+        </tr>
+        <tr>
+            <td>movq</td>
+            <td>%rax</td>
+            <td>-12(%rbp)</td>
+            <td>Register - Memory</td>
+        </tr>
+    </tbody>
+</table>
+<p>*cannot do a memory-memory transfer in a single instruction.</p>
+<h2>Address Computation</h2>
+<p>%rdx = 0xf000;   %rcx = 0x100</p>
+<table>
+    <thead>
+        <tr>
+            <th>Expression</th>
+            <th>Address Computation</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0x8 (%rdx)</td>
+            <td>0xf000 + 0x8</td>
+            <td>0xf008</td>
+        </tr>
+        <tr>
+            <td>(%rdx,%rcx)</td>
+            <td>0xf000 + 0x100</td>
+            <td>0xf100</td>
+        </tr>
+        <tr>
+            <td>(%rdx,%rcx,4)</td>
+            <td>0xf000 + 0x100*4</td>
+            <td>0xf400</td>
+        </tr>
+        <tr>
+            <td>0x80(,%rdx,2)</td>
+            <td>2*0xf000+0x80</td>
+            <td>0x1e080</td>
+        </tr>
+    </tbody>
+</table>
+<h2>Reading Condition Codes</h2>
+<p><strong>SetX Instructions:</strong></p>
+<p>&emsp;Set low order byte of destination to 0 or 1 based on combinations of condition codes. <br>
+    &emsp;Does not alter remaining 7 bytes
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>SetX</th>
+            <th>Condition</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>sete</td>
+            <td>Equal</td>
+            <td>Set if ZF=1</td>
+        </tr>
+        <tr>
+            <td>setne</td>
+            <td>Not equal</td>
+            <td>Set if ZF=0</td>
+        </tr>
+        <tr>
+            <td>setg</td>
+            <td>Greater</td>
+            <td>Set if ZF=0 and SF=OF</td>
+        </tr>
+        <tr>
+            <td>setge</td>
+            <td>Greater or equal</td>
+            <td>Set if SF=OF</td>
+        </tr>
+        <tr>
+            <td>setl</td>
+            <td>Less</td>
+            <td>Set if SF!=OF</td>
+        </tr>
+        <tr>
+            <td>setle</td>
+            <td>Less or equal</td>
+            <td>Set if ZF=1 or SF!=OF</td>
+        </tr>
+        <tr>
+            <td>seta</td>
+            <td>Above</td>
+            <td>Set if CF=0 and ZF=0</td>
+        </tr>
+        <tr>
+            <td>setae</td>
+            <td>Above or equal</td>
+            <td>Set if CF=0</td>
+        </tr>
+        <tr>
+            <td>setb</td>
+            <td>Below</td>
+            <td>Set if CF=1</td>
+        </tr>
+        <tr>
+            <td>setbe</td>
+            <td>Below or equal</td>
+            <td>Set if CF=1 or ZF=1</td>
+        </tr>
+        <tr>
+            <td>sets</td>
+            <td>Sign</td>
+            <td>Set if SF=1</td>
+        </tr>
+        <tr>
+            <td>setns</td>
+            <td>Not sign</td>
+            <td>Set if SF=0</td>
+        </tr>
+    </tbody>
+</table>
+<p>EX - return x > y;</p>
+<p></p>
+<pre><code>cmpq   %rsi, %rdi   # Compare x:y
+setg   %al          # Set when >
+movzbl %al, %eax    # Zero rest of %raxret</code></pre>
+<h2>Jumping</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Instruction</th>
+            <th>Mnemonic</th>
+            <th>C example</th>
+            <th>Flags</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>j (jmp)</td>
+            <td>Jump</td>
+            <td>break;</td>
+            <td>(Unconditional)</td>
+        </tr>
+        <tr>
+            <td>je (jz)</td>
+            <td>Jump if equal (zero)</td>
+            <td>if (x == y)</td>
+            <td>ZF</td>
+        </tr>
+        <tr>
+            <td>jne (jnz)</td>
+            <td>Jump if not equal (nonzero)</td>
+            <td>if (x != y)</td>
+            <td>!ZF</td>
+        </tr>
+        <tr>
+            <td>jg (jnle)</td>
+            <td>Jump if greater</td>
+            <td>if (x > y),signed</td>
+            <td>!ZF && !(SF ^ OF)</td>
+        </tr>
+        <tr>
+            <td>jge (jnl)</td>
+            <td>Jump if greater or equal</td>
+            <td>if (x >= y),signed</td>
+            <td>!(SF ^ OF)</td>
+        </tr>
+        <tr>
+            <td>jl (jnge)</td>
+            <td>Jump if less</td>
+            <td>if (x < y),signed</td>
+            <td>SF ^ OF</td>
+        </tr>
+        <tr>
+            <td>jle (jng)</td>
+            <td>Jump if less or equal</td>
+            <td>if (x <= y),unsigned</td>
+            <td>(SF ^ OF) || ZF</td>
+        </tr>
+        <tr>
+            <td>ja (jnbe)</td>
+            <td>Jump if above</td>
+            <td>if (x > y),unsigned</td>
+            <td>!CF && !ZF</td>
+        </tr>
+        <tr>
+            <td>jae (jnb)</td>
+            <td>Jump if above or equal</td>
+            <td>if (x >= y),unsigned</td>
+            <td>!CF</td>
+        </tr>
+        <tr>
+            <td>jb (jnae)</td>
+            <td>Jump if below</td>
+            <td>if (x < y),unsigned</td>
+            <td>CF</td>
+        </tr>
+        <tr>
+            <td>jbe (jna)</td>
+            <td>Jump if below or equal</td>
+            <td>if (x <= y),unsigned</td>
+            <td>CF || ZF</td>
+        </tr>
+        <tr>
+            <td>js</td>
+            <td>Jump if sign bit</td>
+            <td>if (x < 0),signed</td>
+            <td>SF</td>
+        </tr>
+        <tr>
+            <td>jns</td>
+            <td>Jump if not sign bit</td>
+            <td>if (x >= 0),signed</td>
+            <td>!SF</td>
+        </tr>
+        <tr>
+            <td>jc</td>
+            <td>Jump if carry bit</td>
+            <td>N/A</td>
+            <td>CF</td>
+        </tr>
+        <tr>
+            <td>jnc</td>
+            <td>Jump if not carry bit</td>
+            <td>N/A</td>
+            <td>!CF</td>
+        </tr>
+        <tr>
+            <td>jo</td>
+            <td>Jump if overflow bit</td>
+            <td>N/A</td>
+            <td>OF</td>
+        </tr>
+        <tr>
+            <td>jno</td>
+            <td>Jump if not overflow bit</td>
+            <td>N/A</td>
+            <td>!OF</td>
+        </tr>
+    </tbody>
+</table>
+<pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+        
+</pre>    
+
+<h1>Conditional Statements</h1>
+<h2>Conditional Branch</h2>
+<p>EX - 
+    <pre><code>
+    if ( x > y) { return  x-y; }  else { return = y-x; } 
+        cmpq %rsi, %rdi   #%rdi <= %rsi  {y<=x}
+        jle .L4
+        movq %rdi, %rax  
+        subq %rsi, %rax   #%rax = %rdi - %rsi    {x-y}
+        ret
+    .L4    # y <= x
+        movq %rsi, %rax   
+        subq %rdi, %rax   #%rax = %rsi - %rdi
+        ret
+    </code></pre>
+</p>
+<h2>Conditional Expressions</h2>
+<pre><code>
+    val = Test ? Then : Else;                  “val = x>y ? x-y : y-x;”
+</code></pre>
+    <h3>Goto</h3>
+<p>EX - </p>
+<pre><code>
+        if(x<=y){ 
+            goto Else;
+        } return x-y; 
+        else: 
+            return y-x; 
+</pre></code>
+<p>EX - </p>
+<pre><code>
+        movq %rdi, %rax #x
+        subq %rsi, %rax #result = x-y
+        movq %rsi,%rdx
+        subq %rdi, %rdx #eval = y-x
+        cmpq %rsi, %rdi # x<=y
+        cmovle %rdx, %rax #if <=, result = eval
+        ret
+</pre></code>
+
+<pre>
+
+──────────────────────────────────────────────────────────────────────────────────
+            
+</pre>  
+
+<h1>Conclusion</h1>
+<p>
+    This guide provides a glimpse into the fascinating world of x86 assembly language. Dive deeper, explore more instructions, and experiment with your own programs. Happy coding! 
+</p>
+</div>
+    </div>
+</body>
+
+</html>

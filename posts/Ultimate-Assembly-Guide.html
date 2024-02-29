@@ -4,8 +4,9 @@
     <title>Ultimate Assembly Guide</title>
     <meta name="description" content="A few years back I did a deep dive in Reverse Engineering Malware and wanted to share what I learned and to refresh my knowledge on the Assembly language."> 
     <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
 </head>
@@ -118,22 +119,34 @@
                                 
             </pre> 
             <h1>Operand Types</h1>
-            <p>
-            <strong>Immediate</strong> - constant integer data
-            <ul>$0x400, $-533</ul>
-            <ul>encoded with 1, 2, or 4 bytes.</ul>
-            <strong>Register</strong> - one of 16 integer registers 
-            <ul>%rax, %r13 {{%rsp is reserved for special use}}</ul>
-            <strong>Memory</strong> - 8 consecutive bytes of memory at address given by register.
-            <ul>(%rax)</ul>
-            </p> 
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Immediate</td>
+                        <td>constant integer data</td>
+                        <td>$0x400, $-533</td>
+                        <td>encoded with 1, 2, or 4 bytes</td>
+                    </tr>
+                    <tr>
+                        <td>Register</td>
+                        <td>one of 16 integer registers</td>
+                        <td>%rax, %r13 {{%rsp is reserved for special use}}</td>
+                    </tr>
+                    <tr>
+                        <td>Memory</td>
+                        <td>8 consecutive bytes of memory at address given by register</td>
+                        <td>(%rax)</td>
+                    </tr>
+                </tbody>
+            </table>
+
             <pre>
 
 ──────────────────────────────────────────────────────────────────────────────────
                     
             </pre> 
             <h1>Address Modes</h1>
-<p>* Translation Formula:</p>  
+<p><strong style="font-size: 1.25em">* Translation Formula:</strong></p>  
 <pre><code>instr D(Rb, Ri, S), %rax  ->   %rax=Rb + Ri * S + D</code></pre>
 <p>
 <strong>D:</strong> Constant “displacement”- 1,2, or 4 byte value<br>
@@ -965,7 +978,7 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
 
 <h1>Conclusion</h1>
 <p>
-    This guide provides a glimpse into the fascinating world of x86 assembly language. Dive deeper, explore more instructions, and experiment with your own programs. Happy coding! 
+    <strong>So, that's it for the basics of Assembly. I hope you found this helpful. Happy coding!</strong>
 </p>
         </div>
     </div>

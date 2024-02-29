@@ -118,21 +118,21 @@ time {
     padding: 20px;
 }
 
-table {
+.content table {
     border-collapse: collapse;
     width: 100%;
     margin: 10px auto;
     text-align: auto;
 }
 
-table th {
+.content table th {
     background-color: #ee4c4f; 
 }
 
-table tr {
+.content table tr {
     border: 1px solid #f2f2f2; 
 }
 
-table tr:nth-child(even) {
+.content table tr:nth-child(even) {
     background-color: #ee4c4f5e; 
 }

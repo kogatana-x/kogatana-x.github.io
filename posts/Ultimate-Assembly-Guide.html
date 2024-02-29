@@ -3,8 +3,8 @@
 <head>
     <title>Ultimate Assembly Guide</title>
     <meta name="description" content="A few years back I did a deep dive in Reverse Engineering Malware and wanted to share what I learned and to refresh my knowledge on the Assembly language."> 
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../kogatana-x.css">
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
@@ -970,5 +970,11 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
         </div>
     </div>
 </body>
-
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
 </html>

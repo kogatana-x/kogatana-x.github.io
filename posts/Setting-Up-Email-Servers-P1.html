@@ -468,21 +468,19 @@ Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
             <br>
             <p>It is also possible to adjust these settings via the management GUI.</p><br>
             <strong>SMTP</strong><br>
-            <p>In MS Exchange 2010, from the EMC go to Server Config > Hub Transport > {server name} properties > log Settings </p><br>
+            <p>In MS Exchange 2010, from the EMC go to Server Config > Hub Transport > {server name} properties > log Settings </p>
             <img style="width: 20%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings1.png" alt="SMTP Log Settings">
-            <p>Click on Default (25) & Client <Server Name> (587) and make sure protocol logging level is set to Verbose</p><br>
+            <p>Click on Default (25) & Client <Server Name> (587) and make sure protocol logging level is set to Verbose</p>
             <img style="width: 20%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings2.png" alt="SMTP Log Settings">
             <p>In MS Exchange 2016, in the EAC go to Servers > server name > transport logs</p>
             <p>Note: log setting locations may vary in other versions.</p><br><br>
             
             
-            <p><strong>Default Log Locations</strong></p>
-            <p>SMTP logs are located in C:\Program Files\Microsoft\Exchange Server\V14\TransportRoles\Logs\ProtocolLog\SmtpSend and SmtpReceive</p>
-            <p>     as well as C:\Program Files\Microsoft\Exchange SErver\V14\TransportRoles\Logs\Hub\ProtocolLog</p>
-            <p>POP3 and IMAP logs are located in C:\Program Files\Microsoft\Exchange Server\V14\Logging\PopImap or Pop3 and Imap4</p>
-            <p>Note: C:\Program Files\Microsoft\Exchange Server\V14\ is the default installation path. This may vary depending on where you initially installed exchange and what version you are using.</p>
-            <br>
-            <p><strong>Event Viewer Filters</strong></p>
+            <h3>Default Log Locations</h3>
+            <p>SMTP logs are located in <strong>C:\Program Files\Microsoft\Exchange Server\V14\TransportRoles\Logs\ProtocolLog\SmtpSend and SmtpReceive</strong> as well as <strong>C:\Program Files\Microsoft\Exchange SErver\V14\TransportRoles\Logs\Hub\ProtocolLog</strong></p>
+            <p>POP3 and IMAP logs are located in <strong>C:\Program Files\Microsoft\Exchange Server\V14\Logging\PopImap</strong> or Pop3 and Imap4</p>
+            <p>Note: <strong>C:\Program Files\Microsoft\Exchange Server\V14\</strong> is the default installation path. This may vary depending on where you initially installed exchange and what version you are using.</p>
+            <h3>Event Viewer Filters</h3>
             <p>Located in "Application Log". Note: these wont show the emails sent, but will show issues.</p>
             <ul>
                 <li>MSExchangeAL - Addressing Email</li>
@@ -501,7 +499,7 @@ Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
                 <li>ClusSvc - Cluster Service</li>
             </ul><br>
 
-            <p><strong>Backups!</strong></p>
+            <h3>Backups!</h3>
             <p>Exchange 2010 and later versions have a built-in backup utility that can be used to backup the server. It is recommended to backup the server before making any changes to the server.</p>
             <p>To set this up:</p>
             <ol>

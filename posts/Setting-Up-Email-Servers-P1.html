@@ -104,7 +104,7 @@
             </pre>
             <h2> Simple Email Flow</h2>
             <p>When you send an email, it starts at your MUA. Your MUA uses SMTP to forward the message to an MTA, which may forward it to another MTA, etc. Once your message reaches its intended destination MDA, it will be stored on that server. From there the destination server will use either POP3 or IMAP to index the message in the recipient's mailbox! </p>
-            <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SampleEmailFlow.png" alt="Email Flow">
+            <img style="width: 70%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SampleEmailFlow.png" alt="Email Flow">
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
                                 
@@ -112,7 +112,7 @@
             <h1>Setting Up Microsoft Exchange on Windows</h1>
             <p>Microsoft Exchange is quite a dousy to set up. There are many critical sub-services involved and many other infrastructural constraints that a system administrator should be aware of. This guide is based on Exchange versions older than 2016, so components have likely changed in newer versions</p>
             <p>A key component of Setting up MS Exchange is having an Active Directory server available in your enviornment. There are quite a few dependencies to be mindful of as well, so your network and host firewalls may end up looking like Swiss cheese. Below is a simple diagram I made to illustrate the bare minimum that you will need to allow between your Exchange and AD servers</p>
-            <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/exchange-flow.png" alt="Exchange AD Firewall Flow">
+            <img style="width: 70%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/exchange-flow.png" alt="Exchange AD Firewall Flow">
             
             <h2>Sample Firewall Ruleset</h2>
             <p>NOTE: 2010 vs later versions>> POP/IMAP Service is under FrontEnd instead of ClientAccess and edgetransport is FrontEndTransport</p>
@@ -355,7 +355,7 @@ https://<your-ip-here>/owa #login portal for OWA
                 <li>Google desired exchange version + SP #Service Pack or CU #cumulative update and download installer from Microsoft. This should be one of the first results</li>
                 <li>If Google Doesn’t Work >> the-eye.eu/public/MSDN/Exchange Server 2013 </li>
                 <li>When installing from Microsoft under System Requirements, follow the link to the Prerequisite page and follow those instructions</li>
-                <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/ExchangePrereq.png" alt="Exchange Prerequisites">
+                <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/ExchangePrereq.png" alt="Exchange Prerequisites">
                 <li>Note: you must be connected to an Active Directory Domain and be signed in as an AD Domain Administrator when installing Exchange.</li>
                 <li>Unpack the Exchange Installer (I usually slap it in C:\Exchange). Note: the default is in your Downloads folder without an associated child folder *chaos* will ensue.</li>
                 <li>Run “setup.exe” and the installer snap-in will load >> follow the install (usually just go with the defaults (on 2013+ make sure you check Client Access, Mailbox, and Transport Roles) and if its Exchange 2010 there will eventually be an option to ‘automatically install required server features’ or something like that and you should select that).</li>
@@ -367,9 +367,9 @@ https://<your-ip-here>/owa #login portal for OWA
                 <li>Load in pre-existing domain users into exchange</li>
                 <ol>
                     <li>2010 - Recipient Configuration > Mailbox > New Mailbox (User Mailbox and add existing users)</li>
-                    <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2010NewMailbox.png" alt="Exchange 2010 New Mailbox">
+                    <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2010NewMailbox.png" alt="Exchange 2010 New Mailbox">
                     <li>2016 - Recipients > Mailboxes > New > User Mailbox</li>
-                    <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2016NewMailbox.png" alt="Exchange 2016 New Mailbox">
+                    <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2016NewMailbox.png" alt="Exchange 2016 New Mailbox">
                 </ol>
                 <li>Enable Plain Text Authentication on SMTP. Note, do not do this in the real world please. </li>
                 <ol>
@@ -378,9 +378,9 @@ https://<your-ip-here>/owa #login portal for OWA
                 <li>Enable Plain Text Authentication on POP3/IMAP. Again, please dont do this in the real world. This just makes testing easier.</li>
                 <ol>
                     <li>2010 - Server Configuration > Client Access Configuration > Look at the bottom section and select the POP/IMAP header > click on POP3 & IMAP4 and configure the following: (leave defaults). Also - on the Binding tab remove the SSL ports at the bottom section. <br>Restart Computer after you made these changes.</li>
-                    <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2010PopImap.png" alt="Exchange 2010 POP/IMAP">
+                    <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2010PopImap.png" alt="Exchange 2010 POP/IMAP">
                     <li>2016 - servers > right click on name > properties > POP3/IMAP basic authentication</li>
-                    <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2016PopImap.png" alt="Exchange 2016 POP/IMAP">
+                    <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2016PopImap.png" alt="Exchange 2016 POP/IMAP">
                 </ol>
             </ol>
         </p>
@@ -422,7 +422,7 @@ https://<your-ip-here>/owa #login portal for OWA
                 **Make sure your server meets all of the prereqs for your exchange version!<br>
                 **Make sure you have at least the minimum supported version of exchange installed (see below). [Note: AD Server functional requirements are a bit more lax]<br>
             </p>
-            <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/ExchangeVersion.png" alt="Exchange Version">
+            <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/ExchangeVersion.png" alt="Exchange Version">
             <p><strong>Option 1 - appwiz.cpl & change exchange installation </strong><br>
             (If the install media is still on the system) go to appwiz.cpl and right click > change exchange server.
             Also make sure mgmt tools are checked.<br>
@@ -464,9 +464,9 @@ Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
             <p>It is also possible to adjust these settings via the management GUI.</p><br>
             <strong>SMTP</strong><br>
             <p>In MS Exchange 2010, from the EMC go to Server Config > Hub Transport > {server name} properties > log Settings </p><br>
-            <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings1.png" alt="SMTP Log Settings">
+            <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings1.png" alt="SMTP Log Settings">
             <p>Click on Default (25) & Client <Server Name> (587) and make sure protocol logging level is set to Verbose</p><br>
-            <img class="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings2.png" alt="SMTP Log Settings">
+            <img style="width: 40%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings2.png" alt="SMTP Log Settings">
             <p>In MS Exchange 2016, in the EAC go to Servers > server name > transport logs</p>
             <p>Note: log setting locations may vary in other versions.</p><br><br>
             

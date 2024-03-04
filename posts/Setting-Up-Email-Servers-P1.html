@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setting Up Email Servers - Exchange</title>
+    <meta name="description" content=""> 
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="../images/22989723.png" alt="Profile"> 
+        </a>
+        <h1>kogatana-x</h1>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>My Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>My linkedin</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h2>Setting Up Email Servers: Part 1</h2> 
+            <time datetime="2024-03-04T13:16:05">March 4th, 2024</time> 
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Introduction</h1>
+            <p>When I was first getting into cybersecurity I spent a lot of time researching email server architecture and I had a lot of difficulty finding guides on how to set one up and what all the different acronyms meant. I believe that by learning how systems work is the corenerstone to being successful in securing them. The precursor to that, of course, is setting up a system for yourself! This post will hopefully help those new to the field learn how email servers work and how to set one up for yourself</p>
+            <p>We'll go over setting up Exchange on a windows server. In future posts, we'll go over hMail, and postfix, dovecot, and roundcube on a linux server.</p>
+            
+            <h1>Terms</h1>
+            <p>Before we get started, let's go over some terms that you'll need to know:</p><br>
+            
+            <p><strong>SMTP</strong> - Simple Mail Transfer Protocol</p><br>
+            <p>SMTP is responsible for the transmission of email messages. Operates in "store and forward".</p><br>
+            <p>TCP port 25 - typically a relay port for forwarding messages</p><br>
+            <p>TCP port 587 -  (usually encryoted) submission port for clients to send messages (SSL or STARTTLSmode ) </p><br>
+            <p>TCP port 465 -  a secure submission port for clients to send messages (depricated 'SSL')</p><br>
+            <br>
+            <p><strong>LMTP</strong> - Local Mail Transfer Protocol</p><br>
+            <p>LMTP is a protocol for transferring mail messages from a local message transfer agent (MTA) to a local message store.</p><br>
+            <p>“final delivery” of messages to the mail store for access; an extension of SMTP, allows for multiple recipients for an email & updates send/fail status for each.</p><br>
+            <p>LMTP is not necessary for the mail server to run</p><br>
+            <br>
+            <p><strong>POP3(S)</strong> - Post Office Protocol</p><br>
+            <p>POP3 is a protocol for retrieving email messages from a mail server. The protocol is designed to allow for offline access to email messages.</p><br>
+            <p>Uses “store and retrieve” communication. POP3 is responsible for downloading messages from the server to your inbox. The message will disappear after its accessed</p><br>
+            <p>TCP port 110 - unencrypted communication between client and server</p>
+            <p>TCP port 995 - encrypted communication between client and server</p><br>
+            <br>
+            <p><strong>IMAP(S)</strong> - Internet Message Access Protocol</p><br>
+            <p>IMAP is a protocol for retrieving email messages from a mail server. The protocol is designed to allow for offline access to email messages.</p><br>
+            <p>IMAP also retrieves email, like POP3; however, it allows for messages to be accessed, sorted and organized without them being downloaded. messages can be accessed on multiple devices.</p><br>
+            <p>TCP port 143 - unencrypted communication</p><br>
+            <p>TCP port 993 - encrypted communication</p><br>
+            <br>
+            <p><strong>MTA</strong> - Mail/Message Transfer Agent</p><br>
+            <p>Transfers messages using SMTP from one computer to another</p>
+            <br>
+            <p><strong>MUA</strong> - Mail User Agent</p><br>
+            <p>The user interface for accessing and sending emails. Some common MUAs are Outlook, Thunderbird, OWA (MS Exchange) portal.</p>
+            <br>
+            <p><strong>MDA</strong> - Mail Delivery Agent</p><br>
+            <p>Responsible for final delivery. Stores email as plaintext or passes along to a store database</p>
+            <br>
+            <p><strong>MX Record</strong> - Mail Exchange Record</p><br>
+            <p>This is the first lookup for an email server and will identify the hostname/s and priority of servers that receive mail for a domain when an SMTP server sends a message to a user in a domain. (If no MX record is found, it resorts to an A record, if no A record the send fails)</p><br>
+            <pre>
+─────────────
+            </pre>
+            <p>Exchange - Microsoft's email server</p>
+            <p>hMail - An open source email server for windows</p>
+            <p>Postfix - An open source email server for linux</p>
+            <p>Dovecot - An open source IMAP and POP3 server for linux</p>
+            <p>Roundcube - An open source webmail client for linux</p>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                
+            </pre>
+            <h2> Simple Email Flow</h2>
+            <p>When you send an email, it starts at your MUA. Your MUA uses SMTP to forward the message to an MTA, which may forward it to another MTA, etc. Once your message reaches its intended destination MDA, it will be stored on that server. From there the destination server will use either POP3 or IMAP to index the message in the recipient's mailbox! </p>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/SampleEmailFlow.png" alt="Email Flow">
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                                
+            </pre>        
+            <h1>Setting Up Microsoft Exchange on Windows</h1>
+            <p>Microsoft Exchange is quite a dousy to set up. There are many critical sub-services involved and many other infrastructural constraints that a system administrator should be aware of. This guide is based on Exchange versions older than 2016, so components have likely changed in newer versions</p>
+            <p>A key component of Setting up MS Exchange is having an Active Directory server available in your enviornment. There are quite a few dependencies to be mindful of as well, so your network and host firewalls may end up looking like Swiss cheese. Below is a simple diagram I made to illustrate the bare minimum that you will need to allow between your Exchange and AD servers</p>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/exchange-flow.png" alt="Exchange AD Firewall Flow">
+            
+            <h2>Sample Firewall Ruleset</h2>
+            <p>NOTE: 2010 vs later versions>> POP/IMAP Service is under FrontEnd instead of ClientAccess and edgetransport is FrontEndTransport</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Direction</th>
+                        <th>Protocol</th>
+                        <th>Port</th>
+                        <th>RemoteAddr</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>%installpath%\bin\edgetransport.exe</td>
+                        <td>in</td>
+                        <td>tcp</td>
+                        <td>25,587</td>
+                        <td>any</td>
+                    </tr>
+                    <tr>
+                        <td>%installpath%\ClientAccess\PopImap\Microsoft.Exchange.Pop3Service.exe</td>
+                        <td>in</td>
+                        <td>tcp</td>
+                        <td>110,995</td>
+                        <td>any</td>
+                    </tr>
+                    <tr>
+                        <td>%installpath%\ClientAccess\PopImap\Microsoft.Exchange.Imap4Service.exe</td>
+                        <td>in</td>
+                        <td>tcp</td>
+                        <td>143,993</td>
+                        <td>any</td>
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        <td>in</td>
+                        <td>tcp</td>
+                        <td>443</td>
+                        <td>any</td>
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        <td>in/out</td>
+                        <td>udp</td>
+                        <td>53</td>
+                        <td>AD</td>
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        <td>in/out</td>
+                        <td>tcp/udp</td>
+                        <td>88</td>
+                        <td>AD</td>
+                    </tr>
+                    <tr>
+                        <td>many</td>
+                        <td>in/out</td>
+                        <td>tcp/udp</td>
+                        <td>389</td>
+                        <td>AD</td>
+                    </tr>
+                    <tr>
+                        <td>C:\Windows\System32\svchost.exe</td>
+                        <td>in/out</td>
+                        <td>tcp</td>
+                        <td>135</td>
+                        <td>AD</td>
+                    </tr>
+                    <tr>
+                        <td>many</td>
+                        <td>in/out</td>
+                        <td>tcp</td>
+                        <td>3268</td>
+                        <td>AD</td>
+                    </tr>
+                    <tr>
+                        <td>any</td>
+                        <td>in/out</td>
+                        <td>any</td>
+                        <td>any</td>
+                        <td>127.0.0.1/8</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>*AD can attach C:\Windows\System32\lsass.exe  to 389,3268 rule</p>
+            <p>*RPC can probably be excluded from the exceptions list above</p>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                                
+            </pre> 
+            <h2>Critical Services & Description</h2>  
+            <h3>Localhost -</h3>
+            <p><strong>ADTopologyService.exe</strong> >> locates the AD DCs, Global Catalog Server and provides AD topology info for the exchange server. Runs on TCP port 890.</p><br>
+            <p><strong>MSExchangeIS/store.exe</strong> >> The information Store is the actual database engine (ESE) and manages the mailbox database. Service start type must be set to "Auto Start".</p><br>
+            <p><strong>MSExchangeFrontEndTransport.exe</strong> >> provides an SMTP proxy for inbound and outbound email messages to and from the internet (SMTP daemon basically). Runs on TCP ports 25 and 587 </p><br>
+            <p><strong>MSExchangeImap4Service.exe</strong> >> provides IMAP4 clients with access to exchange server mailboxes and retrieves IMAP4 requests from the client access services. Runs on TCP ports 143 and 993. Set up note: you have to go into services and change start up type to automatic and start the service to enable IMAP4.</p><br>
+            <p><strong>MSExchangePop3Service.exe</strong>>> authenticates the client connection and passes the request to the appropriate mailbox server. RUns on TCP ports 110 and 995. Set up note: you have to go into services and change start up type to automatic and start the service to enable POP3</p><br>
+	        <p><i>You may see that there is a BE (meaning Back End) service for POP3/IMAP4; this is really only needed if there are multiple exchange servers on the network (ie client access server that is separate from the mailbox server) so that they can communicate with one another</i></p>
+            <p><strong>MSExchangeThrottling.exe</strong> >> handles the limits on the rate of user operations to prevent any single user from consuming too many server resources</p><br>
+            <p><strong>HostControllerService.exe/MSExchangeServiceHost</strong> >> misc other tasks that keep exchange running</p><br>
+            <p><strong>MSExchangeDelivery.exe & MSExchangeSubmission.exe</strong> >> I think these have to be running to send out mail (otherwise they are just to manage mail going to and from other transport servers on the network)</p><br>
+            <p><strong>inetsrv\w3wp.exe & noderunner.exe</strong> >> IIS processes for OWA</p><br>
+            <p><strong>MSExchangeMailboxAssistants.exe</strong> >> Handles background processing functions for exchange server mailboxes</p><br><br>
+            
+            <h3>AD Established (AD:389/3268)</h3>
+            <p><strong>MSExchangeRepl.exe</strong> >> provides a continuous replication service to copy log files from ad db to a server that hosts a passive copy of the db</p><br>
+            <p><strong>Microsoft.Exchange.Directory.TopologyService.exe</strong></p><br>
+            <p><strong>Microsoft.Exchange.ServiceHost.exe</strong></p><br>
+            <p><strong>MSExchangeMailboxAssistants.exe</strong></p><br>
+            <p><strong>(Exchange 2010) AddressBook</strong></p><br>
+            <p><strong>(On like Exchange 2003) ActiveDirectoryConnector.exe</strong> **ports 379,389 outbound to AD</p><br>
+            <p><strong>MSExchangeTransportLogSearch.exe</strong></p><br>
+            <p><strong>Microsoft.Exchange.Search.Service.exe</strong></p><br>
+            <p><i>I also think that there is a frontend imap/pop3 (and maybe smtp) connection as well</i> **the non-service exe</p><br><br>
+
+            <h3>Other not so critical services (on localhost)</h3>
+            <p><strong>wbsexchange.exe</strong> >> Exchange backup utility. Set to Manual but is necessary to backup server later</p><br>
+            <p><strong>MSExchangeFastSearch/SearchService</strong> >> handles content indexing and queuing of exchange server data</p><br>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                                                
+            </pre> 
+            <h1> Exchange Management </h1>
+            <p>Exchange has a few different management portals and shells that you can use to administer the server</p>
+            <pre><code>
+https://localhost/ecp #Admin Portal for OWA
+https://<your-ip-here>/owa #login portal for OWA
+</code></pre>
+<p>
+EMS >> is the management shell that uses PowerShell modules specific to exchange, you can use this or the GUI EMC/EAC to administer the db’s & users. <br>
+EMC >> is the management console for Exchange in 2010-like versions. <br>
+EAC >> is what the Admin Portal is called in later versions as it has the combined capability of the Admin Portal and EMC <br>
+</p>
+            <h1>Brief Installation Guide</h1>
+            <p>For a more in-depth guide, see the <a href="https://docs.microsoft.com/en-us/exchange/install/install?view=exchserver-2019">Microsoft Documentation</a></p>
+            <p>First, you will need to install the prerequisites for Exchange. This includes the .NET Framework, Windows Management Framework, and the Unified Communications Managed API. You will also need to install the Remote Tools Administration Pack.</p>
+            <ol>
+                <li>Google desired exchange version + SP #Service Pack or CU #cumulative update and download installer from Microsoft. This should be one of the first results</li>
+                <li>If Google Doesn’t Work >> the-eye.eu/public/MSDN/Exchange Server 2013 </li>
+                <li>When installing from Microsoft under System Requirements, follow the link to the Prerequisite page and follow those instructions</li>
+                <img src="https://kogatana-x.github.io/images/Setting-Up-Email/ExchangePrereq.png" alt="Exchange Prerequisites">
+                <li>Note: you must be connected to an Active Directory Domain and be signed in as an AD Domain Administrator when installing Exchange.</li>
+                <li>Unpack the Exchange Installer (I usually slap it in C:\Exchange). Note: the default is in your Downloads folder without an associated child folder *chaos* will ensue.</li>
+                <li>Run “setup.exe” and the installer snap-in will load >> follow the install (usually just go with the defaults (on 2013+ make sure you check Client Access, Mailbox, and Transport Roles) and if its Exchange 2010 there will eventually be an option to ‘automatically install required server features’ or something like that and you should select that).</li>
+                <li>If your install failed, make sure you have installed all of the prerequisites and are signed in as an AD domain administrator.</li>
+                <li>Restart your computer after it finishes installing if it doesn’t automatically do it.  (Exchange 2010 is faster than newer versions (30min). 2016 takes a solid 2 hours. And 2013 is something in between).</li>
+                <li>So at this point your Exchange install should be functional.</li>
+                <li>Go into your Task Manager > Services and find the Microsoft Exchange POP3 and IMAP services and set them to start automatically and start them up</li>
+                <li>For the purposes of this tutorial, boot up the EMC in Exchange 2010 or go to the EAC in Exchange 2016  so we can make some changes that could easily be done through the EMS</li>
+                <li>Load in pre-existing domain users into exchange</li>
+                <ol>
+                    <li>2010 - Recipient Configuration > Mailbox > New Mailbox (User Mailbox and add existing users)</li>
+                    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2010NewMailbox.png" alt="Exchange 2010 New Mailbox">
+                    <li>2016 - Recipients > Mailboxes > New > User Mailbox</li>
+                    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2016NewMailbox.png" alt="Exchange 2016 New Mailbox">
+                </ol>
+                <li>13.	Enable Plain Text Authentication on SMTP. Note, do not do this in the real world please. </li>
+                <ol>
+                    <li>2010 - Server Configuration > Hub Transport Service > Right click to disable the Client whatever receive connector. Then edit the Default Connector. On the Authentication tab, uncheck every box. On the Allowed Users? tab, check all of the boxes (especially allowing anonymous users). You’re gonna have to restart the box but save that for after we edit pop3/imap.</li>
+                </ol>
+                <li>14.	Enable Plain Text Authentication on POP3/IMAP. Again, please dont do this in the real world. This just makes testing easier.</li>
+                <ol>
+                    <li>2010 - Server Configuration > Client Access Configuration > Look at the bottom section and select the POP/IMAP header > click on POP3 & IMAP4 and configure the following: (leave defaults). Also - on the Binding tab remove the SSL ports at the bottom section. <br>Restart Computer after you made these changes.</li>
+                    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2010PopImap.png" alt="Exchange 2010 POP/IMAP">
+                    <li>2016 - servers > right click on name > properties > POP3/IMAP basic authentication</li>
+                    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/Exchange2016PopImap.png" alt="Exchange 2016 POP/IMAP">
+                </ol>
+            </ol>
+            <p>Your Exchange Email Server should now be good to go. I intentionally set up mine to be insecure by using plaintext authentication for security testing purposes, and to learn more about how Exchange works. If you are deploying this in the real world, please dont do what I did.</p>
+            
+            <h2> Troubleshooting Issues </h2>
+            <p>Hopefully you were able to setup Exchange without issue. Before making this guide, I definitley had my fair share of issues.</p>
+            <h3>Testing Connectivity</h3>
+            <p>To test our services, we are going to be using telnet client, which is a command line utility. When using telnet, some terminals may be picky about backspaces, so be careful when typing commands</p>
+            <p><strong>SMTP</strong></p>
+            <pre><code>
+            telnet <host.domain/ip> 25
+                helo
+                MAIL FROM:<<user@domain>> | RCPT TO:<<user@domain>> NOTIFY=success,failure
+                DATA <enter> Subject: Test <enter> <enter> text <enter> . //type a period
+                QUIT 
+            </code></pre>
+            <p><strong>POP3</strong></p>
+            telnet <host.domain/ip> 110
+                USER <username> <enter> PASS <password> <enter>
+                STAT //will give you number of messages in the inbox and then the size (bytes)
+                LIST //will give you the breakout of these messages and their size (bytes)
+                RETR <#> //will display the mail
+                QUIT
+            </code></pre>
+            <p><strong>IMAP</strong></p>
+            <pre><code>
+            telnet <host.domain/ip> 143
+	            a01 LOGIN <user@domain> <password>
+	            a02 logout 
+            </code></pre>
+            <br><br>
+
+            <h3>Installed, but No EMC / EMS ?</h3>
+            <p>
+                **Make sure IPv6 is enabled (don’t ask why, I don’t know)
+                **Make sure your server meets all of the prereqs for your exchange version!
+                **Make sure you have at least the minimum supported version of exchange installed (see below). [Note: AD Server functional requirements are a bit more lax]
+            </p>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/ExchangeVersion.png" alt="Exchange Version">
+            <p><strong>Option 1 - appwiz.cpl & change exchange installation </strong>
+            (If the install media is still on the system) go to appwiz.cpl and right click > change exchange server.
+            Also make sure mgmt tools are checked.<br>
+            <strong>Option 2 - Fix Installation with CU</strong>
+            If the EMC is broken, open it up and under help > find the version. The version will tell you the proper SP you need to download from Microsoft’s website. Google it.<br>
+            Download the SP found ^ <br>
+            Run the SP and unzip it & run setup <br>
+            Try repairing the install <br>
+            Else check and uncheck the Mgt Tools &  reinstall <br>
+            </p>
+            <p>For more information on troubleshooting, see the <a href="https://docs.microsoft.com/en-us/exchange/troubleshoot?view=exchserver-2019">Microsoft Documentation</a></p>
+            
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                                                
+            </pre>
+            <h1>Logging and Backups</h1>
+            <p>Exchange logging in older versions is not configured by default and has to be enabled. </p>
+            <p>For POP3 and IMAP logs, navigate to the configuration files located: 
+                <pre><code>
+C:\Program Files\Microsoft\Exchange Server\ClientAccess\PopImap\
+                                                                Microsoft.Exchange.Imap4.exe.config
+                                                                Microsoft.Exchange.Pop3.exe.config
+                    </code></pre>
+            and add the following line to the bottom of each file:
+                <pre><code>
+<add key="ProtocolLog" value="true" /> 
+</code></pre>
+            Once these lines are added, reset the service via the management console:
+                <pre><code>
+Restart-service MSExchangePop3 && Restart-Service MSExchangeImap4     
+</code></pre>
+To change the location of the log files and set their name to Pop3Logs and Imap4Logs, via the management console, run the following commands:
+                <pre><code>
+Set-PopSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Pop3Logs"
+Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
+            </p><br>
+            <p>It is also possible to adjust these settings via the management GUI.</p><br>
+            <strong>SMTP</strong><br>
+            <p>In MS Exchange 2010, from the EMC go to Server Config > Hub Transport > {server name} properties > log Settings </p><br>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings1.png" alt="SMTP Log Settings">
+            <p>Click on Default (25) & Client <Server Name> (587) and make sure protocol logging level is set to Verbose</p><br>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/SMTPLogSettings2.png" alt="SMTP Log Settings">
+            <p>In MS Exchange 2016, in the EAC go to Servers > server name > transport logs</p>
+            <p>Note: log setting locations may vary in other versions.</p><br><br>
+            
+            
+            <p><strong>Default Log Locations</strong></p><br>
+            <p>SMTP logs are located in C:\Program Files\Microsoft\Exchange Server\V14\TransportRoles\Logs\ProtocolLog\SmtpSend and SmtpReceive</p><br>
+            <p>     as well as C:\Program Files\Microsoft\Exchange SErver\V14\TransportRoles\Logs\Hub\ProtocolLog</p><br>
+            <p>POP3 and IMAP logs are located in C:\Program Files\Microsoft\Exchange Server\V14\Logging\PopImap or Pop3 and Imap4</p><br>
+            <p>Note: C:\Program Files\Microsoft\Exchange Server\V14\ is the default installation path. This may vary depending on where you initially installed exchange and what version you are using.</p><br><br>
+            
+            <p><strong>Event Viewer Filters</strong></p><br>
+            <p>Located in "Application Log". Note: these wont show the emails sent, but will show issues.</p><br>
+            <ul>MSExchangeAL - Addressing Email</ul>
+            <ul>MSExchangeIS - IIS Access</ul>
+            <ul>MSExchangeSA - AD related Exchange Stuff</ul>
+            <ul>MSExchangeTransport - SMTP</ul>
+            <ul>MSExchangePOP3Svc - </ul>
+            <ul>MSExchangeIMAP4Svc -</ul>
+            <br>
+            <p>Located in "System Log"</p><br>
+            <ul>SMTPSvc</ul>
+            <ul>W3Svc - IIS</ul>
+            <ul>MSExchangeIS Mailbox Store - DB Engine</ul>
+            <ul>ClusSvc - Cluster Service</ul><br><br>
+
+            <p><strong>Backups!</strong></p>
+            <p>Exchange 2010 and later versions have a built-in backup utility that can be used to backup the server. It is recommended to backup the server before making any changes to the server.</p>
+            <p>To set this up:</p>
+            <ol>Install WindowsBackupFeatures:</ol>
+            <pre><code>
+#CMD:
+servermanagercmd -i Backup-Features
+#Powershell
+Import-Module servermanager && Add-WindowsFeature Backup-Features
+</code></pre>
+            <ol>In task manager, Disable MicrosoftExchangeReplication Service</ol>
+            <ol>Run the command "ntbackup", and run a full server backup. backup once, and specify location</ol>
+            <ol>Re-enable MicrosoftExchangeRepl service in task manager</ol>
+            <br>
+            <p>For more information on setting up backups, see the <a href="https://docs.microsoft.com/en-us/exchange/architecture/mailbox-servers/backup-and-restore?view=exchserver-2019">Microsoft Documentation</a></p>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                                                
+            </pre>  
+            <h1>Conclusion</h1>       
+            <p>Setting up an email server can be a daunting task, but it is a great way to learn about how systems work and how to secure them. Hopefully this guide helps demystify Microsoft Exchange for you. Happy learning!</p>
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
+</html>

@@ -4,10 +4,9 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
 <url>
   <loc>https://kogatana-x.github.io/</loc>
-  <lastmod>2024-03-01T00:12:11+00:00</lastmod>
+  <lastmod>2024-03-04T15:18:14+00:00</lastmod>
 </url>
 <url>
     <loc>https://kogatana-x.github.io/posts/Reservation-Bot-With-Selenium.html</loc>
@@ -17,4 +16,7 @@
     <loc>https://kogatana-x.github.io/posts/Ultimate-Assembly-Guide.html</loc>
     <lastmod>2024-02-28T22:45:21+00:00</lastmod>
 </url>
+<url>
+    <loc>https://kogatana-x.github.io/posts/Setting-Up-Email-Servers-P1.html</loc>
+    <lastmod>2024-03-04T13:12:05+00:00</lastmod>
 </urlset>

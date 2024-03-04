@@ -41,11 +41,10 @@
 ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
 
 ──────────────────────────────────────────────────────────────────────────────────
-
 </pre>
     </div>
     <div class="page">
-        <h1 style="padding:10px;">Posts</h1>
+        <h1 style="padding:10px;">Recent Posts</h1>
     </div> 
     <div class="hiddenlinks">
         <a href="posts/Setting-Up-Email-Servers-P1.html">Setting Up Email Servers P1</a>
@@ -84,7 +83,7 @@ Promise.all(postUrls.map(fetchPost))
             const postElement = document.createElement('div');
             postElement.classList.add('blog-post');
             
-            const titleElement = document.createElement('h2');
+            const titleElement = document.createElement('h3');
             const linkElement = document.createElement('a');
             linkElement.href = postUrls[index]; // Set the href to the post URL
             linkElement.textContent = post.title;

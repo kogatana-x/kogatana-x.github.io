@@ -446,26 +446,26 @@ https://<your-ip-here>/owa #login portal for OWA
             </pre>
             <h1>Logging and Backups</h1>
             <p>Exchange logging in older versions is not configured by default and has to be enabled. </p>
-            <p>For POP3 and IMAP logs, navigate to the configuration files located: 
-            <p>    <pre><code>
+            <p>For POP3 and IMAP logs, navigate to the configuration files located: </p>
+            <pre><code>
 C:\Program Files\Microsoft\Exchange Server\ClientAccess\PopImap\
                                                                 Microsoft.Exchange.Imap4.exe.config
                                                                 Microsoft.Exchange.Pop3.exe.config
                     </code></pre>
-            and add the following line to the bottom of each file:
+            <p>and add the following line to the bottom of each file:</p>
                 <pre><code>
-<add key="ProtocolLog" value="true" /> 
+"<add key="ProtocolLog" value="true" />" 
 </code></pre>
-            Once these lines are added, reset the service via the management console:
+<p>Once these lines are added, reset the service via the management console:</p>
                 <pre><code>
 Restart-service MSExchangePop3 && Restart-Service MSExchangeImap4     
 </code></pre>
-To change the location of the log files and set their name to Pop3Logs and Imap4Logs, via the management console, run the following commands:
+<p>To change the location of the log files and set their name to Pop3Logs and Imap4Logs, via the management console, run the following commands:</p>
                 <pre><code>
 Set-PopSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Pop3Logs"
 Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
                 </code></pre>
-            </p><br>
+            <br>
             <p>It is also possible to adjust these settings via the management GUI.</p><br>
             <strong>SMTP</strong><br>
             <p>In MS Exchange 2010, from the EMC go to Server Config > Hub Transport > {server name} properties > log Settings </p><br>

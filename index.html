@@ -117,7 +117,7 @@ Promise.all(postUrls.map(fetchPost))
     .catch(error => console.error(error));
 
 $(document).ready(function() {
-    var categories = [];
+    var categories = ['offensive','defensive','sysadmin','programming'];
 
     // Get the category of each post
     $('.post').each(function() {

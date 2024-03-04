@@ -52,6 +52,13 @@
         <a href="posts/Reservation-Bot-With-Selenium.html">Reservation Bot With Selenium</a>
     </div>
     <div id="blogContainer"></div>
+    <div id="categoryContainer">
+        <h1>Categories</h1>
+        <a href="#" data-category="offensive">Offensive Security</a>
+        <a href="#" data-category="defensive">Defensive Security</a>
+        <a href="#" data-category="sysadmin">Systems and Servers</a>
+        <a href="#" data-category="programming">Programming</a>
+    </div>
     <div class="footer">
         <p>© 2021 kogatana-x</p>
     </div>
@@ -112,4 +119,15 @@ Promise.all(postUrls.map(fetchPost))
         });
     })
     .catch(error => console.error(error));
+
+    $(document).ready(function() {
+        $('#categoryContainer a').click(function(e) {
+            e.preventDefault();
+
+            var category = $(this).data('category');
+
+            $('.post').hide(); // Hide all posts
+            $('.post[data-category="' + category + '"]').show(); // Show posts with the clicked category
+        });
+    });
 </script>

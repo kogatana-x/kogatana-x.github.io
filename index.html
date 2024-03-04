@@ -122,6 +122,9 @@ Promise.all(postUrls.map(fetchPost))
     // Fetch all posts and add them to the page
     Promise.all(postUrls.map(fetchPost))
         .then(posts => {
+            const blogContainer = document.querySelector('#blogContainer');
+            const categories = new Set(); // Use a Set to automatically discard duplicates
+
             posts.forEach((post, index) => {
                 // Fetch the category from the post's meta tag
                 const category = post.doc.querySelector('meta[name="category"]').content;
@@ -131,6 +134,7 @@ Promise.all(postUrls.map(fetchPost))
                     categories.push(category);
                 }
             });
+            console.log(Array.from(categories));
 
             // Create a category box for each unique category
             $.each(categories, function(index, category) {

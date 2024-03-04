@@ -120,14 +120,29 @@ Promise.all(postUrls.map(fetchPost))
     })
     .catch(error => console.error(error));
 
-    $(document).ready(function() {
-        $('#categoryContainer a').click(function(e) {
-            e.preventDefault();
+$(document).ready(function() {
+    var categories = [];
 
-            var category = $(this).data('category');
+    // Get the category of each post
+    $('.post').each(function() {
+        var category = $(this).find('meta[name="category"]').attr('content');
 
-            $('.post').hide(); // Hide all posts
-            $('.post[data-category="' + category + '"]').show(); // Show posts with the clicked category
-        });
+        // Add the category to the categories array if it's not already in it
+        if ($.inArray(category, categories) === -1) {
+            categories.push(category);
+        }
     });
+
+    // Create a category box for each unique category
+    $.each(categories, function(index, category) {
+        var categoryBox = $('<div class="categoryBox">' + category + '</div>');
+        $('#categoryContainer').append(categoryBox);
+    });
+
+    // When a category box is clicked, navigate to a new page that displays posts with the same category
+    $('.categoryBox').click(function() {
+        var category = $(this).text();
+        window.location.href = 'category.html?category=' + encodeURIComponent(category);
+    });
+});
 </script>

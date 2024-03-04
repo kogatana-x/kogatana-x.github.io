@@ -39,7 +39,7 @@ body {
     text-align: center;
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
 }
-.hiddenlinks {
+.hiddenlinks a {
     display: none;
 }
 

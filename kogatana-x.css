@@ -39,6 +39,10 @@ body {
     text-align: center;
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
 }
+.hiddenlinks {
+    display: none;
+}
+
 .content {
     flex: 3;
     margin-left: 17em;

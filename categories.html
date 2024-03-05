@@ -119,7 +119,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
     })
     .catch(error => console.error(error));
 
-    
+
     $(document).ready(function() {
         // Initialize categories as an empty array
         var categories = [];
@@ -131,7 +131,8 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
         };
 
         // Fetch all posts and add them to the page
-        Promise.all(postUrls.map(fetchPost))
+        fetch('https://kogatana-x.github.io/posts/posts.json')
+            .then(response => response.json())
             .then(posts => {
                 posts.forEach((post, index) => {
                     // Fetch the category from the post's meta tag

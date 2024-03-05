@@ -47,7 +47,7 @@
     <div class="page">
         <h1 style="padding:10px;">Relevant Posts</h1>
     </div> 
-    <div id="postContainer"></div>
+    <div id="blogContainer"></div>
 
     <div class="footer">
         <p>© 2021 kogatana-x</p>
@@ -78,13 +78,40 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
         });
 
         // Create a post element for each post in the filtered list
-        const postContainer = document.querySelector('#postContainer');
+        const postContainer = document.querySelector('#blogContainer');
         filteredPostsHtml.forEach(html => {
             const doc = parser.parseFromString(html, 'text/html');
             const postElement = document.createElement('div');
-            postElement.textContent = doc.querySelector('title').textContent;
-            postElement.classList.add('post'); // Add a class for styling
-            postContainer.appendChild(postElement);
+            const title = doc.querySelector('title').textContent;
+            const time = doc.querySelector('time').textContent;
+            const description = doc.querySelector('meta[name="description"]').content;
+            
+            postElement.classList.add('blog-post');
+            
+            const titleElement = document.createElement('h3');
+            const linkElement = document.createElement('a');
+            linkElement.href = postUrls[index]; // Set the href to the post URL
+            linkElement.textContent = post.title;
+            linkElement.style.color = 'inherit'; // Inherit the color from the h2
+            linkElement.style.textDecoration = 'none'; // Remove the underline
+            
+            titleElement.appendChild(linkElement); // Append the link to the h2
+            
+            postElement.appendChild(titleElement);
+
+            const timeElement = document.createElement('span');
+            const strongElement = document.createElement('strong'); // Create a strong tag to bold the time
+            strongElement.textContent = post.time;
+            timeElement.appendChild(strongElement);
+            postElement.appendChild(timeElement);
+
+            const descriptionElement = document.createElement('span');
+            descriptionElement.textContent = ' - ' + post.description; // Add a dash before the description
+            postElement.appendChild(descriptionElement);
+
+
+
+            blogContainer.appendChild(postElement);
         });
     })
     .catch(error => console.error(error));

@@ -68,6 +68,10 @@
                 For our backend web server, we will be using IIS7, which is a nice web server we can install directly from Windows Features list. 
                 If you are new to email servers, I highly recommend checking out my previous post, <a link="https://kogatana-x/posts/Setting-Up-Email-Servers-P1.html">Setting Up Email Servers - Part 1</a>, where we went over the basics of email servers and how they work.
             </p>
+                        <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
             <h1>Setting Up hMail</h1>
             <p>I set hMail up on Windows Server 2008</p>
             <p>Jumping right into the installation, we will first need to download the packages and installers we will need for our setup.
@@ -203,6 +207,10 @@ $config[‘mime_types’]= ‘C:\inetpub\wwwroot\roundcube\mime.types’;
             <li>Navigate to http://localhost/roundcube and try to login with an account you set up in hMail</li>
             <li>Clean up the conf file where the installer was.</li>
         </ol>
+        <pre>
+──────────────────────────────────────────────────────────────────────────────────
+            
+                        </pre>
         <h1>Hardening </h1>
         <h3>Firewall Rules</h3>
         <table>
@@ -266,7 +274,10 @@ $config['smtp_debug'] = true; //Log SMTP conversation
         <p>From the hMail Management Interface, go to Settings >> Backup >> and create a backup of your hMail configuration.</p>
         <p><strong>Roundcube/IIS</strong></p>
         <p>From the IIS Manager, go to the root of your website and create a backup of your web.config file.</p>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
 
+            </pre>
         <h1>Setting Up SSL</h1>
         <p>SSL is a must-have for any email server. It encrypts the connection between the client and the server, ensuring that no one can eavesdrop on the conversation. 
             There are a few ways to acquire an SSL certificate, but the most common way is to purchase one from a Certificate Authority (CA). 
@@ -305,6 +316,10 @@ New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -Subject "*.e
             <li>Save the changes</li>
             <li>Restart hMailServer</li>
         </ol>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
         <h1>Conclusion</h1>
         <p>That's all for this post! We have successfully set up hMail and Roundcube on Windows. In the next post, we will be going over how to secure our email servers on Linux. Stay tuned!</p>
         </div>

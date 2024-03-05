@@ -43,6 +43,17 @@ body {
     display: none;
 }
 
+.category{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
 .content {
     flex: 3;
     margin-left: 17em;

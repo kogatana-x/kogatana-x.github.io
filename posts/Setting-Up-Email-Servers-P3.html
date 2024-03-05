@@ -67,7 +67,7 @@
                 Welcome to the third part of the Setting Up Email Servers series. In this part, we will go over setting up an email server on Linux.
                 We will be using Postfix as our Mail Transfer Agent (MTA), Dovecot as our Mail Delivery Agent (MDA), and Roundcube as our webmail client, with Apache as the web server and MariaDB as the backend database.
                 If you have been following along, you should have a basic understanding of how email servers work and be comfortable with making command-line configuration changes.
-                We will also be exploring various configuration options and security considerations.
+                For now, we will stick to local authentication, but we will be exploring various configuration options and security considerations in future iterations of this series.
                 __
                 Postfix is a free and open-source mail transfer agent (MTA) that routes and delivers electronic mail. It is Wietse Venema's mail server that started life at IBM research as an alternative to the widely-used Sendmail program. Now at Google, Wietse continues to support Postfix.
                 Dovecot is an open-source IMAP and POP3 server for Unix-like operating systems, written primarily with security in mind. Dovecot is an excellent choice for both small and large installations. It's fast, simple to set up, requires no special administration, and it uses very little memory.
@@ -83,27 +83,277 @@
             </pre>
             <h1>Prerequisites</h1>
             <p>
-                Before we begin, you will need to have a server running a Linux distribution. I will be using Ubuntu 20.04 LTS for this guide. You will also need to have a domain name and a server with a static IP address. For the purposes of this tutorial, the domain can be whatever you wish. You will also need to have a basic understanding of how to use the command line and be comfortable with making configuration changes.
-                <br>#NOTE >>
-                SELinux should be disabled or figure out those exceptions manually (vi /etc/selinux/config)
-                *Note – sendmail (another MTA) is likely to be installed by default on your OS (and will take precedence over Postfix), so make sure it is disabled (systemctl disable sendmail).
+                Before we begin, you will need to have a server running a Linux distribution. This guide follows both RHEL-based and Debian-based OSes, any other type, youll have to figure out on your own. You will also need to have a domain name and a server with a static IP address. For the purposes of this tutorial, the domain can be whatever you wish. You will also need to have a basic understanding of how to use the command line and be comfortable with making configuration changes.
+                <br>Note, there are a few things on a freshly installed machine that may pose a bit of an issue later down the line:
+                SELinux should be disabled or, figure out those exceptions manually (vi /etc/selinux/config) prior to starting.
+                Also, sendmail (another MTA) is likely to be installed by default on your OS (and will take precedence over Postfix), so make sure it is disabled (systemctl disable sendmail).
             </p>
 
             <h3>Downloads</h3>
-            RHEL type OS
-            : yum install postfix dovecot
-            : yum install roundcubemail httpd php php-common php-json php-xml php-mbstring php-imap php-pear-DB php-mysql mysql mysql-server (mod_nss or mod_ssl for HTTPS)
-            :  dnf -y install mariadb-server php-mysqlnd
-            
+            <h4>RHEL-type OS</h4>
+            <pre><code>
+yum install postfix dovecot
+yum install roundcubemail httpd php php-common php-json php-xml php-mbstring php-imap php-pear-DB php-mysql mysql mysql-server (mod_nss or mod_ssl for HTTPS)
+dnf -y install mariadb-server php-mysqlnd
+        </code></pre>
             Debian type OS
-            : apt-get install postfix dovecot-pop3d dovecot-imapd php5 mysql-server  php5-mysql
-            #This is intended for Debian 8/ Ubuntu 15, if you are using a newer OS go w that and use php7 
-            : wget github.com/roundcube/roundcubemail/releases/download/1.3.14/roundcubemail-1.3.14-complete.tar.gz
-            : tar -zxvf roundcubemail-1.3.14-complete.tar.gz
-            #may have to apt-get install -f 
-            : mv roundcubemail-1.3.13-complete /var/www/html/roundcube
-            
+            <pre><code>
+apt-get install postfix dovecot-pop3d dovecot-imapd php5 mysql-server  php5-mysql
 
+#This is intended for Debian 8/ Ubuntu 15, if you are using a newer OS go w that and use php7 
+wget github.com/roundcube/roundcubemail/releases/download/1.3.14/roundcubemail-1.3.14-complete.tar.gz
+tar -zxvf roundcubemail-1.3.14-complete.tar.gz
+
+#may have to apt-get install -f 
+mv roundcubemail-1.3.13-complete /var/www/html/roundcube
+        </code></pre>
+        <h1>Postfix MTA</h1>
+        <p>Postfix is a type of MTA that supports the transport of messages across servers. </p>
+        <a link="https://web.archive.org/web/20171127055338/http://www.linuxmail.info/postfix-howtos/">Other Reference Guide</a>
+        <h3>Supporting Command Reference</h3>
+        <pre><code>
+mailq/postqueue #views the contents of the Postfix queue (size | time of arrival | sender addr | rcpt addr )
+newaliases/postalias #rebuilds local alias/email mapping files (ones stored on the pc)
+postconf #shows Postfix’s configuration values(can also be used to modify it & check for errors)
+postfix #the service name to start/stop/restart Postfix
+postmap #rebuilds an indexed database file used for table lookups/queries any lookup table. Used for debugging purposes.
+postqueue #also used to flush the queue (immediately deliver all messages)
+postsuper #delete or requeue already sent items, and can perform structural checks on queue directions
+</code></pre>
+
+<h3>Security-Related Information</h3>
+<ul>
+    <li>in most cases, mail delivery does not require a shell</li>
+    <li>most processes are executed by a master daemon
+        <ul>
+            <li>and do not run as a user child process</li>
+        </ul>
+    </li>
+    <li>does not used fixed-size buffers </li>
+    <li>can chroot postfix**</li>
+</ul>
+<h3>Defaults</h3>
+<pre><code>
+#Directories
+/etc/postfix       #Configuration files and lookup tables
+/usr/libexec/postfix     #Postfix daemons
+/var/spool/postfix  #Queue files
+/usr/sbin   #Postfix commands
+
+#Users
+postfix = user
+postdrop = group
+</code></pre>
+
+<h1> Local Authentication </h1>
+<h3>Configure</h3>
+<pre><code>
+vi /etc/postfix/main.cf
+myhostname = <hostname>.<domain>
+mydomain = <domain>
+myorigin = $mydomain
+inet_interfaces = all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+mynetworks = <network>/<prefix>,127.0.0.0/8 
+home_mailbox = Maildir/  or Mail
+#relayhost = <ip> if you have to go through an ISP >> don’t actually worry eh
+#Mailbox Creation* (only in older versions)
+mkdir /home/<username>/Mail
+chown <user>:<user> /home/<user>/Mail
+chmod -R 700 /home/<user>/Mail
+postalias /etc/aliases
+</code></pre>
+<h3>Start/Restart Postfix</h3>
+<pre><code>
+systemctl start postfix #you cant reload, b/c inet_interfaces was likely changed from default of loopback
+systemctl restart postfix
+</code></pre>
+<h3>Test Connectivity</h3>
+<pre><code>
+telnet localhost 25
+ehlo localhost
+mail from: <username>@<domain>
+rcpt to: <username>@<domain>
+data
+<whatever your message is>
+.
+quit
+</code></pre>
+<h3>See if the mail was actually sent</h3>
+<pre><code>
+mail
+</code></pre>
+
+
+<h1>Dovecot MDA - IMAP/POP3</h1>
+<h3>Local Authentication</h3>
+<h3>Configure</h3>
+<pre><code>
+vi /etc/dovecot/dovecot.conf
+protocols = imap pop3 (lmtp for local mail transfer)
+
+vi /etc/dovecot/conf.d/10-mail.conf
+mail_location = maildir:~/Mail
+
+vi /etc/dovecot/conf.d/10-auth.conf
+disable_plaintext_auth = no #ref ssl
+auth_mechanisms = plain login
+
+vi /etc/dovecot/conf.d/10-master.conf
+unix_listener auth-userdb {
+    #mode
+    user = postfix
+    group = postfix
+}
+</code></pre>
+
+<h3>Start/Restart Dovecot</h3>
+<pre><code>
+systemctl start dovecot 
+systemctl status dovecot
+</code></pre>
+
+<h3>Test Connection</h3>
+<pre><code>
+#TEST POP3
+telnet localhost 110
+user <username>
+pass <pass>
+list
+retr <#>
+quit
+
+#TEST IMAP
+telnet localhost 143
+a1 LOGIN <username> <password>
+a2 LOGOUT
+</code></pre>
+
+<h3>OPTIONAL >> Aliases</h3>
+<pre><code>
+vi /etc/aliases
+test1:  test  #mail sent to test1 will go to test
+test66: test
+
+vi /etc/postfix/main.cf
+virtual_alias_domains = domain1.example.com, domain2.example.com
+
+</code></pre>
+
+<h1>PHP</h1>
+<h3>Test if install works</h3>
+<pre><code>
+vi /var/www/html/index.php
+<?php
+   phpinfo();
+?>
+</code></pre>
+navigate to localhost and see if this works:
+<pre><code>
+    http://localhost/index.php
+</code></pre>
+then remove the test file
+<pre><code>
+rm -f /var/www/html/index.php
+</code></pre>
+<h3>Configure PHP Settings</h3>
+RHEL type OS:
+<pre><code>
+vi /etc/php.ini
+date.timezone = America/Chicago #or UTC
+extension=mysql.so
+systemctl start httpd 
+systemctl status httpd #make sure its running
+systemctl enable httpd
+chown -R apache:apache /var/www/html
+</code></pre>
+Debian type OS
+<pre><code>
+vi /etc/php5/apache2/php.ini
+date.timezone = America/Chicago #or UTC
+extension=mysql.so
+systemctl start apache2 
+systemctl status apache2 #make sure its running
+chown -R www-data:www-data /var/www/html
+</code></pre>
+
+
+<h1>MySQL</h1>
+<pre><code>
+systemctl start mysql/d #or mariadb
+</code></pre>
+Debian type OS
+<pre><code>
+#create database
+mysql --defaults-file=/etc/mysql/debian.cnf
+create database roundcubemail; 
+create user roundcube; 
+grant all privileges on roundcubemail.* to roundcube@localhost identified by 'your password'; 
+flush privileges; 
+use roundcubemail; 
+quit #or exit;
+
+#if the above doesnt work, use this method to set the password:
+FOR 'roundcubemail'@'localhost' = PASSWORD('newpassword');
+</code></pre>
+RHEL type OS
+<pre><code>
+mysql -u root -p
+    create database roundcubemail; 
+    create user roundcube; 
+    grant all privileges on roundcubemail.* to roundcube@localhost identified by 'your password'; 
+    flush privileges; 
+    use roundcubemail; 
+    quit #or exit;
+
+    #inititalize database
+mysql -u root -p roundcubemail < /usr/share/roundcubemail/SQL/mysql.initial.sql
+   
+</code></pre>
+
+<h1>Roundcube (WebApp)</h1>
+<h3>Install (With A GUI)</h3>
+Navigate to
+<pre><code>
+http://localhost/roundcubemail/installer
+</code></pre>
+<h3>Step 1</h3>
+Check preqs
+<h3>Step 2</h3>
+Configure
+<p>make sure you add the password to the database conf. that’s all you have to do
+but you should probably specify a hostname and domain instead of localhost</p>
+download the conf file in step 2 and move it to /var/www/html/roundcube/config/config.inc.php
+<h3>Step 3</h3>
+Test (you don’t actually have to do this)
+
+<h3>Configuration File</h3>
+<pre><code>
+vi /etc/roundcubemail/db.inc.php
+$rcmail_config['db_dsnw'] = 'mysql://
+roundcube:password@localhost/roundcubemail';
+</code></pre>
+OR
+<pre><code>
+vi /var/www/html/roundcube/config.inc.php
+$config[‘db_dsnw’] = 'mysql://roundcube:password@localhost/roundcubemail';
+</code></pre>
+
+<h3>Acquire Mail</h3>
+<pre><code>
+http://localhost/roundcubemail
+</code></pre>
+*If you cant login >>
+<pre><code>
+vi /var/www/html/roundcube/config/config.inc.php
+[type] /username_domain
+and comment that line out
+</code></pre>
+
+<h1>Conclusion</h1>
+<p>With that, your email server should be up and running. This is no where near secure, and will not scale very well with many many users. In the next post, we will go over LDAP and Kerberos authentication in this setup. 
+Happy testing!
+</p>
         </div>
     </div>
     <div class="footer">

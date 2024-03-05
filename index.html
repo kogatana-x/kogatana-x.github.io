@@ -143,11 +143,16 @@ Promise.all(postUrls.map(fetchPost))
                 // Create a category box for each unique category
                 categories.forEach(category => {
                     var categoryBox = document.createElement('div');
+                    var categoryImage = document.createElement('img'); // Create an img element
+
                     categoryBox.className = 'categoryBox';
                     categoryBox.textContent = category;
-                    categoryBox.style.backgroundImage = 'url(' + categoryImages[category] + ')';
-                    document.querySelector('#categoryContainer').appendChild(categoryBox);
 
+                    categoryImage.src = categoryImages[category]; // Set the image URL
+                    categoryImage.className = 'categoryImage'; // Add a class to the image
+
+                    categoryBox.appendChild(categoryImage); // Append the image to the category box
+                    document.querySelector('#categoryContainer').appendChild(categoryBox);
                 });
 
                 // When a category box is clicked, navigate to a new page that displays posts with the same category

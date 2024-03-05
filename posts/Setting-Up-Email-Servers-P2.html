@@ -256,10 +256,8 @@ $config[‘mime_types’]= ‘C:\inetpub\wwwroot\roundcube\mime.types’;
         </table>
         <h3>Logging</h3>
         <p>Make sure to enable logging on hMailServer and Roundcube. This will help you troubleshoot any issues that may arise.</p>
-        <p><strong>hMail</strong></p>
-        <p>From the hMail Management Interface, go to Settings >> Logging >> and enable + log everything except for Debug and Awstats as those can get noisy.</p>
-        <p><strong>Roundcube/IIS</strong></p>
-        <p>Via the roundcube config file (config.inc.php), add the following lines:</p>
+        <p><strong>hMail</strong> - From the hMail Management Interface, go to Settings >> Logging >> and enable + log everything except for Debug and Awstats as those can get noisy.</p>
+        <p><strong>Roundcube/IIS</strong> - Via the roundcube config file (config.inc.php), add the following lines:</p>
         <pre><code>
 $config['debug_level'] = 1; //System Error Reporting
 $config['sql_debug'] = true; //Log SQL queries
@@ -270,10 +268,8 @@ $config['smtp_debug'] = true; //Log SMTP conversation
         </code></pre>
 
         <h3>Backups</h3>
-        <p><strong>hMail</strong></p>
-        <p>From the hMail Management Interface, go to Settings >> Backup >> and create a backup of your hMail configuration.</p>
-        <p><strong>Roundcube/IIS</strong></p>
-        <p>From the IIS Manager, go to the root of your website and create a backup of your web.config file.</p>
+        <p><strong>hMail</strong> - From the hMail Management Interface, go to Settings >> Backup >> and create a backup of your hMail configuration.</p>
+        <p><strong>Roundcube/IIS</strong> - From the IIS Manager, go to the root of your website and create a backup of your web.config file.</p>
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 

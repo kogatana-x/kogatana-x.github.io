@@ -90,7 +90,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
             
             const titleElement = document.createElement('h3');
             const linkElement = document.createElement('a');
-            linkElement.href = postUrls[index]; // Set the href to the post URL
+            linkElement.href = post.url; // Set the href to the post URL
             linkElement.textContent = post.title;
             linkElement.style.color = 'inherit'; // Inherit the color from the h2
             linkElement.style.textDecoration = 'none'; // Remove the underline

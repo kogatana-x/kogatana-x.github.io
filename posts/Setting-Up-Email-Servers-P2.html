@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setting Up Email Servers - Part 2</title>
+    <meta name="description" content="This is part 2 in the Setting Up Email Servers series, where we will go over setting up hMail and Roundcube on Windows"> 
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="../images/22989723.png" alt="Profile"> 
+        </a>
+        <h1>kogatana-x</h1>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>LinkedIn</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h2>Setting Up Email Servers - Part 2</h2> 
+            <time datetime="2024-03-05T00:04:25">March 5th, 2024</time> 
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Introduction</h1>
+            <p>
+                In this post, we will be continuing our email deep dive, and will be setting up hMail and Roundcube on Windows. 
+                hMail is a light-weight yet powerful email server that is easy to configure and manage. 
+                Roundcube is a web-based email client that is easy to use and has a modern interface.
+                For our backend database, we will be using MySQL, which is a popular open-source relational database management system.
+                For our backend web server, we will be using IIS7, which is a nice web server we can install directly from Windows Features list. 
+                If you are new to email servers, I highly recommend checking out my previous post, <a link="https://kogatana-x/posts/Setting-Up-Email-Servers-P1.html">Setting Up Email Servers - Part 1</a>, where we went over the basics of email servers and how they work.
+            </p>
+            <h1>Setting Up hMail</h1>
+            <p>I set hMail up on Windows Server 2008</p>
+            <p>Jumping right into the installation, we will first need to download the packages and installers we will need for our setup.
+                <ul>
+                    <li>Roundcube 1.2.10-complete.tar.gz</li>
+                    <li>Apache Mime.Types File</li>
+                    <li>7-Zip or other archive management program that can handle tar-balls</li>
+                    <li>hMailServer 5.2.1</li>
+                    <li>MySQL Community Server 5.6.48.0</li>
+                    <li>.NET 2.0 / 3.5 SP1 Update</li>
+                    <li>.NET 4.5.2 Install</li>
+                    <li>PHP 5.3.7 NTS version</li>       
+                </ul>  
+            </p>
+            <p>Once we have all of our packages downloaded, we can start the installation and configuation process. </p>
+            <h3>PHP</h3>
+            <ol>
+                <li>Unzip PHP into Program Files</li>
+                <li>Change to php.ini.production to  php.ini</li>
+                <li>Edit:</li>
+            </ol>
+                <pre><code>
+//Comment out open_basedir
+extension_dir=”C:\Program Files\PHP\ext”
+cgi.force_redirect = 0
+cgi.fix_pathinfo=1
+fastcgi.impersonate=1
+fastcgi.logging=0
+date.timezone = America/Chicago
+
+//Uncomment ---
+extension=php_imap.dll
+extension=php_ldap.dll
+extension=php_mbstring.dll
+extension=php_openssl.dll
+extension=php_pdo_mysql.dll
+                    
+                </code></pre>
+            <h3>IIS</h3>
+            <ol>
+                <li>Install Windows IIS 7. Make sure NET 3.5 and CGI Features are installed as well</li>
+                <li>Install IIS 7 Admin Pack and continue with a typical installation</li>
+                <li>In the Tree click on the server and add Handler Mapping & Add Module Mapping</li>
+                <ul>
+                    <li>Request path: *.php</li>
+                    <li>Module: FastCgiModule</li>
+                    <li>Executable: "C:\Program Files\PHP\php-cgi.exe"</li>
+                    <li>Name: FastCGI</li>
+                </ul>
+                <li>Fast CGI Settings > Add FastCGI Application</li>
+                <ol>
+                    <li>Environment Var</li>
+                    <ul><li>Enter "PHP_FCGI_MAX_REQUESTS" for the Name. | 10000</li></ul>
+                </ol>
+
+                <li>Add index.php to default document</li>
+                <li>Edit system $PATH environment variable to include C:\Program Files\PHP</li>
+                <li>Test PHP config. Add phpinfo.php to IIS root. <?php phpinfo(); ?></li>
+                <li>Make sure you have bindings on the default website matching:</li>
+                <ul>
+                    <li>http | <your ip> | 80</li>
+                    <li>http | <your hostname> | 80</li>
+                </ul>
+                <li>Edit Permissions on Roundcube\temp && \logs to everyone write</li>    
+            </ol>
+            <h3>MySQL Server</h3>
+            <ol>
+                <li>Run MySQL Server Installation Executable
+                <li>Set root password</li>
+                <li>Continue with hMail Installation</li>
+            <h3>hMailServer</h3>
+            <ol>
+                <li>Run hMailServer Installation Executable</li>
+                <ol>
+                    <li>Select External DB (MySQL) instead of Built in.MySQL.</li>
+                    <li>Create New Database with type "MySQL". </li>
+                    <li>Make sure the "localhost" and that the database name is set to "roundcubemail".</li>
+                    <li>For the purposes of this guide, set the username to "roundcube" and the password to "roundcubepass"</li>
+                </ol>
+                <li>Open hMail Server GUI</li>
+                <ol>
+                    <li>Create new domain (if you are using LDAP or other non-localhost authentication, make sure to set this to your domain name</li>
+                    <li>Add Users (LDAP or manual)</li>
+                    <li>Under Internet Protocol (Computer/Internet), make sure to disallow External Authentication by unchecking the boxes</li>
+                </ol>
+            </ol>
+
+            <h3>MySQL Server ...</h3>
+            <li>After MySQL finishes installing, go into the command client</li>
+            <li>Enter the following commands:</li>
+            <pre><code>
+SHOW DATABASES; //make sure roundcubemail is in there
+CREATE USER ‘roundcube’@’localhost’ IDENTIFIED BY ‘!Password123’;
+GRANT ALL PRIVILEGES ON roundcubemail.* TO ‘roundcube’@’localhost’;
+FLUSH PRIVILEGES;              
+            </code></pre>
+            <li>Navigate to C:\Program Files\MySQL and spawn a cmd shell</li>
+        <pre><code>
+mysql -u roundcube -p roundcubemail -e “source C:\inetpub\wwwroot\roundcube\SQL\mysql.initial.sql”;         
+        </code></pre>
+        <li>This should successfully create a bunch of new tables in roundcubemail.</li> 
+        <li>Go back to the MySQL command line client and verify. </li>
+        <pre><code>
+USE roundcubemail;
+SHOW TABLES;
+        </code></pre>
+        </ol>
+
+        <h3>Roundcube</h3>
+        <ol>
+            <li>Untar Roundcube into IIS root</li>
+            <li>Change the name of the folder to "roundcube"</li>
+            <li>Open roundcube/config/config.inc.php and edit the following:</li>
+            <pre><code>
+$config['db_dsnw'] = 'mysql://roundcube:roundcubepass@localhost/roundcubemail';
+$config['enable_installer'] = 'true';
+            </code></pre>
+            <li>Edit roundcube/config/defaults.inc.php and edit the following:</li>
+            <pre><code>
+$config[‘db_dsnw’]=’mysql://roundcube:@localhost/roundcubemail’;
+$config[‘mime_types’]= ‘C:\inetpub\wwwroot\roundcube\mime.types’;
+            </code></pre>
+            <li>Navigate to http://localhost/roundcube/installer</li>
+            <ul>
+                <li>Make sure all of the mandatory checks are OK</li>
+                <li>Once clear, edit the conf file to have a localhost on SMTP Server and IMAP uses your domain if using LDAP users.</li>
+                <li>Export the config file & replace config.inc.php</li>
+                <li>On the Test Page, initialize the database, if there is DB Schema error like an ‘IF’ table missing. Ignore it</li>
+                <li>If there is a mime error click on the link and save the webpage as mime.types and move it to the roundcube folder. Just make sure the path you specified in the defaults.inc.php matches.</li>
+            </ul>
+            <li>Navigate to http://localhost/roundcube and try to login with an account you set up in hMail</li>
+            <li>Clean up the conf file where the installer was.</li>
+        </ol>
+        <h1>Hardening </h1>
+        <h3>Firewall Rules</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Path</th>
+                    <th>Dir</th>
+                    <th>Pro</th>
+                    <th>Port</th>
+                    <th>RemoteAddr</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Program Files (x86)\hMailServer\Bin\hMailServer.exe</td>
+                    <td>in</td>
+                    <td>tcp</td>
+                    <td>25,110,143</td>
+                    <td>any</td>
+                </tr>
+                <tr>
+                    <td>Program Files\Microsoft SQL Server\MSSQL{nn}.MyInstance\<></td>
+                    <td>in/out</td>
+                    <td>tcp</td>
+                    <td>32608</td>
+                    <td><external sql db></td>
+                </tr>
+                <tr>
+                    <td>N/A (IIS/RC)</td>
+                    <td>in</td>
+                    <td>tcp</td>
+                    <td>80</td>
+                    <td>any</td>
+                </tr>
+                <tr>
+                    <td>N/A</td>
+                    <td>in/out</td>
+                    <td>udp</td>
+                    <td>53</td>
+                    <td><dns server></td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Logging</h3>
+        <p>Make sure to enable logging on hMailServer and Roundcube. This will help you troubleshoot any issues that may arise.</p>
+        <p><strong>hMail</strong></p>
+        <p>From the hMail Management Interface, go to Settings >> Logging >> and enable + log everything except for Debug and Awstats as those can get noisy.</p>
+        <p><strong>Roundcube/IIS</strong></p>
+        <p>Via the roundcube config file (config.inc.php), add the following lines:</p>
+        <pre><code>
+$config['debug_level'] = 1; //System Error Reporting
+$config['sql_debug'] = true; //Log SQL queries
+$config['imap_debug'] = true; //Log IMAP4 conversation
+$config[pop_debug’]=true; //Log POP3 converstation
+$config['ldap_debug'] = true; //Log LDAP conversation
+$config['smtp_debug'] = true; //Log SMTP conversation          
+        </code></pre>
+
+        <h3>Backups</h3>
+        <p><strong>hMail</strong></p>
+        <p>From the hMail Management Interface, go to Settings >> Backup >> and create a backup of your hMail configuration.</p>
+        <p><strong>Roundcube/IIS</strong></p>
+        <p>From the IIS Manager, go to the root of your website and create a backup of your web.config file.</p>
+
+        <h1>Setting Up SSL</h1>
+        <p>SSL is a must-have for any email server. It encrypts the connection between the client and the server, ensuring that no one can eavesdrop on the conversation. 
+            There are a few ways to acquire an SSL certificate, but the most common way is to purchase one from a Certificate Authority (CA). 
+            However, if you are setting up a test environment, you can use a self-signed certificate or a free certificate from Let's Encrypt.
+        </p>
+        <h3>Acquire the Cert</h3>
+        <p>We will be going through self-signing our own certificates and generating our own via LetsEncrypt. Self-signing is perfect for lab enviornments, however, certificates are not trusted by modern browsers by default.</p>
+        <p><strong>Self-Signed in Windows 10 Powershell:</strong></p> 
+        <pre><code>
+New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -DnsName "mysite.local" -FriendlyName "MySiteCert" -NotAfter (Get-Date).AddYears(10)
+#OR
+New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -Subject "*.example.local" -DnsName "example.local", "*.example.local" -FriendlyName "LocalStarCert" -NotAfter (Get-Date).AddYears(10)
+        </code></pre>
+        <p><strong>Lets Encrypt</strong></p>
+        <ol>
+            <li>Install Win-Acme >> <a href="https://github.com/win-acme/win-acme/releases/download/v2.1.9/win-acme.v2.1.9.870.x64.pluggable.zip>Here</a></li>
+            <li>Unzip & open a terminal from the folder.</li>
+            <li>run >> LetsEncrypt</li>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/SSL-LetsEncrypt.png" alt="LetsEncrypt">
+        </ol>
+        <h3>Adding the SSL certificate to hMailServer</h3>
+        <ol>
+            <li>Start hMailServer Administrator</li>
+            <li>Navigate to Settings->Advanced->SSL certificate</li>
+            <li>Click Add</li>
+            <li>Type in a SSL certificate name. This can be anything you like, but it's suggested that you set it to the host name in the SSL certificate.</li>
+            <li>Select the certificate file and private key filed</li>
+            <li>Save the changes</li>
+        </ol>
+        <h3>Configuring hMailServer to use the SSL certificate</h3>
+        <ol>
+            <li>Start hMailServer Administrator</li>
+            <li>Navigate to Settings->Advanced->TCP/IP ports</li>
+            <li>Select a port</li>
+            <li>Select "Use SSL" and the certificate. For more info about these options, please see Connection security.</li>
+            <li>Save the changes</li>
+            <li>Restart hMailServer</li>
+        </ol>
+        <h1>Conclusion</h1>
+        <p>That's all for this post! We have successfully set up hMail and Roundcube on Windows. In the next post, we will be going over how to secure our email servers on Linux. Stay tuned!</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2021 kogatana-x</p>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
+</html>

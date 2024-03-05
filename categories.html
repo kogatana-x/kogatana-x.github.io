@@ -58,20 +58,26 @@
 
 <script>
 // Fetch all posts
-Promise.all(postUrls.map(fetchPost))
-    .then(posts => {
+Promise.all(postUrls.map(url => fetch(url).then(response => response.text())))
+    .then(postsHtml => {
         // Get the category from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const category = urlParams.get('category');
 
         // Filter the posts by category
-        const filteredPosts = posts.filter(post => post.category === category);
+        const parser = new DOMParser();
+        const filteredPostsHtml = postsHtml.filter(html => {
+            const doc = parser.parseFromString(html, 'text/html');
+            const metaCategory = doc.querySelector('meta[name="category"]').getAttribute('content');
+            return metaCategory === category;
+        });
 
         // Create a post element for each post in the filtered list
         const postContainer = document.querySelector('#postContainer');
-        filteredPosts.forEach(post => {
+        filteredPostsHtml.forEach(html => {
+            const doc = parser.parseFromString(html, 'text/html');
             const postElement = document.createElement('div');
-            postElement.textContent = post.title;
+            postElement.textContent = doc.querySelector('title').textContent;
             postElement.classList.add('post'); // Add a class for styling
             postContainer.appendChild(postElement);
         });

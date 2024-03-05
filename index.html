@@ -77,7 +77,7 @@ function fetchPost(url) {
             const time = doc.querySelector('time').textContent;
             const description = doc.querySelector('meta[name="description"]').content;
             const category = doc.querySelector('meta[name="category"]').content;
-            return { title, time, description, category};
+            return {doc, title, time, description, category};
         });
 }
 

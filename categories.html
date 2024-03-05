@@ -58,6 +58,27 @@
 
 <script>
 // Fetch all posts
+fetch('https://kogatana-x.github.io/posts/posts.json')
+    .then(response => response.json())
+    .then(posts => {
+        // Get the category from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+
+        // Filter the posts by category
+        const filteredPosts = posts.filter(post => post.category === category);
+
+        // Create a post element for each post in the filtered list
+        const postContainer = document.querySelector('#postContainer');
+        filteredPosts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.textContent = post.title;
+            postElement.classList.add('post'); // Add a class for styling
+            postContainer.appendChild(postElement);
+        });
+    })
+    .catch(error => console.error(error));
+    
 Promise.all(postUrls.map(url => fetch(url).then(response => response.text())))
     .then(postsHtml => {
         // Get the category from the URL

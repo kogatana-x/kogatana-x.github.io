@@ -61,26 +61,30 @@
 fetch('https://kogatana-x.github.io/posts/posts.json')
     .then(response => response.json())
     .then(postUrls => {
-        // Fetch the HTML of each post
-        return Promise.all(postUrls.map(url => fetch(url).then(response => response.text())));
+        // Fetch the HTML of each post and keep the association with its URL
+        return Promise.all(postUrls.map(url => 
+            fetch(url)
+            .then(response => response.text())
+            .then(html => ({html, url})) // Return an object with both the HTML and the URL
+        ));
     })
-    .then(postsHtml => {
+    .then(posts => {
         // Get the category from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const category = urlParams.get('category');
 
         // Filter the posts by category
         const parser = new DOMParser();
-        const filteredPostsHtml = postsHtml.filter(html => {
-            const doc = parser.parseFromString(html, 'text/html');
+        const filteredPosts = posts.filter(post => {
+            const doc = parser.parseFromString(post.html, 'text/html');
             const metaCategory = doc.querySelector('meta[name="category"]').getAttribute('content');
             return metaCategory === category;
         });
 
         // Create a post element for each post in the filtered list
         const postContainer = document.querySelector('#blogContainer');
-        filteredPostsHtml.forEach(html => {
-            const doc = parser.parseFromString(html, 'text/html');
+        filteredPosts.forEach(post => {
+            const doc = parser.parseFromString(post.html, 'text/html');
             const postElement = document.createElement('div');
             const title = doc.querySelector('title').textContent;
             const time = doc.querySelector('time').textContent;
@@ -91,12 +95,13 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
             const titleElement = document.createElement('h3');
             const linkElement = document.createElement('a');
             linkElement.href = post.url; // Set the href to the post URL
-            linkElement.textContent = post.title;
+            linkElement.textContent = title;
             linkElement.style.color = 'inherit'; // Inherit the color from the h2
             linkElement.style.textDecoration = 'none'; // Remove the underline
             
             titleElement.appendChild(linkElement); // Append the link to the h2
-            
+
+           
             postElement.appendChild(titleElement);
 
             const timeElement = document.createElement('span');

@@ -101,20 +101,17 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
             
             titleElement.appendChild(linkElement); // Append the link to the h2
 
-           
             postElement.appendChild(titleElement);
 
             const timeElement = document.createElement('span');
             const strongElement = document.createElement('strong'); // Create a strong tag to bold the time
-            strongElement.textContent = post.time;
+            strongElement.textContent = time; // Use the time variable
             timeElement.appendChild(strongElement);
             postElement.appendChild(timeElement);
 
             const descriptionElement = document.createElement('span');
-            descriptionElement.textContent = ' - ' + post.description; // Add a dash before the description
+            descriptionElement.textContent = ' - ' + description; // Use the description variable
             postElement.appendChild(descriptionElement);
-
-
 
             blogContainer.appendChild(postElement);
         });

@@ -63,11 +63,7 @@ body {
     background-repeat:no-repeat;
     transition: transform 0.3s ease;
 }
-.categoryBox img {
-    width: 20%;
-    margin-top: 10px;
-    opacity: 0.8;
-}
+
 .categoryBox:hover {
     transform: scale(1.1);
     background-color: #ee4c4f;

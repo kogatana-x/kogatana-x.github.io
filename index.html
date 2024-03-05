@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>kogatana-x</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="kogatana-x.css">
 </head>
@@ -117,39 +118,37 @@ Promise.all(postUrls.map(fetchPost))
     .catch(error => console.error(error));
 
     $(document).ready(function() {
-    var categories = [];
+        var categories = [];
 
-    // Fetch all posts and add them to the page
-    Promise.all(postUrls.map(fetchPost))
-        .then(posts => {
-            const blogContainer = document.querySelector('#blogContainer');
-            const categories = new Set(); // Use a Set to automatically discard duplicates
+        // Fetch all posts and add them to the page
+        Promise.all(postUrls.map(fetchPost))
+            .then(posts => {
+                const blogContainer = document.querySelector('#blogContainer');
+                const categories = new Set(); // Use a Set to automatically discard duplicates
 
-            posts.forEach((post, index) => {
-                // Fetch the category from the post's meta tag
-                const category = post.doc.querySelector('meta[name="category"]').content;
+                posts.forEach((post, index) => {
+                    // Fetch the category from the post's meta tag
+                    const category = post.doc.querySelector('meta[name="category"]').content;
 
-                // Add the category to the categories array if it's not already in it
-                if ($.inArray(category, categories) === -1) {
-                    categories.push(category);
-                }
-            });
-            console.log(Array.from(categories));
+                    // Add the category to the categories array if it's not already in it
+                    if ($.inArray(category, categories) === -1) {
+                        categories.push(category);
+                    }
+                });
+                console.log(Array.from(categories));
 
-            // Create a category box for each unique category
-            $.each(categories, function(index, category) {
-                var categoryBox = $('<div class="categoryBox">' + category + '</div>');
-                $('#categoryContainer').append(categoryBox);
-            });
+                // Create a category box for each unique category
+                $.each(categories, function(index, category) {
+                    var categoryBox = $('<div class="categoryBox">' + category + '</div>');
+                    $('#categoryContainer').append(categoryBox);
+                });
 
-            // When a category box is clicked, navigate to a new page that displays posts with the same category
-            $('.categoryBox').click(function() {
-                var category = $(this).text();
-                window.location.href = 'category.html?category=' + encodeURIComponent(category);
-            });
-        })
-        .catch(error => console.error(error));
-}); 
-.catch(error => console.error(error));
-
+                // When a category box is clicked, navigate to a new page that displays posts with the same category
+                $('.categoryBox').click(function() {
+                    var category = $(this).text();
+                    window.location.href = 'category.html?category=' + encodeURIComponent(category);
+                });
+            })
+            .catch(error => console.error(error));
+    }); 
 </script>

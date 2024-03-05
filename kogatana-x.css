@@ -61,11 +61,19 @@ body {
     font-family:'Segoe UI Bold';
     background-position: center;
     background-repeat:no-repeat;
+    transition: transform 0.3s ease;
 }
 .categoryBox img {
     width: 20%;
     margin-top: 10px;
     opacity: 0.8;
+}
+.categoryBox:hover {
+    transform: scale(1.1);
+    background-color: #ee4c4f;
+    color: #f2f2f2;
+    box-shadow: 0 0 10px #f2f2f2;
+    cursor: pointer;
 }
 
 .content {

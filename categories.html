@@ -57,10 +57,6 @@
 </html>
 
 <script>
-// Define pagination variables
-const postsPerPage = 10;
-let currentPage = 1;
-
 // Fetch all posts
 Promise.all(postUrls.map(url => fetch(url).then(response => response.text())))
     .then(postsHtml => {
@@ -76,44 +72,15 @@ Promise.all(postUrls.map(url => fetch(url).then(response => response.text())))
             return metaCategory === category;
         });
 
-        // Split the filtered posts into pages
-        const pages = Math.ceil(filteredPostsHtml.length / postsPerPage);
-        const postsPages = Array.from({length: pages}, (_, i) => filteredPostsHtml.slice(i * postsPerPage, i * postsPerPage + postsPerPage));
-
-        // Function to display the posts for a page
-        function displayPage(page) {
-            const postContainer = document.querySelector('#postContainer');
-            postContainer.innerHTML = ''; // Clear the container
-            postsPages[page - 1].forEach(html => {
-                const doc = parser.parseFromString(html, 'text/html');
-                const postElement = document.createElement('div');
-                postElement.textContent = doc.querySelector('title').textContent;
-                postElement.classList.add('post'); // Add a class for styling
-                postContainer.appendChild(postElement);
-            });
-        }
-
-        // Display the first page
-        displayPage(currentPage);
-
-        // Add next and previous buttons
-        const nextButton = document.querySelector('#nextButton');
-        const prevButton = document.querySelector('#prevButton');
-        nextButton.addEventListener('click', () => {
-            if (currentPage < pages) {
-                currentPage++;
-                displayPage(currentPage);
-            }
-        });
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayPage(currentPage);
-            }
+        // Create a post element for each post in the filtered list
+        const postContainer = document.querySelector('#postContainer');
+        filteredPostsHtml.forEach(html => {
+            const doc = parser.parseFromString(html, 'text/html');
+            const postElement = document.createElement('div');
+            postElement.textContent = doc.querySelector('title').textContent;
+            postElement.classList.add('post'); // Add a class for styling
+            postContainer.appendChild(postElement);
         });
     })
     .catch(error => console.error(error));
 </script>
-
-<button id="prevButton">Previous</button>
-<button id="nextButton">Next</button>

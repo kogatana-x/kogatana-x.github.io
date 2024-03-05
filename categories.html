@@ -82,7 +82,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
         });
 
         // Create a post element for each post in the filtered list
-        const postContainer = document.querySelector('#blogContainer');
+        const blogContainer = document.querySelector('#blogContainer');
         filteredPosts.forEach(post => {
             const doc = parser.parseFromString(post.html, 'text/html');
             const postElement = document.createElement('div');

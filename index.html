@@ -156,7 +156,7 @@ Promise.all(postUrls.map(fetchPost))
                 document.querySelectorAll('.categoryBox').forEach(box => {
                     box.addEventListener('click', function() {
                         var category = this.textContent;
-                        window.location.href = 'category.html?category=' + encodeURIComponent(category);
+                        window.location.href = 'categories.html?category=' + encodeURIComponent(category);
                     });
                 });
             })

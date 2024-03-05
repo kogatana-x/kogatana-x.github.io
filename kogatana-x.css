@@ -43,7 +43,14 @@ body {
     display: none;
 }
 
-.categoryBox{
+.categoryContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.categoryBox {
+    flex: 1 0 200px; /* Grow and shrink, basis */
     margin: 10px;
     padding: 10px;
     background-color: #f2f2f2;

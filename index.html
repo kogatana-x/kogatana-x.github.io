@@ -118,38 +118,46 @@ Promise.all(postUrls.map(fetchPost))
     .catch(error => console.error(error));
 
     $(document).ready(function() {
-// Initialize categories as an empty array
-var categories = [];
+        // Initialize categories as an empty array
+        var categories = [];
+        const categoryImages = {
+            'offensive': 'https://kogatana-x.github.io/images/Offensive-Security.jpg',
+            'defensive': 'https://kogatana-x.github.io/images/Defensive-Security.jpg',
+            'sysadmin': 'https://kogatana-x.github.io/images/Sysadmin.jpg',
+            'programming': 'https://kogatana-x.github.io/images/Programming.jpg'
+        };
 
-// Fetch all posts and add them to the page
-Promise.all(postUrls.map(fetchPost))
-    .then(posts => {
-        posts.forEach((post, index) => {
-            // Fetch the category from the post's meta tag
-            const category = post.doc.querySelector('meta[name="category"]').content;
+        // Fetch all posts and add them to the page
+        Promise.all(postUrls.map(fetchPost))
+            .then(posts => {
+                posts.forEach((post, index) => {
+                    // Fetch the category from the post's meta tag
+                    const category = post.doc.querySelector('meta[name="category"]').content;
 
-            // Add the category to the categories array if it's not already in it
-            if (categories.indexOf(category) === -1) {
-                categories.push(category);
-            }
-        });
+                    // Add the category to the categories array if it's not already in it
+                    if (categories.indexOf(category) === -1) {
+                        categories.push(category);
+                    }
+                });
 
-        // Create a category box for each unique category
-        categories.forEach(category => {
-            var categoryBox = document.createElement('div');
-            categoryBox.className = 'categoryBox';
-            categoryBox.textContent = category;
-            document.querySelector('#categoryContainer').appendChild(categoryBox);
-        });
+                // Create a category box for each unique category
+                categories.forEach(category => {
+                    var categoryBox = document.createElement('div');
+                    categoryBox.className = 'categoryBox';
+                    categoryBox.textContent = category;
+                    categoryBox.style.backgroundImage = 'url(' + categoryImages[category] + ')';
+                    document.querySelector('#categoryContainer').appendChild(categoryBox);
 
-        // When a category box is clicked, navigate to a new page that displays posts with the same category
-        document.querySelectorAll('.categoryBox').forEach(box => {
-            box.addEventListener('click', function() {
-                var category = this.textContent;
-                window.location.href = 'category.html?category=' + encodeURIComponent(category);
-            });
-        });
-    })
-    .catch(error => console.error(error));
+                });
+
+                // When a category box is clicked, navigate to a new page that displays posts with the same category
+                document.querySelectorAll('.categoryBox').forEach(box => {
+                    box.addEventListener('click', function() {
+                        var category = this.textContent;
+                        window.location.href = 'category.html?category=' + encodeURIComponent(category);
+                    });
+                });
+            })
+        .catch(error => console.error(error));
     }); 
 </script>

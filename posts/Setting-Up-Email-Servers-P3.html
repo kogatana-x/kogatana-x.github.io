@@ -366,6 +366,189 @@ and comment that line out
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
+<h1>Troubleshooting</h1>
+<h3>Postfix</h3>
+<pre><code>
+postconf -n # to see current settings
+postconf -d # to see default values
+
+#what errors?
+systemctl status postfix 
+tail /var/log/maillog
+
+#resolve config errors
+postfix check
+postfconf 1> /dev/null
+
+#check directory permissions
+chattr -R -i /var/log/
+chattr -R -i /etc/postfix/
+ls -l /var/log && ls -l /etc/postfix
+
+#check the firewall logs for dropped SMTP traffic
+vi /var/log/messages | grep ‘:drop_log:’
+
+#monitor smtp traffic
+tcpdump -w /file/name -s 0 host example.com and port 25 
+tcpdump -i  -vv -x -X -s 1500 -i <eth1> ‘port 25’  #Verbose Output for SMTP
+
+#get very verbose log output
+vi /etc/postfix/master.cf:
+    smtp      inet  n       -       n       -       -       smtpd -v
+postfix reload
+
+#if connected to ldap - 
+    postmap -q user@domain.com ldap:/path/to/ldap/conf
+
+#find networks
+cat /etc/postfix/main.cf | grep “mynetworks”
+cat /etc/postfix/main.cf | grep “mydomain”
+
+</code></pre>
+<h3>Dovecot</h3>
+<pre><code>
+dovecot -n #to see current settings
+dovecot -n -c /etc/dovecot/dovecot.conf #to see current settings
+dovecot -n -c /etc/dovecot/dovecot.conf | grep -i ‘ssl’ #to see current settings
+dovecot -n -c /etc/dovecot/dovecot.conf | grep -i ‘auth’ #to see current settings
+
+# what errors?
+cat /var/log/maillog >> maillog
+
+#check the firewall logs for dropped IMAP/POP traffic
+vi /var/log/messages | grep ‘:drop_log:’ #if you have logging set up for iptables
+
+</code></pre>
+<h3>Roundcube/Apache</h3>
+<pre><code>
+#check the logs
+    tail /var/log/httpd/access_log
+    tail /var/log/httpd/error_log 
+
+#monitor traffic
+    tcpdump -i eth1 ‘port 80’  
+
+#normal httpd.conf
+https://github.com/assistanz247/APACHE/blob/master/httpd.conf
+
+</code></pre>
+<h3>MySQL</h3>
+<pre><code>
+#check the logs
+    tail /var/log/mysqld.log
+    tail /var/log/mysql/error.log
+
+#monitor traffic
+    tcpdump -i eth1 ‘port 3306’
+
+#if it doesn’t start: my.cnf
+#check user permissions
+#check password configs for the webserver
+#**make sure your fw rules allow for external SQL/ loopback 
+
+#check the firewall logs for dropped External SQL connections (if applicable)
+    vi /var/log/messages | grep ‘:drop_log:’
+                
+</code></pre>
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h1>Hardening</h1>
+<h3>Firewall</h3>
+<pre><code>
+#NOTE: *SASL is for 587, smart host relays (starttls encryption)
+
+#Core Services
+iptables -A INPUT -p tcp -m multiport --dports 25,80,110,143 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --sports 25,80,110,143 -m state --state ESTABLISHED -j ACCEPT
+
+#SQL Database connection
+iptables -A INPUT -s 172.20.240.20 -p tcp  --sport 3306 -j ACCEPT
+iptables -A OUTPUT -d 172.20.240.20 -p tcp --dport 3306 -j ACCEPT
+
+#AD connection 
+iptables -A INPUT -s 172.20.242.200 -p tcp --sport 389 -j ACCEPT
+iptables -A OUTPUT -d 172.20.242.200 -p tcp --dport 389 -j ACCEPT
+</code></pre>
+<h3>Logging</h3>
+<h4>Roundcube/Apache</h4>
+<pre><code>
+#In the roundcube config file -- config.inc.php
+$config['debug_level'] = 1; #System Error Reporting
+$config['sql_debug'] = true; # Log SQL queries
+$config['imap_debug'] = true; #Log IMAP4 conversation
+$config[pop_debug’]=true; #Log POP3 converstation
+$config['ldap_debug'] = true; #Log LDAP conversation
+$config['smtp_debug'] = true; #Log SMTP conversation
+</code> </pre>
+<h4>Postfix</h4>
+<pre><code>
+postconf -e smtp_tls_loglevel=1
+notify_classes = resource, software, protocol
+</code></pre>
+<h4>Dovecot</h4>
+<pre><code>
+#located: /var/log/maillog or /var/log/mail.info or something similar
+#the postfix mail queue is located in the directory tree /var/spool/postfix and below
+</code></pre>
+<h4>Apache</h4>
+<pre><code>
+#located in /var/log/httpd or /apache2
+</code></pre>
+   
+<h3>Backup</h3>
+<h4>Postfix</h4>
+<pre><code>
+tar czf /root/postfix-$(date “+%F”).tar.gz /etc/postfix
+postconf > /root/postconf-$)date “+%F)
+</code></pre>
+<h4>Dovecot</h4>
+<pre><code>
+tar czf /root/dovecot-$(date “+%F”).tar.gz /etc/dovecot
+</code></pre>
+<h1>Postfix Hardening – Hella ExtraTM</h1>
+<h3>Chroot Jail</h3>
+<pre><code>
+mkdir -p /var/spool/postfix/dev
+syslogd -a /var/spool/postfix/dev/log
+vi main.cf
+</code></pre>
+<h3>Domain Restrictions</h3>
+<pre><code>
+*can combine w/ a comma
+smtpd_client_restrictions =reject_non_fqdn_sender, reject_non_fqdn_recipient
+smtpd_client_restrictions = warn_if_reject reject_unknown_client
+smtpd_client_restrictions = check_client_access hash:/etc/postfix/client_access
+#vi /etc/postfix/client_access file:
+    10                          REJECT RFC 1918 address not allowed here
+    192.168                     REJECT RFC 1918 address not allowed here
+    # Known spammers
+    12.34.56.78			        REJECT 
+	spammer.example.com 		REJECT
+</code></pre>
+<h3>Message Content Checks</h3>
+<pre><code>
+mime_header_checks = /^Content-(Disposition|Type).*name\s*=\s*"?(.*\.( ade|adp|bas|bat|
+    chm|cmd|com|cpl|crt|dll|exe|hlp|hta|inf|ins|isp|js|jse|lnk|mdb|mde|mdt|
+    mdw|ms[cipt]|nws|ops|pcd|pif|prf|reg|sc[frt]|sh[bsm]|swf|vb[esx]?|vxd|
+    ws[cfh]))(\?=)?"?\s*(;|$)/x
+REJECT Attachment not allowed. Filename "$2" may not end with ".$3".
+</code></pre>
+<h3>Initial Scan of Postfix</h3>
+<pre><code>
+#check config & resolve any errors
+postfconf 1> /dev/null
+#find version
+dpkg -l postfix OR postconf mail_version | awk -F” = “ ‘{print $2}’
+#check networks
+cat /etc/postfix/conf.php | grep “mynetworks”
+</code></pre>
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+
 <h1>Conclusion</h1>
 <p>With that, your email server should be up and running. If you are an engineer, I cannot and will never reccomend using plaintext authentication. What we did in the lab is not secure, and will not scale very well with many many users. In the next post, we will go over some more secure options, as well as using directories via LDAP and Kerberos authentication. 
 <br>Happy testing!

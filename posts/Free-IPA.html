@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free IPA</title> 
+    <meta name="description" content="We will be going over how to set up FreeIPA, a Linux Identity Provider for a lab enviornment"> 
+    <meta name="author" content="kogatana-x">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Free IPA">
+    <meta name="category" content="sysadmin">
+
+
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="../images/22989723.png" alt="Profile"> 
+        </a>
+        <h1>kogatana-x</h1>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>LinkedIn</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h2>Setting Up Free IPA</h2> 
+            <time datetime="2024-03-7T12:01:55">March 7th, 2024</time> 
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Introduction</h1>
+            <p>FreeIPA is an open-source identity provider for Linux and Unix environments. It is a combination of 389 Directory Server, MIT Kerberos, NTP, DNS, Dogtag, SSSD, and other components. FreeIPA is a great tool for managing users, groups, and hosts in a lab environment. In this post, we will be going over how to set up FreeIPA on a CentOS 8 machine.</p>
+            <h1>Prerequisites</h1>
+            <ol>
+                <li>A Machine that actually supports FreeIPA</li>
+                <ul>
+                    <li>Debian 11 Unstable Package</li>
+                    <li>Fedora 21</li>
+                    <li>[...] </li>
+                </ul>
+                <li>Set hostname to “ipa”</li>
+                <ul>
+                    <li>hostnamectl set-hostname ipa.example.com && reboot</li>
+                </ul>
+                <li>Static ip address</li>
+                <ul>
+                    <li>/etc/sysconfig/network-scripts/ifcfg-eth0</li>
+                </ul>
+                <li>Drop your firewall, or add the exceptions to follow</li>
+                <li>Add Network Devices to Hosts File</li>
+                <ul>
+                    <li>echo “<your ip> ipa.example.com ipa” >> /etc/hosts</li>
+                    <li>echo “<other server ip> www.example.com www” >> /etc/hosts</li>
+                </ul>
+                <li>Fix DNS Resolve</li>
+                <ul>
+                    <li>echo nameserver 1.1.1.1 >> /etc/resolv.conf</li>
+                    <li>echo nameserver 8.8.8.8 >> /etc/resolv.conf</li>
+                </ul>
+                <li>Double Check</li>
+                <ul>
+                    <li>hostname -f && hostname -s && hostname -d</li>
+                </ul>
+            </ol>
+            <h3>Firewall Rules</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Protocol</th>
+                        <th>Ports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HTTP/S</td>
+                        <td>TCP</td>
+                        <td>80, 443</td>
+                    </tr>
+                    <tr>
+                        <td>LDAP/S</td>
+                        <td>TCP</td>
+                        <td>389, 636</td>
+                    </tr>
+                    <tr>
+                        <td>Kerberos</td>
+                        <td>TCP & UDP</td>
+                        <td>88, 464</td>
+                    </tr>
+                    <tr>
+                        <td>DNS</td>
+                        <td>TCP & UDP</td>
+                        <td>53</td>
+                    </tr>
+                    <tr>
+                        <td>NTP</td>
+                        <td>UDP</td>
+                        <td>123</td>
+                    </tr>
+                    <tr>
+                        <td>Dogtag Cert System -  LDAP</td>
+                        <td>TCP</td>
+                        <td>7389</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Installation</h1>
+            <p>First, we will install the necessary packages for FreeIPA. We will also remove the bind-chroot package as it is not needed for our purposes.</p>
+            <pre><code>
+#install packages
+yum -y install freeipa-server bind bind-dyndb-ldap && yum remove bind-chroot
+
+#install IPA
+ipa-server-install --ssh-trust-dns --setup-dns --idstart=50000 --idmax=99999 --mkhomedir
+</code> </pre>
+            <p>After the installation, we will need to restart the sshd service and then log in as the admin user. We will then verify that the admin user exists and then modify the DNS forwarders to use Google’s DNS servers. We will also need to modify the nsswitch.conf file to include the sudoers file.</p>
+            <pre><code></code>
+#post installation tasks
+systemctl restart sshd
+kinit admin
+ipa user-find admin
+ipa dnsconfig-mod --forwarder=1.1.1.1 --forwarder=8.8.8.8 
+echo “sudoers: files sss” >> /etc/nsswitch.conf
+
+vi /etc/sssd/sssd.conf
+    services = nss, pam, ssh, sudo
+</code> </pre>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Usage - Command Line-Fu</h1>
+            <h3>Adding DNS Records</h3>
+            <pre><code>
+#new dns record - fill in prompts manually
+ipa dnsrecord-add
+
+#new dns record - loaded
+ipa dnsrecord-add --name=”webmail” --zone=”frog.com” --type=”A”
+            </code> </pre>
+            <h3>Adding Hosts</h3>
+            <pre><code>
+#add new host to IPA
+ipa host-add <FQDN>
+            </code> </pre>
+            <h3>Adding Services</h3>
+            <pre><code>
+#**in order to get a keytab for neato SSL/TLS  **
+#add service - prompt
+ipa service-add
+
+#add service - no prompt
+ipa service-add smtp/www.example.com
+            </code> </pre>
+            <h3>Creating Users</h3>
+            <pre><code>
+#add user - normal prompt
+ipa user-add <username> --password
+
+#add user - with extra args
+ipa user-add <username> --first=<firstname> --last=<lastname> --password
+#**IPA prompts to change the user’s password on initial login FYI**
+            </code> </pre>
+            <h3>Scripted Version</h3>
+            <pre><code>
+vi ipausers.sh
+    #!/bin/bash
+    for i in {1..200}
+    do
+        username=$(cat /dev/urandom | tr -dc ‘a-z’ | fold -w 8 | head -n 1) #creates 200 random users
+        #password=”yourinitialpass”
+        password=$(cat /dev/urandom | tr -dc ‘a-zA-Z0-9’ | fold -w 12 | head -n 1) #random passwords
+    
+        echo “$username:$password” >> userinfo.txt #so you can reference this later
+        echo -e “$password\n$password” | ipa user-add $username --first=$username --last=$username --password
+        echo -e “$password\n$password\n$password” | kinit $username #logs in and keeps same pwd
+    done
+            </code> </pre>
+            <h3>Enable/Disable User</h3>
+            <pre><code>
+#enable user
+ipa user-enable <username>
+
+#disable user
+ipa user-disable <username>
+            </code> </pre>
+            <h3>Change User Password</h3>
+            <pre><code>
+ipa user-mod <username> --password
+            </code> </pre>
+            <h3>Password Policy</h3>
+            <pre><code>
+#Show
+ipa pwpolicy-show
+ipa pwpolicy-show --user=test
+
+#modify
+ipa pwpolicy-mod {flags}
+{flags}
+    --minlife=7
+    --maxlife=90
+    --history=3
+    --minlength=6
+    --maxlength=12
+            </code> </pre>
+            <h3>Groups</h3>
+            <pre><code>
+#add a new group
+ipa group-add <groupname>
+
+#add user to group
+ipa group-add-member <groupname> --users={<test1,test2,test3>}
+
+#add group to group
+ipa group-add-member <groupname> --groups={<group1,group2,group3>}
+
+    #remove users from group
+ipa group-remove-member <groupname> --users=test3
+
+    #show members
+ipa group-show <groupname>
+
+    #delete a group
+ipa group-del <groupname>
+            </code> </pre>
+            <h3>Certs</h3>
+            <pre><code>
+#log into ipa server
+kinit admin
+
+# add host
+ipa host-add host.example.com
+
+# add service
+ipa service-add HTTP/host.example.com
+
+# ipa server to manage cert
+ipa service-add-host --hosts=ipa.example.com HTTP/host.example.com
+
+#new cert
+ipa-getcert request -r -f /etc/pki/tls/certs/host.example.com.crt -k /etc/pki/tls/private/host.example.com.key -N CN=host.example.com -D host.example.com -K HTTP/host.example.com
+
+#copy cert and key
+rsync -P /etc/pki/tls/certs/host.example.com.crt /etc/pki/tls/private/host.example.com.key
+            </code> </pre>
+            <h3>HBAC Rules</h3>
+            <pre><code>
+#Create rule:
+    ipa hbacrule-add sshd-ipa
+
+    #Add a user to the rule:
+    ipa hbacrule-add-user --users=ttester sshd-ipa
+
+#Add a host group to the rule:
+    ipa hbacrule-add-host --hostgroups=ipa sshd-ipa
+
+#Add a service to the rule:
+    ipa hbacrule-add-service --hbacsvcs=sshd sshd-ipa
+
+#Verify:
+    ipa hbacrule-show sshd-ipa
+    ssh test@localhost
+
+#Example - Allow ALL
+    ipa hostgroup-add allow_all_hosts
+    ipa host-find --raw --pkey-only --sizelimit=0  | awk '$1 == "fqdn:" { print "--hosts=" $2 }' | xargs -n100 ipa hostgroup-add-member allow_all_hosts
+    ipa hbacrule-add allow_all_users_services --usercat=all --servicecat=all
+    ipa hbacrule-add-host allow_all_users_services --hostgroups=allow_all_hosts
+
+#Example - Allow SSH
+    ipa hbasvc-add sshd
+    ipa hbacrule-add allow_sshd
+    ipa hbacrule-add-service allow_sshd --hbacsvcs=sshd
+    ipa hbacrule-add-user allow_sshd --hosts=workstation.example.com
+    ipa hbacrule-add-user allow_sshd --user=linuxadmin
+    ipa hbactest --user=linuxadmin --host=workstation.example.com --service=sshd
+
+#On the Host Machine:
+vi /etc/pam.d/sshd
+    auth    required    pam_sss.so
+    account    required    pam_sss.so
+            </code> </pre>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Client Configuration</h1>
+            <h3>Adding DNS Records on IPA Server</h3>
+            <pre><code>
+ipa dnsrecord-add --name=”host” --zone=”example.com” --type=”A”
+            </code> </pre>
+            <h3>Add Email Server to IPA Server</h3>
+            <pre><code>
+ipa host-add www.example.com
+            </code> </pre>
+            <h3>Verify content of /etc/hosts (should have your ip - hostname mapping at a minimum)</h3>
+            <pre><code>
+vi /etc/hosts
+            </code> </pre>
+            <h3>Install FreeIPA Client</h3>
+            <pre><code>
+yum -y install ipa-client-install
+            </code> </pre>
+            <h3>Verify</h3>
+            <pre><code>
+kinit admin
+klist
+            </code> </pre>
+            <p>If everything goes as expected, you should get a prompt that looks like the following:
+                </p>
+                <img src="https://kogatana-x.github.io/images/Setting-Up-Email/freeipa works.png" alt="FreeIPA-1">
+                        <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h3>OpenSuse</h3>
+            <pre><code>
+#Get Keytab Auth
+#From IPA Server >> 
+    /usr/sbin/ipa-getkeytab -s ipa.example.com -p host/suse.example.com -k /tmp/suse.keytab
+    scp /tmp/suse.keytab suse.example.com:/tmp/krb5.keytab
+
+#From IPA Client >>
+    cp /tmp/krb5.keytab /etc
+    chmod 600 /etc/krb5.keytab
+    mkdir /etc/ipa
+    curl -o /etc/ipa/ca.crt http://ipa.example.com/ipa/config/ca.crt
+    curl -o /etc/pki/trust/anchors/ipa.example.com.crt http://ipa.example.com/ipa/config/ca.crt
+    update-ca-certificates
+    zypper install sssd sssd-ipa yast2-auth-client krb5-client openldap2-client cyrus-sasl-gssapi
+
+# Setup SSSD
+vi /etc/sssd/sssd.conf
+[domain/example.com]
+cache_credentials = True
+krb5_store_password_if_offline = True
+ipa_domain = example.com
+ipa_hostname = suse.example.com
+ipa_server = _srv_, ipa.example.com
+dns_discovery_domain = example.com
+
+id_provider = ipa
+auth_provider = ipa
+access_provider = ipa
+chpass_provider = ipa
+
+ldap_tls_cacert = /etc/ipa/ca.crt
+
+[sssd]
+services = nss, sudo, pam, ssh
+domains = example.com
+[nss]
+filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd,tomcat,postgres
+homedir_substring = /home
+[pam]
+[sudo]
+[autofs]
+[ssh]
+
+# Setup Kerberos
+vi /etc/krb5.conf
+[libdefaults]
+  default_realm = EXAMPLE.COM
+  dns_lookup_realm = true
+  dns_lookup_kdc = true
+  rdns = false
+  dns_canonicalize_hostname = false
+  ticket_lifetime = 24h
+  forwardable = true
+  udp_preference_limit = 0
+  default_ccache_name = KEYRING:persistent:%{uid}
+
+
+[realms]
+    EXAMPLE.COM = {
+        pkinit_anchors = FILE:/var/lib/ipa-client/pki/kdc-ca-bundle.pem
+        pkinit_pool = FILE:/var/lib/ipa-client/pki/ca-bundle.pem
+    }
+
+[domain_realm]
+    .example.com = EXAMPLE.COM
+    example.com = EXAMPLE.COM
+    suse.example.com = EXAMPLE.COM
+
+# Setup pam
+pam-config -a --sss --mkhomedir --mkhomedir-umask=0077  --pwhistory --pwhistory-remember=5 --localuser --cracklib  --cracklib-minlen=14 --cracklib-dcredit=-1 --cracklib-ucredit=-1   --cracklib-lcredit=-1 --cracklib-ocredit=-1 --cracklib-retry=3 --unix-sha512
+
+# Setup nsswitch
+sed -i.bak 's/compat$/files sss/g' /etc/nsswitch.conf
+echo "sudoers: files sss" >> /etc/nsswitch.conf
+sed -i '/netgroup/ s/nis/sss/g' /etc/nsswitch.conf
+
+#Set NIS Domain Name
+sed -i.bak '/NETCONFIG_NIS_STATIC_DOMAIN/ s/""/"example.com"/g' /etc/sysconfig/network/config
+netconfig update -f
+
+# Start sssd
+systemctl enable sssd --now
+
+# Verify
+id admin
+            </code> </pre>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h3>Centos 8 / RHEL 8</h3>
+            <pre><code>
+yum module list idm
+yum module info idm:client
+yum -y install @idm:client
+rpm -qi ipa-client && rpm -qi sssd
+
+echo "192.168.58.121 ipa.example.com"| sudo tee /etc/hosts
+export HNAME="host.example.com"
+hostnamectl set-hostname $HNAME --static
+hostname $HNAME
+
+ipa-client-install --hostname=host.example.com --mkhomedir --server=ipa.example.com --domain example.com --realm EXAMPLE.COM
+ipa-client-install
+authconfig --enablemkhomedir --update
+            </code> </pre>
+                    <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h3>Service Configuration</h3>
+            <h3>Dovecot - IMAP</h3>
+            <pre><code>
+#   1.  Add Service to IPA Server
+ipa service-add imap/www.example.com
+
+#   2.  Add Mail Group
+ipa group-add mailusers
+ipa group-add-member mailusers --users={test1,test2,test3}
+
+#   3.  Configure IPA Client
+<ref client config>
+
+#    4.  Basic Dovecot Install
+yum -y install dovecot
+systemctl enable dovecot
+
+#    5.  Configure to Allow imap
+vi /etc/dovecot/dovecot.conf
+    protocols = imap
+
+#    6.  Kerberos Authentication
+vi /etc/dovecot/conf.d/10-auth.conf
+    auth_mechanisms = gssapi
+    auth_gssapi_hostname = webmail.example.com
+    auth_krb5_keytab = /etc/dovecot/krb5.keytab
+    auth_realms = example.com
+    auth_default_realm = example.com
+    userdb {
+        driver  =  static
+        args = uid=dovecot gid=dovecot home=/var/spool/mail/%u
+    }
+
+#    7.  Configure Mailbox Location
+vi /etc/dovecot/conf.d/10-mail.conf
+    mail_location = maildir:~/Maildir
+
+#    8.  Start Dovecot
+systemctl start dovecot
+
+            </code></pre>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h3>Postfix - SMTP</h3>
+            <pre><code>
+#   1.  Add Service to IPA Server
+ipa service-add smtp/www.example.com
+
+#   2.  Configure IPA Client - If Not Done Already
+<ref client config>
+
+#   3.  Basic Postfix Install
+yum -y install postfix
+systemctl enable postfix
+
+#   4.  Configure Basic Settings
+vi /etc/postfix/main.cf
+    myhostname = <hostname>.<domain>
+    mydomain = <domain>
+    myorigin = $mydomain 
+    inet_interfaces = all 
+    mynetworks =
+    home_mailbox = /var/mail/users
+vi /etc/postfix/master.cf
+    #uncomment: 
+    submission inet n - n - - smtpd
+    -o syslog_name=postfix/submission
+    -o smtpd_tls_security_level=encrypt
+    -o smtpd_sasl_auth_enable=yes
+
+#   5.  LDAP Mappings
+postconf -e ‘virtual_alias_domains = example.com’
+postconf -e ‘virtual_alias_maps = ldap:/etc/postfix/ldap_aliases.cf’
+
+vi /etcpostfix/ldap_aliases.cf
+    server_host = ipa.example.com
+    search_base = cn=accounts,dc=example,dc=com
+    query_filter = (mail=%s)
+    result_attribute = uid
+    bind = no
+    start_tls = yes
+    version = 3
+
+postmap /etc/postfix/ldap_aliases.cf
+restorecon -R /etc/postfix/
+systemctl restart postfix
+
+
+#   6.  SASL (Single Sign on for Authentication) Config
+yum -y install cyprus_sasl
+kinit admin
+
+ipa-getkeytab -s ipa.example.com -p smtp/webmail.example.com -k /etc/postfix/smtp.keytab
+chown root:mail /etc/postfix/smtp.keytab
+chmod 640 /etc/postfix/smtp.keytab
+
+vi /etc/sasl2/smtpd.conf
+    pwcheck_method: saslauthd
+    mech_list: GSSAPI PLAIN LOGIN
+vi /etc/sysconfig/saslauthd
+    SOCKETDIR=/var/run/saslauthd
+    MECH=kerberos5
+    FLAGS=
+
+postconf -e 'import_environment = MAIL_CONFIG MAIL_DEBUG MAIL_LOGTAG TZ XAUTHORITY DISPLAY LANG=C KRB5_KTNAME=/etc/postfix/smtp.keytab'
+postconf -e 'smtpd_client_restrictions = permit_sasl_authenticated, reject'
+postconf -e 'smtpd_recipient_restrictions = permit_sasl_authenticated, reject'
+postconf -e 'smtpd_sender_restrictions = permit_sasl_authenticated, reject'
+postconf -e 'smtpd_sasl_auth_enable = yes'
+postconf -e 'smtpd_sasl_security_options = noanonymous'
+postconf -e 'smtpd_sasl_tls_security_options = $smtpd_sasl_security_options'
+postconf -e 'broken_sasl_auth_clients = yes'
+postconf -e 'smtpd_sasl_authenticated_header = yes'
+postconf -e 'smtpd_sasl_local_domain = $mydomain'
+
+systemctl enable saslauthd
+systemctl restart saslauthd
+systemctl restart postfix
+
+#  7.  TLS Connections
+mkdir /etc/postfix-certs
+chcon -t cert_t /etc/postfix-certs
+
+ipa-getcert request -r -f /etc/postfix-certs/smtp.crt -k /etc/postfix-certs/smtp.key -N CN=webmail.example.com -D webmail.example.com -K smtp/webmail.example.com
+
+postconf -e 'smtpd_tls_auth_only = yes'
+postconf -e 'smtpd_tls_key_file = /etc/postfix-certs/smtp.key'
+postconf -e 'smtpd_tls_cert_file = /etc/postfix-certs/smtp.crt'
+postconf -e 'smtpd_tls_received_header = yes'
+postconf -e 'smtpd_tls_session_cache_timeout = 3600s'
+systemctl restart postfix
+            </code> </pre>
+                        <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h3>HTTP LDAP Login Page</h3>
+            <pre><code>
+#   11. Add Webserver to IPA Server
+ipa host-add www.example.com
+
+#   12. Add Service to IPA Server
+ipa service-add HTTP/www.example.com
+
+#    13. Configure IPA Client
+<ref client config>
+
+#    14. Install
+yum -y install mod_ldap mod_auth_kerb
+
+#   15. Get Keytab
+kinit admin
+ipa-getkeytab -s ipa.www.example.com -p ipa-getkeytab -s ipa.www.example.com -p HTTP/www.example.com -k /etc/httpd/conf.dkeytab
+chwon apache:apache /etc/httpd/conf.d/keytab
+vi /etc/httpd/conf.d/auth_ipa.conf #new file
+    <Directory /var/www/html/ipa>
+        SSLRequireSSL
+        AuthName "IPA Authentication"
+        AuthType Kerberos
+
+        KrbServiceName HTTP
+        KrbMethodK5Passwd On
+        KrbSaveCredentials On
+        KrbMethodNegotiate On
+        KrbAuthRealms EXAMPLE>COM
+        Krb5KeyTab /etc/httpd/conf.d/keytab
+
+        AuthLDAPUrl ldap://<<ipa-ip>>/dc=example,dc=com?krbPrincipalName
+        Require valid-user
+    </Directory>
+
+systemctl restart httpd
+
+#   16.	Test
+    vi /var/www/html/ipa/index.html
+    <html>
+        <body>
+            <div style="width: 100%; font-size: 40px; font-weight: bold; text-align: center;">
+            Test Page for IPA Server Auth </div>
+        </body>
+    </html>
+            </code> </pre>
+                        <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h3>References</h3>
+            <ul>
+                <li><a href="https://docs.fedoraproject.org/en-US/Fedora/17/html/FreeIPA_Guide/index.html">Fedora FreeIPA Guide</a></li>
+                <li><a href="https://www.freeipa.org/page/Howto/HBAC_and_allow_all">FreeIPA HBAC Allow All</a></li>
+                <li><a href="https://linuxguideandhints.com/centos/freeipa.html#suse">Linux Guide and Hints</a></li>
+                <li><a href="https://www.dalemacartney.com/2013/03/14/deploying-postfix-with-ldap-freeipa-virtual-aliases-and-kerberos-authentication/">Dale Macartney</a></li>
+                <li><a href="https://www.dalemacartney.com/2012/07/05/configuring-dovecot-to-authenticate-freeipa-users-using-kerberos-with-single-sign-on/">Dale Macartney</a></li>
+                <li><a href="https://wiki.debian.org/PostfixAndSASL">Debian Postfix and SASL</a></li>
+            </ul>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Conclusion</h1>
+            <p>FreeIPA is a great tool for managing users, groups, and hosts in a lab environment. It is a great way to learn about identity management and LDAP. It is also a great way to learn about the different services that are used in a Linux environment. I hope this post has been helpful and informative. If you have any questions or comments, please feel free to reach out to me.</p>
+
+        </div>  
+
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2021 kogatana-x</p>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setting Up Email Servers - Part 4!</title> 
+    <meta name="description" content="We will be continuing our series on setting up email servers. In this part, we will be configuring different types of authentication mechanisms for our email server.">
+    <meta name="author" content="kogatana-x">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="Setting Up Email Servers - Part 4">
+    <meta name="category" content="sysadmin">
+
+
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="../images/22989723.png" alt="Profile"> 
+        </a>
+        <h1>kogatana-x</h1>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>LinkedIn</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h2>Setting Up Email Servers - Part 4 </h2>
+            <time datetime="2024-03-7T12:01:55">March 7th, 2024</time>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Introduction</h1>
+            <p>
+                We will be continuing our series on setting up email servers on Linux systems from Part 3. In this part, we will be configuring different types of authentication mechanisms for our email server. This one requires the Active Directory server you used in Part 1, or any identity provider in general as we will just be focusing on the email side of things.
+                The programs we will be exploring in this guide are Postfix, Dovecot, (Microsoft AD) LDAP, Kerberos, Samba and FreeIPA.
+
+            </p>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h1>Postfix - MTA</h1>
+            <p>
+                Postfix is a mail transfer agent (MTA) that is used to send and receive emails. We will be using our configuration from Part 3:
+            </p>
+            <pre><code>
+vi /etc/postfix/main.cf
+    myhostname = <hostname>.<domain>
+    mydomain = <domain>
+    myorigin = $mydomain #$mydomain is a variable that you dont have to change.
+    inet_interfaces = all 
+    mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain 
+    mynetworks = <network>/<prefix>, 127.0.0.0/8   #substitute with the networks you need to communicate with your server (typically internal RFC1918 addresses).
+    home_mailbox = Maildir               #Maildir is what I and Dovecot choose to use by default. Mail is the traditional mailbox format.
+            </code></pre>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>            
+            <h3>Active Directory LDAP Authentication</h3>
+            <p>
+                We will be using LDAP to authenticate users against our Active Directory server. This is a common practice in enterprise environments.
+            </p>
+            <h4>Add User (on the AD Box)</h4>
+            <pre><code>
+net user binddn password /add /domain  #for Windows AD
+            </code></pre>
+            <p>
+                You might have to go into the AD Users/Groups and have this user sign in with the path @example.com
+            </p>
+            <h4>Configure</h4>
+            <pre><code>
+#LDAP Settings >>
+vi /etc/postfix/main.cf
+    virtual_mailbox_domains = $mydomain
+    virtual_mailbox_base = /home/vmail/
+    virtual_mailbox_maps = ldap:/etc/postfix/ldap-users.cf
+    virtual_uid_maps = static:501
+    virtual_gid_maps = static:501
+
+#Connect LDAP >>
+vi /etc/postfix/ldap-users.cf
+    server_host = ad.example.com
+    search_base = dc=example,dc=com
+    version = 3
+    query_filter = (&(objectclass=person)(mail=%s))
+    result_attribute = samaccountname
+    result_format = %s/Maildir/
+    bind = yes
+    bind_dn = binddn@example.com
+    bind_pw = password
+            </code></pre>
+            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/ldap-users.cf.png" alt="ldap-users.cf">   
+
+            <h3>Start/Restart Postfix</h3>
+            <pre><code>
+postfix check && systemctl restart postfix
+            </code></pre>
+            <h3>Test Connectivity</h3>
+            <pre><code>
+postmap -q user@example.com ldap:/etc/postfix/ldap-users.cf            #Assuming “user” exists on AD
+#this should return the path to the user’s mail directory
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h3>Connected Authentication - FreeIPA</h3>
+<p>
+    FreeIPA is an identity management solution that is built on top of the open-source projects like 389 Directory Server, MIT Kerberos, and SSSD. It is a great alternative to Active Directory and is a great solution for Linux environments.
+</p>
+<h4>Configure</h4>
+<ol>
+    <li>Add Service to IPA Server</li>
+    <pre><code>
+ipa service-add smtp/www.example.com
+    </code></pre>
+    <li>Enable Service</li>
+    <pre><code>
+systemctl enable postfix
+    </code></pre>
+    <li>Configure Basic Settings</li>
+    <pre><code>
+vi /etc/postfix/main.cf
+    myhostname = <hostname>.<domain>
+    mydomain = <domain>
+    myorigin = $mydomain 
+    inet_interfaces = all 
+    mynetworks =  127.0.0.0/8, 172.16.0.0/12, 10.0.0.0/8, 192.168.0.0/16
+
+vi /etc/postfix/master.cf
+#uncomment: 
+submission inet n - n - - smtpd
+    -o syslog_name=postfix/submission
+    -o smtpd_tls_security_level=encrypt
+    -o smtpd_sasl_auth_enable=yes
+    </code></pre>
+    <li>Integrate Postfix with Dovecot for SASL (Single Sign on for Authentication) Config</li>
+    <pre><code>
+postconf -e ‘smtpd_sasl_type = dovecot’
+postconf -e ‘smtpd_sasl_path = private/auth'
+postconf -e 'smtpd_sasl_auth_enable = yes'
+postconf -e ‘smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination’
+    </code></pre>
+    <li>TLS Connections</li>
+    <pre><code>
+mkdir /etc/postfix-certs
+chcon -t cert_t /etc/postfix-certs
+kinit admin
+ipa-getcert request -r -f /etc/postfix-certs/smtp.crt -k /etc/postfix-certs/smtp.key -N CN=webmail.example.com -D webmail.example.com -K smtp/webmail.example.com
+postconf -e 'smtpd_tls_auth_only = yes'
+postconf -e 'smtpd_tls_key_file = /etc/postfix-certs/smtp.key'
+postconf -e 'smtpd_tls_cert_file = /etc/postfix-certs/smtp.crt'
+postconf -e 'smtpd_tls_received_header = yes'
+postconf -e 'smtpd_tls_session_cache_timeout = 3600s'
+    </code></pre>
+<li>Start / Restart Postfix</li>
+<pre><code>
+postfix check && systemctl restart postfix
+    </code></pre>
+<li>Test Connectivity</li>
+<pre><code>
+#install openssl
+apt-get install openssl -y
+#OR
+yum install openssl -y
+
+#base64 encode username and password
+echo -ne ‘\0username@example.com\0password’ | base64
+openssl s_client -connect webmail.example.com:587 -starttls smtp
+
+ehlo localhost
+start tls
+auth plain or login 
+mail from: <username>@<domain>
+rcpt to: <username>@<domain>
+data
+.
+quit
+    </code></pre>
+</ol>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h1>Dovecot</h1>
+<p>
+    Dovecot is an open-source IMAP and POP3 server for Linux/UNIX-like systems, written with security primarily in mind. It is an excellent choice for both small and large installations. We will be using our configuration from Part 3:
+
+</p>
+<h3>Active Directory LDAP Authentication</h3>
+<h4>Configure</h4>
+<pre><code>
+vi /etc/dovecot/dovecot.conf
+    protocols = imap pop3 (lmtp for local mail transfer)
+vi /etc/dovecot/conf.d/10-mail.conf
+    mail_location = maildir:~/Maildir
+vi /etc/dovecot/conf.d/10-auth.conf
+    disable_plaintext_auth = no 
+    auth_mechanisms = plain ntlm login 
+    auth_username_format = %Lu
+    passdb {
+        driver = ldap 
+        args = /etc/dovecot/conf.d/dovecot-ldap.conf
+    }
+    userdb {
+        driver = static
+        args = uid=501 gid=501 home=/home/vmail/%n
+    }
+vi /etc/dovecot/conf.d/10-master.conf
+    unix_listener auth-userdb {
+        user = postfix
+        group = postfix
+    }
+vi /etc/dovecot/conf.d/dovecot-ldap.conf
+    hosts = ad.example.com     #or  uris = ldap://ad.frog.com
+    base = dc=example, dc=com
+    ldap_version = 3
+    auth_bind = yes
+    dn = binddn
+    dnpass = password
+    auth_bind_userdn = “cn=users,dc=example,dc=com”
+    pass_filter = (&(objectclass=person) (uid=%u))
+</code></pre>
+<h4>Test</h4>
+<pre><code>
+install openldap openldap-clients
+ldapsearch -x -h ad.frog.com -D “
+</code></pre>
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h3>Active Directory Kerberos Authentication</h3>
+<h4>RHEL</h4>
+<pre><code>
+yum -y install realmd sssd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools ntpdate ntp krb5-workstation
+</code></pre>
+<h4>Configure Kerberos</h4>
+<pre><code>
+vi /etc/krb5.conf
+[libdefaults]
+default_realm = EXAMPLE.COM  #all EXAMPLE.COMs must be in caps
+[realms]
+EXAMPLE.COM = {
+  kdc = ad.example.com
+}
+[domain_realm]
+  .example.com = EXAMPLE.COM
+  example.com = EXAMPLE.COM
+ .kerberos.server = EXAMPLE.COM
+
+kinit Administrator
+
+</code></pre>
+<img src="https://kogatana-x.github.io/images/Setting-Up-Email/krb5.conf.png" alt="krb5.conf">
+<h4>Join Box to AD Domain </h4>
+<pre><code>
+realm discover ad.example.com
+realm join ad.example.com
+#OR
+realm join -v -U administrator DOMAIN.COM --install=/
+</code></pre>
+<img src="https://kogatana-x.github.io/images/Setting-Up-Email/realm-join.png" alt="realm-join">
+<h3>(or) via Samba</h3>
+<h4>Configure</h4>
+<pre><code>
+vi /etc/samba/smb.conf
+[global]
+  workgroup = EXAMPLE
+  realm = EXAMPLE.COM
+  security = ADS
+  local master = no
+  domain master = no
+  preferred master = no
+  dns proxy = no
+  idmap uid = 10000-20000
+  idmap gid = 10000-20000
+  password server = ad.example.com
+  encrypt passwords = yes
+  winbind use default domain = yes
+  winbind separator = +
+
+</code></pre>
+<h4>Join Box to AD Domain</h4>
+<pre><code>
+net ads join -U Administrator
+</code></pre>
+<h4>Start Winbind Daemon</h4>
+<pre><code>
+service winbind start
+wbinfo -i Administrator
+</code></pre>
+<h4>PAM</h4>
+<pre><code>
+vi /etc/pam.d/dovecot
+auth        sufficient   pam_krb5.so no_user_check validate
+account     sufficient   pam_permit.so
+</code></pre>
+<h4>Configure</h4>
+<pre><code>
+vi /etc/dovecot/dovecot.conf
+    protocols = imap pop3 (lmtp for local mail transfer)
+vi /etc/dovecot/conf.d/10-mail.conf
+    mail_location = maildir:~/Maildir
+vi /etc/dovecot/conf.d/10-auth.conf
+    disable_plaintext_auth = no 
+    auth_mechanisms = plain ntlm gss-spnego login 
+    auth_use_winbind = yes
+    auth_winbind_helper_path = /usr/bin/ntlm_auth
+    auth_ntlm_use_winbind = yes                                                #idk bout this one
+    userdb {
+        driver = static
+        args = uid=501 gid=501 home=/home/vmail/%n
+    }
+vi /etc/dovecot/conf.d/10-master.conf
+    unix_listener auth-userdb {
+        #mode =0600
+        user = postfix
+        group = postfix
+    }
+</code></pre>
+                <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>                     
+<h3>Connected Authentication - FreeIPA</h3>
+<h4>Configure</h4>
+<ol>
+    <li>Add Service to IPA Server</li>
+    <pre><code>
+ipa service-add imap/www.example.com
+    </code></pre>
+    <li>Add Mail Group</li>
+    <pre><code>
+ipa group-add mailusers
+ipa group-add-member mailusers --users={test1,test2,test3}
+    </code></pre>
+    <li>Configure IPA Client</li>
+    <pre><code>
+<ref client config>
+    </code></pre>
+    <li>Basic Dovecot Install</li>
+    <pre><code>
+yum -y install dovecot
+systemctl enable dovecot
+    </code></pre>
+    <li>Configure to Allow imap</li>
+    <pre><code>
+vi /etc/dovecot/dovecot.conf
+protocols = imap
+    </code></pre>
+    <li>Kerberos Authentication</li>
+    <pre><code>
+vi /etc/dovecot/conf.d/10-auth.conf
+auth_mechanisms = plain gssapi login
+auth_gssapi_hostname = webmail.example.com
+auth_krb5_keytab = /etc/dovecot/krb5.keytab
+auth_realms = example.com
+auth_default_realm = example.com
+userdb {
+driver  =  static
+    args = uid=dovecot gid=dovecot home=/var/spool/mail/%u
+}
+    </code></pre>
+    <li>Configure Mailbox Location</li>
+    <pre><code>
+vi /etc/dovecot/conf.d/10-mail.conf
+mail_location = mbox:/mail/%u/ : INBOX=/var/mail/%n
+    </code></pre>
+    <li>Postfix SASL</li>
+    <pre><code>
+vi /etc/dovecot/conf.d/10-master.conf
+service auth {
+...
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    # Assuming the default Postfix user and group
+    user = postfix
+    group = postfix        
+  }
+    </code></pre>
+    <li>Make Mail Directory</li>
+    <pre><code>
+mkdir /mail
+chmod 770 /mail   #** you might have to chmod 770 /var/mail as well
+chgrp mailusers /mail
+chcon -t user_home_t /mail #OR disable selinux
+    </code></pre>
+    <li>Generate Keytab</li>
+    <pre><code>
+kinit admin
+ipa-getkeytab -s ipa.example.com -p imap/webmail.example.com -k /etc/dovecot/krb5.keytab
+chown root:dovecot /etc/dovecot/krb5.keytab
+chmod 640 /etc/dovecot/krb5.keytab
+systemctl restart dovecot
+    </code></pre>
+</ol>
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h1>SSL Certs for - Roundcube HTTPS, SMTPS, POP3S, IMAPS</h1>
+<h3>Roundcube</h3>
+<h4>RHEL - Configuration</h4>
+<pre><code>
+vi /etc/httpd/conf.d/roundcube-mail.conf
+Alias /webmail /usr/share/roundcubemail
+    RewriteEngine on
+    RewriteCond %{HTTPS} !=on
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+#IF YOU GET A LOG WRITE ERROR  > ITS SELINUX:
+(chcon -R system_u:object_r:httpd_log_t:s0 /var/log/roundcubemail
+OR
+semanage fcontext -a -t httpd_log_t ‘/var/log/roundcubemail(/.*)?’
+restorecon -v -R /var/log/
+)AND
+setsebool -P httpd_can_network_connect=1
+    </code></pre>
+<h4>FreeIPA HTTPS</h4>
+<pre><code>
+yum -y install mod_ssl
+mkdir /etc/httpd/httpd-certs
+ipa service-add http/www.example.com
+<connect host if not connected already>
+kinit admin
+ipa-getcert request -r -f /etc/httpd/httpd-certs/http.crt -k /etc/httpd/httpd-certs/http.key -N CN=webmail.example.com -D webmail.example.com -K http/webmail.example.com
+vi /etc/httpd/conf.d/ssl.conf
+DocumentRoot "/var/www/html"
+ServerName webmail.example.com:443
+SSLCertificateFile /etc/httpd/httpd-certs/http.crt
+SSLCertificateKeyFile /etc/httpd/httpd-certs/http.key
+    </code></pre>
+<h3>Debian/Ubuntu</h3>
+<h4>Obtain Certs</h4>
+<pre><code>
+a2enmod ssl
+a2ensite default-ssl
+service apache2 reload
+mkdir /etc/apache2/ssl
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt
+chmod 600 /etc/apache2/ssl/*
+    </code></pre>
+<h4>Web App</h4>
+<pre><code>
+vi /etc/apache2/sites-enabled/default-ssl.conf
+<IfModule mod_ssl.c>
+    <VirtualHost _default_:443>
+        ServerAdmin webmaster@localhost
+        ServerName example.com:443
+        DocumentRoot /var/www/html
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/apache.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+  </VirtualHost>
+</IfModule>
+service apache2 reload
+    </code></pre>
+<h4>Uncomment the mod_rewrite.so line in /etc/httpd/conf/httpd.conf, restart apache</h4>
+<h4>Try this:In httpd.conf, search for AllowOveride None and change to AllowOveride All, then restart apache</h4>
+<h1>Postfix</h1>
+<h4>Configuration</h4>
+<pre><code>
+vi /etc/postfix/main.cf
+smtpd_use_tls=yes
+    #seperate files
+  	smtpd_tls_cert_file=/etc/ssl/certs/certificate.crt
+ 	 smtpd_tls_key_file=/etc/ssl/private/yourdomainname.key
+   #single file
+  	smtpd_tls_cert_file=/etc/ssl/certs/certificate_and_key.crt
+    smtpd_tls_key_file=$smtpd_tls_cert_file 
+vi /etc/postfix/master.cf
+    </code></pre>
+    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-master.cf.jpg" alt="postfix-master.cf">
+<h4>Start Postfix</h4>
+<pre><code>
+systemctl restart postfix
+telnet localhost 465
+
+#test encryption
+    echo | openssl s_client -starttls smtp -connect localhost:25 -cipher "EDH" 2>/dev/null | grep -i -e "Server .* key"
+    </code></pre>
+
+<h1>Dovecot</h1>
+<h4>Configuration</h4>
+<pre><code>
+vi /etc/dovecot/conf.d/10-ssl.conf #you can also disable the plaintext auth that we set up in the beginning if you want
+    </code></pre>
+    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/dovecot-ssl.conf.png" alt="dovecot-ssl.conf">
+<h4>Restart</h4>
+<pre><code>
+systemctl restart dovecot
+telnet localhost 995/993
+    </code></pre>
+<h4>Links</h4>
+<p>
+    <a href="https://www.rosehosting.com/blog/how-to-generate-a-self-signed-ssl-certificate-on-linux/">https://www.rosehosting.com/blog/how-to-generate-a-self-signed-ssl-certificate-on-linux/</a>
+</p>
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h1>Postfix Auth Integrated w/ Dovecot SASL</h1>
+<h4>Links</h4>
+<p>
+    <a href="https://www.howtoforge.com/postfix-smtp-authentication-on-the-secure-port-only">https://www.howtoforge.com/postfix-smtp-authentication-on-the-secure-port-only</a>
+    <a href="https://www.vennedey.net/resources/2-LDAP-managed-mail-server-with-Postfix-and-Dovecot-for-multiple-domains#sasl_authentication">https://www.vennedey.net/resources/2-LDAP-managed-mail-server-with-Postfix-and-Dovecot-for-multiple-domains#sasl_authentication</a>
+    <a href="https://doc.dovecot.org/configuration_manual/howto/postfix_and_dovecot_sasl/">https://doc.dovecot.org/configuration_manual/howto/postfix_and_dovecot_sasl/</a>
+</p>
+
+<h4>Configuration</h4>
+<pre><code>
+#Test if Postfix is compatible
+postconf -a
+
+#Dovecot Integration
+vi /etc/dovecot/conf.d/10-master.conf
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+    }
+}
+vi /etc/dovecot/conf.d/10-auth.conf
+# Outlook and Windows Mail works only with LOGIN mechanism, not the standard PLAIN:
+auth_mechanisms = plain login
+systemctl restart dovecot
+
+</code></pre>
+<h4>Postfix Configuration</h4>
+<p>Note: this will configure AUTH on port 25</p>
+<pre><code>
+vi /etc/postfix/main.cf
+    #Add to bottom
+    smtpd_sasl_type = dovecot
+    smtpd_sasl_path = private/auth
+
+    # On Debian Wheezy path must be relative and queue_directory defined
+    #queue_directory = /var/spool/postfix
+    smtpd_sasl_auth_enable = yes
+
+    # With Postfix version before 2.10, use smtpd_recipient_restrictions
+    smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+
+    systemctl restart postfix
+    </code></pre>
+<h4>W/ SSL</h4>
+<img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-ssl.png" alt="postfix-dovecot-ssl">
+<img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-ssl2.png" alt="postfix-dovecot-ssl2">
+<h5>Example Logs</h5>
+<img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-log.png" alt="postfix-dovecot-ssl3">   
+
+
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+<h1>Conclusion</h1>
+<p>
+    We have configured some of the common types of authentication mechanisms for our email server. Whatever you choose to implement in your lab, hopefully it works out well! SSL Certs can also be tricky sometimes, but having this skill is important for an increasingly interconnected world to protect the integrity of our information. Happy learning!</p>
+             
+</div>
+    </div>
+    <div class="footer">
+        <p>© 2021 kogatana-x</p>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
+</html>

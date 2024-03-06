@@ -334,17 +334,15 @@ Navigate to
 <pre><code>
 http://localhost/roundcubemail/installer
 </code></pre>
-<h3>Step 1</h3>
-Check preqs
-<h3>Step 2</h3>
-Configure
+<h4>Step 1 - Check preqs</h4>
+<h4>Step 2 - Configure</h4>
 <p>make sure you add the password to the database conf. that’s all you have to do
 but you should probably specify a hostname and domain instead of localhost</p>
 download the conf file in step 2 and move it to /var/www/html/roundcube/config/config.inc.php
-<h3>Step 3</h3>
-Test (you don’t actually have to do this)
+<h4>Step 3</h4>
+Test your configuration if you are unsure, but you don’t actually have to do this.
 
-<h3>Configuration File</h3>
+<h4>Step 4 - Edit Configuration Files</h4>
 <pre><code>
 vi /etc/roundcubemail/db.inc.php
 $rcmail_config['db_dsnw'] = 'mysql://
@@ -356,10 +354,8 @@ vi /var/www/html/roundcube/config.inc.php
 $config[‘db_dsnw’] = 'mysql://roundcube:password@localhost/roundcubemail';
 </code></pre>
 
-<h3>Acquire Mail</h3>
-<pre><code>
-http://localhost/roundcubemail
-</code></pre>
+<h4>Step 5 - Acquire Mail</h4>
+<pre><code>http://localhost/roundcubemail</code></pre>
 *If you cant login >>
 <pre><code>
 vi /var/www/html/roundcube/config/config.inc.php
@@ -371,8 +367,8 @@ and comment that line out
 
             </pre>
 <h1>Conclusion</h1>
-<p>With that, your email server should be up and running. This is no where near secure, and will not scale very well with many many users. In the next post, we will go over LDAP and Kerberos authentication in this setup. 
-Happy testing!
+<p>With that, your email server should be up and running. If you are an engineer, I cannot and will never reccomend using plaintext authentication. What we did in the lab is not secure, and will not scale very well with many many users. In the next post, we will go over some more secure options, as well as using directories via LDAP and Kerberos authentication. 
+<br>Happy testing!
 </p>
         </div>
     </div>

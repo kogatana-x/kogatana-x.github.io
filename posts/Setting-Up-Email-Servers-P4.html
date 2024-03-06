@@ -123,7 +123,7 @@ vi /etc/postfix/ldap-users.cf
     bind_dn = binddn@example.com
     bind_pw = password
             </code></pre>
-            <img src="https://kogatana-x.github.io/images/Setting-Up-Email/ldap-users.cf.png" alt="ldap-users.cf">   
+            <img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/ldap-users.cf.png" alt="ldap-users.cf">   
 
             <h3>Start/Restart Postfix</h3>
             <pre><code>
@@ -133,6 +133,7 @@ postfix check && systemctl restart postfix
             <pre><code>
 postmap -q user@example.com ldap:/etc/postfix/ldap-users.cf            #Assuming “user” exists on AD
 #this should return the path to the user’s mail directory
+</code></pre>
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 

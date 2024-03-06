@@ -286,7 +286,7 @@ EXAMPLE.COM = {
 kinit Administrator
 
 </code></pre>
-<img src="https://kogatana-x.github.io/images/Setting-Up-Email/krb5.conf.png" alt="krb5.conf">
+<img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/krb5.conf.png" alt="krb5.conf">
 <h4>Join Box to AD Domain </h4>
 <pre><code>
 realm discover ad.example.com
@@ -294,7 +294,7 @@ realm join ad.example.com
 #OR
 realm join -v -U administrator DOMAIN.COM --install=/
 </code></pre>
-<img src="https://kogatana-x.github.io/images/Setting-Up-Email/realm-join.png" alt="realm-join">
+<img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/realm-join.png" alt="realm-join">
 <h3>(or) via Samba</h3>
 <h4>Configure</h4>
 <pre><code>
@@ -505,7 +505,7 @@ smtpd_use_tls=yes
     smtpd_tls_key_file=$smtpd_tls_cert_file 
 vi /etc/postfix/master.cf
     </code></pre>
-    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-master.cf.jpg" alt="postfix-master.cf">
+    <img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-master.cf.jpg" alt="postfix-master.cf">
 <h4>Start Postfix</h4>
 <pre><code>
 systemctl restart postfix
@@ -520,7 +520,7 @@ telnet localhost 465
 <pre><code>
 vi /etc/dovecot/conf.d/10-ssl.conf #you can also disable the plaintext auth that we set up in the beginning if you want
     </code></pre>
-    <img src="https://kogatana-x.github.io/images/Setting-Up-Email/dovecot-ssl.conf.png" alt="dovecot-ssl.conf">
+    <img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/dovecot-ssl.conf.png" alt="dovecot-ssl.conf">
 <h4>Restart</h4>
 <pre><code>
 systemctl restart dovecot
@@ -580,10 +580,10 @@ vi /etc/postfix/main.cf
     systemctl restart postfix
     </code></pre>
 <h4>W/ SSL</h4>
-<img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-ssl.png" alt="postfix-dovecot-ssl">
-<img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-ssl2.png" alt="postfix-dovecot-ssl2">
+<img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-ssl.png" alt="postfix-dovecot-ssl">
+<img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-ssl2.png" alt="postfix-dovecot-ssl2">
 <h5>Example Logs</h5>
-<img src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-log.png" alt="postfix-dovecot-ssl3">   
+<img style="width: 40%" src="https://kogatana-x.github.io/images/Setting-Up-Email/postfix-dovecot-log.png" alt="postfix-dovecot-ssl3">   
 
 
              <pre>

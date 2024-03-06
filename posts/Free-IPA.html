@@ -154,7 +154,7 @@ yum -y install freeipa-server bind bind-dyndb-ldap && yum remove bind-chroot
 ipa-server-install --ssh-trust-dns --setup-dns --idstart=50000 --idmax=99999 --mkhomedir
 </code> </pre>
             <p>After the installation, we will need to restart the sshd service and then log in as the admin user. We will then verify that the admin user exists and then modify the DNS forwarders to use Google’s DNS servers. We will also need to modify the nsswitch.conf file to include the sudoers file.</p>
-            <pre><code></code>
+            <pre><code>
 #post installation tasks
 systemctl restart sshd
 kinit admin

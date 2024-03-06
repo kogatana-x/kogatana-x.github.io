@@ -336,7 +336,8 @@ ipa dnsrecord-add --name=”host” --zone=”example.com” --type=”A”
             <pre><code>
 ipa host-add www.example.com
             </code> </pre>
-            <h3>Verify content of /etc/hosts (should have your ip - hostname mapping at a minimum)</h3>
+            <h3>Verify content of /etc/hosts</h3>
+            <p> (should have your ip - hostname mapping at a minimum)</p>
             <pre><code>
 vi /etc/hosts
             </code> </pre>
@@ -375,26 +376,28 @@ klist
 # Setup SSSD
 vi /etc/sssd/sssd.conf
 [domain/example.com]
-cache_credentials = True
-krb5_store_password_if_offline = True
-ipa_domain = example.com
-ipa_hostname = suse.example.com
-ipa_server = _srv_, ipa.example.com
-dns_discovery_domain = example.com
+    cache_credentials = True
+    krb5_store_password_if_offline = True
+    ipa_domain = example.com
+    ipa_hostname = suse.example.com
+    ipa_server = _srv_, ipa.example.com
+    dns_discovery_domain = example.com
 
-id_provider = ipa
-auth_provider = ipa
-access_provider = ipa
-chpass_provider = ipa
+    id_provider = ipa
+    auth_provider = ipa
+    access_provider = ipa
+    chpass_provider = ipa
 
-ldap_tls_cacert = /etc/ipa/ca.crt
+    ldap_tls_cacert = /etc/ipa/ca.crt
 
 [sssd]
-services = nss, sudo, pam, ssh
-domains = example.com
+    services = nss, sudo, pam, ssh
+    domains = example.com
+
 [nss]
-filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd,tomcat,postgres
-homedir_substring = /home
+    filter_users = root,ldap,named,avahi,haldaemon,dbus,radiusd,news,nscd,tomcat,postgres
+    homedir_substring = /home
+
 [pam]
 [sudo]
 [autofs]
@@ -478,7 +481,7 @@ ipa group-add mailusers
 ipa group-add-member mailusers --users={test1,test2,test3}
 
 #   3.  Configure IPA Client
-<ref client config>
+#ref client config
 
 #    4.  Basic Dovecot Install
 yum -y install dovecot
@@ -518,7 +521,7 @@ systemctl start dovecot
 ipa service-add smtp/www.example.com
 
 #   2.  Configure IPA Client - If Not Done Already
-<ref client config>
+#ref client config
 
 #   3.  Basic Postfix Install
 yum -y install postfix
@@ -614,7 +617,7 @@ ipa host-add www.example.com
 ipa service-add HTTP/www.example.com
 
 #    13. Configure IPA Client
-<ref client config>
+#ref client config
 
 #    14. Install
 yum -y install mod_ldap mod_auth_kerb
@@ -644,12 +647,12 @@ systemctl restart httpd
 
 #   16.	Test
     vi /var/www/html/ipa/index.html
-    <html>
-        <body>
-            <div style="width: 100%; font-size: 40px; font-weight: bold; text-align: center;">
-            Test Page for IPA Server Auth </div>
-        </body>
-    </html>
+    &lt;html&gt;
+        &lt;body&gt;
+            &lt;div style="width: 100%; font-size: 40px; font-weight: bold; text-align: center;"&gt;
+            Test Page for IPA Server Auth &lt;/div&gt;
+        &lt;/body&gt;
+    &lt;/html&gt;
             </code> </pre>
                         <pre>
 ──────────────────────────────────────────────────────────────────────────────────

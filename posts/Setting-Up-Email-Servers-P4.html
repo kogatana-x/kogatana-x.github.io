@@ -5,7 +5,9 @@
     <meta name="description" content="We will be continuing our series on setting up email servers. In this part, we will be configuring different types of authentication mechanisms for our email server.">
     <meta name="author" content="kogatana-x">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="language" content="en">
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
+    
     <meta property="og:title" content="Setting Up Email Servers - Part 4">
     <meta name="category" content="sysadmin">
 
@@ -23,7 +25,7 @@
         <a href="https://kogatana-x.github.io/">
             <img src="../images/22989723.png" alt="Profile"> 
         </a>
-        <h1>kogatana-x</h1>
+        <h2>kogatana-x</h2>
         <p>Offensive//Defensive Security</p>
         <div class="social">
             <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
@@ -56,13 +58,13 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h2>Setting Up Email Servers - Part 4 </h2>
+            <h1>Setting Up Email Servers - Part 4 </h1>
             <time datetime="2024-03-7T12:01:55">March 7th, 2024</time>
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Introduction</h1>
+            <h2>Introduction</h2>
             <p>
                 We will be continuing our series on setting up email servers on Linux systems from Part 3. In this part, we will be configuring different types of authentication mechanisms for our email server. This one requires the Active Directory server you used in Part 1, or any identity provider in general as we will just be focusing on the email side of things.
                 The programs we will be exploring in this guide are Postfix, Dovecot, (Microsoft AD) LDAP, Kerberos, Samba and FreeIPA.
@@ -72,7 +74,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Postfix - MTA</h1>
+            <h2>Postfix - MTA</h2>
             <p>
                 Postfix is a mail transfer agent (MTA) that is used to send and receive emails. We will be using our configuration from Part 3:
             </p>
@@ -216,7 +218,7 @@ quit
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Dovecot</h1>
+<h2>Dovecot</h2>
 <p>
     Dovecot is an open-source IMAP and POP3 server for Linux/UNIX-like systems, written with security primarily in mind. It is an excellent choice for both small and large installations. We will be using our configuration from Part 3:
 
@@ -433,7 +435,7 @@ systemctl restart dovecot
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>SSL Certs for - Roundcube HTTPS, SMTPS, POP3S, IMAPS</h1>
+<h2>SSL Certs for - Roundcube HTTPS, SMTPS, POP3S, IMAPS</h2>
 <h3>Roundcube</h3>
 <h4>RHEL - Configuration</h4>
 <pre><code>
@@ -492,7 +494,7 @@ service apache2 reload
     </code></pre>
 <h4>Uncomment the mod_rewrite.so line in /etc/httpd/conf/httpd.conf, restart apache</h4>
 <h4>Try this:In httpd.conf, search for AllowOveride None and change to AllowOveride All, then restart apache</h4>
-<h1>Postfix</h1>
+<h2>Postfix</h2>
 <h4>Configuration</h4>
 <pre><code>
 vi /etc/postfix/main.cf
@@ -515,7 +517,7 @@ telnet localhost 465
     echo | openssl s_client -starttls smtp -connect localhost:25 -cipher "EDH" 2>/dev/null | grep -i -e "Server .* key"
     </code></pre>
 
-<h1>Dovecot</h1>
+<h2>Dovecot</h2>
 <h4>Configuration</h4>
 <pre><code>
 vi /etc/dovecot/conf.d/10-ssl.conf #you can also disable the plaintext auth that we set up in the beginning if you want
@@ -534,7 +536,7 @@ telnet localhost 995/993
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Postfix Auth Integrated w/ Dovecot SASL</h1>
+<h2>Postfix Auth Integrated w/ Dovecot SASL</h2>
 <h4>Links</h4>
 <p>
     <a href="https://www.howtoforge.com/postfix-smtp-authentication-on-the-secure-port-only">https://www.howtoforge.com/postfix-smtp-authentication-on-the-secure-port-only</a>
@@ -590,7 +592,7 @@ vi /etc/postfix/main.cf
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Conclusion</h1>
+<h2>Conclusion</h2>
 <p>
     We have configured some of the common types of authentication mechanisms for our email server. Whatever you choose to implement in your lab, hopefully it works out well! SSL Certs can also be tricky sometimes, but having this skill is important for an increasingly interconnected world to protect the integrity of our information. Happy learning!</p>
              

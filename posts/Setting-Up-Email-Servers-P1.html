@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="Setting Up Email Servers - Exchange">
     <meta name="category" content="sysadmin">
+    <meta name="language" content="en">
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
     
     <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
@@ -21,7 +23,7 @@
         <a href="https://kogatana-x.github.io/">
             <img src="../images/22989723.png" alt="Profile"> 
         </a>
-        <h1>kogatana-x</h1>
+        <h2>kogatana-x</h2>
         <p>Offensive//Defensive Security</p>
         <div class="social">
             <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
@@ -54,17 +56,17 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h2>Setting Up Email Servers: Part 1</h2> 
+            <h1>Setting Up Email Servers: Part 1</h1> 
             <time datetime="2024-03-04T13:16:05">March 4th, 2024</time> 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Introduction</h1>
+            <h2>Introduction</h2>
             <p>When I was first getting into cybersecurity I spent a lot of time researching email server architecture and I had a lot of difficulty finding guides on how to set one up and what all the different acronyms meant. I believe that by learning how systems work is the corenerstone to being successful in securing them. The precursor to that, of course, is setting up a system for yourself! This post will hopefully help those new to the field learn how email servers work and how to set one up for yourself</p>
             <p>We'll go over setting up Exchange on a windows server. In future posts, we'll go over hMail, and postfix, dovecot, and roundcube on a linux server.</p>
             
-            <h1>Terms</h1>
+            <h2>Terms</h2>
             <p>Before we get started, let's go over some terms that you'll need to know:</p>
             
             <p><strong>SMTP</strong> - Simple Mail Transfer Protocol</p>
@@ -113,7 +115,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
                                 
             </pre>        
-            <h1>Setting Up Microsoft Exchange on Windows</h1>
+            <h2>Setting Up Microsoft Exchange on Windows</h2>
             <p>Microsoft Exchange is quite a dousy to set up. There are many critical sub-services involved and many other infrastructural constraints that a system administrator should be aware of. This guide is based on Exchange versions older than 2016, so components have likely changed in newer versions</p>
             <p>A key component of Setting up MS Exchange is having an Active Directory server available in your enviornment. There are quite a few dependencies to be mindful of as well, so your network and host firewalls may end up looking like Swiss cheese. Below is a simple diagram I made to illustrate the bare minimum that you will need to allow between your Exchange and AD servers</p>
             <img style="width: 50%;" src="https://kogatana-x.github.io/images/Setting-Up-Email/exchange-flow.png" alt="Exchange AD Firewall Flow">
@@ -209,7 +211,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
                                 
             </pre> 
-            <h1>Critical Services & Description</h1>  
+            <h2>Critical Services & Description</h2>  
             <h3>Localhost -</h3>
             <table>
                 <thead>
@@ -333,7 +335,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
                                                 
             </pre> 
-            <h1> Exchange Management </h1>
+            <h2> Exchange Management </h2>
             <p>Exchange has a few different management portals and shells that you can use to administer the server</p>
             <pre><code>
 https://localhost/ecp #Admin Portal for OWA
@@ -358,7 +360,7 @@ https://<your-ip-here>/owa #login portal for OWA
         </tr>
         </tbody>
 </table>
-            <h1>Brief Installation Guide</h1>
+            <h2>Brief Installation Guide</h2>
             <p>For a more in-depth guide, see the <a href="https://docs.microsoft.com/en-us/exchange/install/install?view=exchserver-2019">Microsoft Documentation</a></p>
             <p>First, you will need to install the prerequisites for Exchange. This includes the .NET Framework, Windows Management Framework, and the Unified Communications Managed API. You will also need to install the Remote Tools Administration Pack.</p>
             <p><ol>
@@ -449,7 +451,7 @@ https://<your-ip-here>/owa #login portal for OWA
 ──────────────────────────────────────────────────────────────────────────────────
                                                 
             </pre>
-            <h1>Logging and Backups</h1>
+            <h2>Logging and Backups</h2>
             <p>Exchange logging in older versions is not configured by default and has to be enabled. </p>
             <p>For POP3 and IMAP logs, navigate to the configuration files located: </p>
             <pre><code>
@@ -525,7 +527,7 @@ Import-Module servermanager && Add-WindowsFeature Backup-Features
 ──────────────────────────────────────────────────────────────────────────────────
                                                 
             </pre>  
-            <h1>Conclusion</h1>       
+            <h2>Conclusion</h2>       
             <p>Setting up an email server can be a daunting task, but it is a great way to learn about how systems work and how to secure them. Hopefully this guide helps demystify Microsoft Exchange for you. Happy learning!</p>
         </div>
     </div>

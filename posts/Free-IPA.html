@@ -5,7 +5,9 @@
     <meta name="description" content="We will be going over how to set up FreeIPA, a Linux Identity Provider for a lab enviornment"> 
     <meta name="author" content="kogatana-x">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="language" content="en">
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
+    
     <meta property="og:title" content="Free IPA">
     <meta name="category" content="sysadmin">
 
@@ -23,7 +25,7 @@
         <a href="https://kogatana-x.github.io/">
             <img src="../images/22989723.png" alt="Profile"> 
         </a>
-        <h1>kogatana-x</h1>
+        <h2>kogatana-x</h2>
         <p>Offensive//Defensive Security</p>
         <div class="social">
             <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
@@ -56,15 +58,15 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h2>Setting Up Free IPA</h2> 
+            <h1>Setting Up Free IPA</h1> 
             <time datetime="2024-03-7T12:01:55">March 7th, 2024</time> 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Introduction</h1>
+            <h2>Introduction</h2>
             <p>FreeIPA is an open-source identity provider for Linux and Unix environments. It is a combination of 389 Directory Server, MIT Kerberos, NTP, DNS, Dogtag, SSSD, and other components. FreeIPA is a great tool for managing users, groups, and hosts in a lab environment. In this post, we will be going over how to set up FreeIPA on a CentOS 8 machine.</p>
-            <h1>Prerequisites</h1>
+            <h2>Prerequisites</h2>
             <ol>
                 <li>A Machine that actually supports FreeIPA</li>
                 <ul>
@@ -144,7 +146,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Installation</h1>
+            <h2>Installation</h2>
             <p>First, we will install the necessary packages for FreeIPA. We will also remove the bind-chroot package as it is not needed for our purposes.</p>
             <pre><code>
 #install packages
@@ -172,7 +174,7 @@ vi /etc/sssd/sssd.conf
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Usage - Command Line-Fu</h1>
+            <h2>Usage - Command Line-Fu</h2>
             <h3>Adding DNS Records</h3>
             <pre><code>
 #new dns record - fill in prompts manually
@@ -327,7 +329,7 @@ vi /etc/pam.d/sshd
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Client Configuration</h1>
+            <h2>Client Configuration</h2>
             <h3>Adding DNS Records on IPA Server</h3>
             <pre><code>
 ipa dnsrecord-add --name=”host” --zone=”example.com” --type=”A”
@@ -671,7 +673,7 @@ systemctl restart httpd
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Conclusion</h1>
+            <h2>Conclusion</h2>
             <p>FreeIPA is a great tool for managing users, groups, and hosts in a lab environment. It is a great way to learn about identity management and LDAP. It is also a great way to learn about the different services that are used in a Linux environment. I hope this post has been helpful and informative. If you have any questions or comments, please feel free to reach out to me.</p>
 
         </div>  

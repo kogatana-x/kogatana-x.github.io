@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="Setting Up Email Servers - Part 2">
     <meta name="category" content="sysadmin">
+    <meta name="language" content="en">
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
     <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
     <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
@@ -20,7 +22,7 @@
         <a href="https://kogatana-x.github.io/">
             <img src="../images/22989723.png" alt="Profile"> 
         </a>
-        <h1>kogatana-x</h1>
+        <h2>kogatana-x</h2>
         <p>Offensive//Defensive Security</p>
         <div class="social">
             <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
@@ -53,13 +55,13 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h2>Setting Up Email Servers - Part 2</h2> 
+            <h1>Setting Up Email Servers - Part 2</h1> 
             <time datetime="2024-03-05T00:04:25">March 5th, 2024</time> 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Introduction</h1>
+            <h2>Introduction</h2>
             <p>
                 In this post, we will be continuing our email deep dive, and will be setting up hMail and Roundcube on Windows. 
                 hMail is a light-weight yet powerful email server that is easy to configure and manage. 
@@ -72,7 +74,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Setting Up hMail</h1>
+            <h2>Setting Up hMail</h2>
             <p>I set hMail up on Windows Server 2008</p>
             <p>Jumping right into the installation, we will first need to download the packages and installers we will need for our setup.
                 <ul>
@@ -211,7 +213,7 @@ $config[‘mime_types’]= ‘C:\inetpub\wwwroot\roundcube\mime.types’;
 ──────────────────────────────────────────────────────────────────────────────────
             
                         </pre>
-        <h1>Hardening </h1>
+        <h2>Hardening </h2>
         <h3>Firewall Rules</h3>
         <table>
             <thead>
@@ -274,7 +276,7 @@ $config['smtp_debug'] = true; //Log SMTP conversation
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-        <h1>Setting Up SSL</h1>
+        <h2>Setting Up SSL</h2>
         <p>SSL is a must-have for any email server. It encrypts the connection between the client and the server, ensuring that no one can eavesdrop on the conversation. 
             There are a few ways to acquire an SSL certificate, but the most common way is to purchase one from a Certificate Authority (CA). 
             However, if you are setting up a test environment, you can use a self-signed certificate or a free certificate from Let's Encrypt.
@@ -316,7 +318,7 @@ New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -Subject "*.e
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-        <h1>Conclusion</h1>
+        <h2>Conclusion</h2>
         <p>That's all for this post! We have successfully set up hMail and Roundcube on Windows. In the next post, we will be going over how to secure our email servers on Linux. Stay tuned!</p>
         </div>
     </div>

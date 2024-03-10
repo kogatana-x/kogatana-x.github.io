@@ -5,7 +5,9 @@
     <meta name="description" content="Third part of the Setting Up Email Servers series, where we will go over setting up an email server on Linux">   
     <meta name="author" content="kogatana-x">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="language" content="en">
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
+    
     <meta property="og:title" content="Setting Up Email Servers - Part 3">
     <meta name="category" content="sysadmin">
 
@@ -23,7 +25,7 @@
         <a href="https://kogatana-x.github.io/">
             <img src="../images/22989723.png" alt="Profile"> 
         </a>
-        <h1>kogatana-x</h1>
+        <h2>kogatana-x</h2>
         <p>Offensive//Defensive Security</p>
         <div class="social">
             <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
@@ -56,13 +58,13 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h2>Setting Up Email Servers - Part 3</h2> 
+            <h1>Setting Up Email Servers - Part 3</h1> 
             <time datetime="2024-03-6T01:01:44">March 6th, 2024</time> 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Introduction</h1>
+            <h2>Introduction</h2>
             <p>
                 Welcome to the third part of the Setting Up Email Servers series. In this part, we will go over setting up an email server on Linux.
                 We will be using Postfix as our Mail Transfer Agent (MTA), Dovecot as our Mail Delivery Agent (MDA), and Roundcube as our webmail client, with Apache as the web server and MariaDB as the backend database.
@@ -83,7 +85,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Prerequisites</h1>
+            <h2>Prerequisites</h2>
             <p>
                 Before we begin, you will need to have a server running a Linux distribution. This guide follows both RHEL-based and Debian-based OSes, any other type, youll have to figure out on your own. You will also need to have a domain name and a server with a static IP address. For the purposes of this tutorial, the domain can be whatever you wish. You will also need to have a basic understanding of how to use the command line and be comfortable with making configuration changes.
                 <br>Note, there are a few things on a freshly installed machine that may pose a bit of an issue later down the line:
@@ -113,7 +115,7 @@ mv roundcubemail-1.3.13-complete /var/www/html/roundcube
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-        <h1>Postfix MTA</h1>
+        <h2>Postfix MTA</h2>
         <p>Postfix is a type of MTA that supports the transport of messages across servers. <a link="https://web.archive.org/web/20171127055338/http://www.linuxmail.info/postfix-howtos/"> Reference </a></p>
         <h3>Supporting Command Reference</h3>
         <pre><code>
@@ -150,7 +152,7 @@ postfix = user
 postdrop = group
 </code></pre>
 
-<h1> Local Authentication </h1>
+<h2> Local Authentication </h2>
 <h3>Configure</h3>
 <pre><code>
 vi /etc/postfix/main.cf
@@ -193,7 +195,7 @@ mail
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Dovecot MDA - IMAP/POP3</h1>
+<h2>Dovecot MDA - IMAP/POP3</h2>
 <h3>Local Authentication</h3>
 <h3>Configure</h3>
 <pre><code>
@@ -251,7 +253,7 @@ virtual_alias_domains = domain1.example.com, domain2.example.com
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>PHP</h1>
+<h2>PHP</h2>
 <h3>Test if install works</h3>
 <pre><code>
 vi /var/www/html/index.php
@@ -292,7 +294,7 @@ chown -R www-data:www-data /var/www/html
 
             </pre>
 
-<h1>MySQL</h1>
+<h2>MySQL</h2>
 <pre><code>
 systemctl start mysql/d #or mariadb
 </code></pre>
@@ -328,7 +330,7 @@ mysql -u root -p roundcubemail < /usr/share/roundcubemail/SQL/mysql.initial.sql
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Roundcube (WebApp)</h1>
+<h2>Roundcube (WebApp)</h2>
 <h3>Install (With A GUI)</h3>
 Navigate to
 <pre><code>
@@ -366,7 +368,7 @@ and comment that line out
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Troubleshooting</h1>
+<h2>Troubleshooting</h2>
 <h3>Postfix</h3>
 <pre><code>
 postconf -n # to see current settings
@@ -390,7 +392,7 @@ vi /var/log/messages | grep ‘:drop_log:’
 
 #monitor smtp traffic
 tcpdump -w /file/name -s 0 host example.com and port 25 
-tcpdump -i  -vv -x -X -s 1500 -i <eth1> ‘port 25’  #Verbose Output for SMTP
+tcpdump -i  -vv -x -X -s 1500 -i <eth2> ‘port 25’  #Verbose Output for SMTP
 
 #get very verbose log output
 vi /etc/postfix/master.cf:
@@ -426,7 +428,7 @@ vi /var/log/messages | grep ‘:drop_log:’ #if you have logging set up for ipt
     tail /var/log/httpd/error_log 
 
 #monitor traffic
-    tcpdump -i eth1 ‘port 80’  
+    tcpdump -i eth2 ‘port 80’  
 
 #normal httpd.conf
 https://github.com/assistanz247/APACHE/blob/master/httpd.conf
@@ -439,7 +441,7 @@ https://github.com/assistanz247/APACHE/blob/master/httpd.conf
     tail /var/log/mysql/error.log
 
 #monitor traffic
-    tcpdump -i eth1 ‘port 3306’
+    tcpdump -i eth2 ‘port 3306’
 
 #if it doesn’t start: my.cnf
 #check user permissions
@@ -454,7 +456,7 @@ https://github.com/assistanz247/APACHE/blob/master/httpd.conf
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-<h1>Hardening</h1>
+<h2>Hardening</h2>
 <h3>Firewall</h3>
 <pre><code>
 #NOTE: *SASL is for 587, smart host relays (starttls encryption)
@@ -507,7 +509,7 @@ postconf > /root/postconf-$)date “+%F)
 <pre><code>
 tar czf /root/dovecot-$(date “+%F”).tar.gz /etc/dovecot
 </code></pre>
-<h1>Postfix Hardening – Hella ExtraTM</h1>
+<h2>Postfix Hardening – Hella ExtraTM</h2>
 <h3>Chroot Jail</h3>
 <pre><code>
 mkdir -p /var/spool/postfix/dev
@@ -549,7 +551,7 @@ cat /etc/postfix/conf.php | grep “mynetworks”
 
             </pre>
 
-<h1>Conclusion</h1>
+<h2>Conclusion</h2>
 <p>With that, your email server should be up and running. If you are an engineer, I cannot and will never reccomend using plaintext authentication. What we did in the lab is not secure, and will not scale very well with many many users. In the next post, we will go over some more secure options, as well as using directories via LDAP and Kerberos authentication. 
 <br>Happy testing!
 </p>

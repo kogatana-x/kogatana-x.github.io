@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="Ultimate Assembly Guide">
     <meta name="category" content="programming">
+    <meta name="language" content="en">
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
+    
     <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
     <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
@@ -20,7 +23,7 @@
         <a href="https://kogatana-x.github.io/">
             <img src="../images/22989723.png" alt="Profile"> 
         </a>
-        <h1>kogatana-x</h1>
+        <h2>kogatana-x</h2>
         <p>Offensive//Defensive Security</p>
         <div class="social">
             <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
@@ -53,13 +56,13 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h2>Ultimate Assembly Guide</h2> 
+            <h1>Ultimate Assembly Guide</h1> 
             <time datetime="2024-02-29T11:33:42">Feburary 29th, 2024</time> 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
-            <h1>Introduction</h1>
+            <h2>Introduction</h2>
             <p>A few years back I did a deep dive in Reverse Engineering Malware and wanted to share what I learned and to refresh my knowledge on the Assembly language.</p>
             <p>For those of you that don't know, Assembly language is a low-level programming language that provides a direct interface with the computer’s hardware. Assembly is a low-level programming language that computers use to interpret high level programming langauges such as Python or Java. Of course, at the end of the day computers speak in 0s and 1s (binary!), and ons and offs (electric current!), but when you reverse an executable or binary, you are most likely going to be seeing Assembly.</p>
             <p>There are many many other reasons why knowing some Assembly as a computer nerd is useful, such as for debugging and optimizing code, and even directly programming embedded systems in Assembly.</p>
@@ -68,7 +71,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
                 
             </pre>            
-            <h1>Data Types (in C)</h1>
+            <h2>Data Types (in C)</h2>
             <p>High level programming languages use data types to store information temporarily in memory, these data types effect how Assembly processes information. Knowing each types size and flags can be pretty handy later on.</p>
             <table>
                 <thead>
@@ -121,7 +124,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
                                 
             </pre> 
-            <h1>Operand Types</h1>
+            <h2>Operand Types</h2>
             <table>
                 <tbody>
                     <tr>
@@ -148,7 +151,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
                     
             </pre> 
-            <h1>Address Modes</h1>
+            <h2>Address Modes</h2>
 <p><strong style="font-size: 1.25em">* Translation Formula:</strong></p>  
 <pre><code>instr D(Rb, Ri, S), %rax  ->   %rax=Rb + Ri * S + D</code></pre>
 <p>
@@ -262,7 +265,7 @@
 ──────────────────────────────────────────────────────────────────────────────────
 
 </pre>
-<h1>Registers 101</h1>
+<h2>Registers 101</h2>
 <p>A register is a small storage space available as part of the CPU & are typically addressed by other mechanisms than main memory & are much faster to access. Registers are used to store values for future usage by the CPU and they can be divided into the following classes.</p>
 <p><br><strong>General Purpose Registers:</strong></p>
 <table>
@@ -322,7 +325,7 @@ It points to the next instruction to be executed.
 ──────────────────────────────────────────────────────────────────────────────────
     
 </pre>
-<h1>Registers Overview</h1>
+<h2>Registers Overview</h2>
 <table>
     <thead>
         <tr>
@@ -516,7 +519,7 @@ It points to the next instruction to be executed.
 ──────────────────────────────────────────────────────────────────────────────────
         
 </pre>        
-<h1>Instructions!</h1>
+<h2>Instructions!</h2>
 <p>Instructions are the basic commands that a CPU executes. They are the building blocks of a program. There are three main types of instructions:</p>
 <ol>
     <li>Computation:   instructions are executed on values (that are usually stored in registers) . Instructions are broken out by the destination and source? operand, with the flow being source -> destination (left->right)</li>
@@ -932,7 +935,7 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
         
 </pre>    
 
-<h1>Conditional Statements</h1>
+<h2>Conditional Statements</h2>
 <h2>Conditional Branch</h2>
 <p>EX - 
     <pre><code>
@@ -979,7 +982,7 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
             
 </pre>  
 
-<h1>Conclusion</h1>
+<h2>Conclusion</h2>
 <p>
     <strong>So, that's it for the basics of Assembly. I hope you found this helpful. Happy coding!</strong>
 </p>

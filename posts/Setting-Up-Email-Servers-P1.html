@@ -454,20 +454,16 @@ https://<your-ip-here>/owa #login portal for OWA
             <h2>Logging and Backups</h2>
             <p>Exchange logging in older versions is not configured by default and has to be enabled. </p>
             <p>For POP3 and IMAP logs, navigate to the configuration files located: </p>
-            <pre><code>
-C:\Program Files\Microsoft\Exchange Server\ClientAccess\PopImap\
+            <pre><code>C:\Program Files\Microsoft\Exchange Server\ClientAccess\PopImap\
                                                                 Microsoft.Exchange.Imap4.exe.config
-                                                                Microsoft.Exchange.Pop3.exe.config
-                    </code></pre>
+                                                                Microsoft.Exchange.Pop3.exe.config</code></pre>
             <p>and add the following line to the bottom of each file:</p>
-                <pre><code><pre><add key="ProtocolLog" value="true" /></pre></code></pre>
+                <pre><add key="ProtocolLog" value="true" /></pre>
 <p>Once these lines are added, reset the service via the management console:</p>
-                <pre><code>
-Restart-service MSExchangePop3 && Restart-Service MSExchangeImap4     
+                <pre><code>Restart-service MSExchangePop3 && Restart-Service MSExchangeImap4     
 </code></pre>
 <p>To change the location of the log files and set their name to Pop3Logs and Imap4Logs, via the management console, run the following commands:</p>
-                <pre><code>
-Set-PopSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Pop3Logs"
+                <pre><code>Set-PopSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Pop3Logs"
 Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
                 </code></pre>
             <br>
@@ -509,12 +505,10 @@ Set-ImapSettings -ProtocolLogEnabled $true -LogFileLocation "C:\Imap4Logs"
             <p>To set this up:</p>
             <ol>
                 <li>Install WindowsBackupFeatures:</li>
-            <pre><code>
-#CMD:
+            <pre><code>#CMD:
 servermanagercmd -i Backup-Features
 #Powershell
-Import-Module servermanager && Add-WindowsFeature Backup-Features
-</code></pre>
+Import-Module servermanager && Add-WindowsFeature Backup-Features</code></pre>
             <li>In task manager, Disable MicrosoftExchangeReplication Service</li>
             <li>Run the command "ntbackup", and run a full server backup. backup once, and specify location</li>
             <li>Re-enable MicrosoftExchangeRepl service in task manager</li>

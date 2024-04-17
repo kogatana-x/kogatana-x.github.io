@@ -97,7 +97,7 @@
             <p>To disassemble the getbuf function and get the buffer size, we can use the disas command:</p>
             <pre><code>disas getbuf</code></pre>
             <p>We can then take the buffer size and use it to fill the amount of space we need to force the application to return the touch1 function.</p>
-            <img src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture1.png" alt="bof1">
+            <img style="width: 50%;" src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture1.png" alt="bof1">
             <p>If we take a look at the first line, sub $0x28,%rsp, we can see that the buffer size is 0x28, or 40 bytes.
             To find the address the touch1, you need to get the dissasembled code for ctarget executable.</p>
             <pre><code>objdump -d ctarget > ctarget_dump.txt</code></pre>
@@ -134,7 +134,7 @@
             <pre><code>48 c7 c7 df 1f ee 10
                 c3</code></pre>
             <p>Next objective on the dock for this exploit is to get the rsp address in touch 2. In order to do this, I ran the code just until the Gets call.</p>
-            <img src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture2.png" alt="bof2">
+            <img style="width: 50%;" src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture2.png" alt="bof2">
             <pre><code>until *0x401838</code></pre>
             <p>My application prompted me to type a string, so I inputted 40bytes worth of characters, then I executed: </p>
             <pre><code>x/s $rsp</code></pre>

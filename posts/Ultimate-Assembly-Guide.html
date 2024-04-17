@@ -938,8 +938,7 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
 <h2>Conditional Statements</h2>
 <h2>Conditional Branch</h2>
 <p>EX - 
-    <pre><code>
-    if ( x > y) { return  x-y; }  else { return = y-x; } 
+    <pre><code>if ( x > y) { return  x-y; }  else { return = y-x; } 
         cmpq %rsi, %rdi   #%rdi <= %rsi  {y<=x}
         jle .L4
         movq %rdi, %rax  
@@ -948,33 +947,25 @@ movzbl %al, %eax    # Zero rest of %raxret</code></pre>
     .L4    # y <= x
         movq %rsi, %rax   
         subq %rdi, %rax   #%rax = %rsi - %rdi
-        ret
-    </code></pre>
+        ret</code></pre>
 </p>
 <h2>Conditional Expressions</h2>
-<pre><code>
-    val = Test ? Then : Else;                  “val = x>y ? x-y : y-x;”
-</code></pre>
+<pre><code>val = Test ? Then : Else;                  “val = x>y ? x-y : y-x;”</code></pre>
     <h3>Goto</h3>
 <p>EX - </p>
-<pre><code>
-        if(x<=y){ 
+<pre><code>if(x<=y){ 
             goto Else;
         } return x-y; 
         else: 
-            return y-x; 
-        </code></pre>
+            return y-x; </code></pre>
 <p>EX - </p>
-<pre><code>
-        movq %rdi, %rax #x
-        subq %rsi, %rax #result = x-y
-        movq %rsi,%rdx
-        subq %rdi, %rdx #eval = y-x
-        cmpq %rsi, %rdi # x<=y
-        cmovle %rdx, %rax #if <=, result = eval
-        ret
-    </code>
-    </pre>
+<pre><code>movq %rdi, %rax #x
+subq %rsi, %rax #result = x-y
+movq %rsi,%rdx
+subq %rdi, %rdx #eval = y-x
+cmpq %rsi, %rdi # x<=y
+cmovle %rdx, %rax #if <=, result = eval
+ret</code></pre>
 
 <pre>
 

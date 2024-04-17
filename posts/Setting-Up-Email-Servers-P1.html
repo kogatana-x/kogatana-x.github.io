@@ -337,10 +337,8 @@
             </pre> 
             <h2> Exchange Management </h2>
             <p>Exchange has a few different management portals and shells that you can use to administer the server</p>
-            <pre><code>
-https://localhost/ecp #Admin Portal for OWA
-https://<your-ip-here>/owa #login portal for OWA
-</code></pre>
+            <pre><code>https://localhost/ecp #Admin Portal for OWA
+https://<your-ip-here>/owa #login portal for OWA</code></pre>
 <table>
     <tbody>
         <tr>
@@ -403,29 +401,23 @@ https://<your-ip-here>/owa #login portal for OWA
             <h3>Testing Connectivity</h3>
             <p>To test our services, we are going to be using telnet client, which is a command line utility. When using telnet, some terminals may be picky about backspaces, so be careful when typing commands</p>
             <p><strong>SMTP</strong></p>
-            <pre><code>
-            telnet <host.domain/ip> 25
+            <pre><code>telnet <host.domain/ip> 25
                 helo
                 MAIL FROM:<<user@domain>> | RCPT TO:<<user@domain>> NOTIFY=success,failure
                 DATA <enter> Subject: Test <enter> <enter> text <enter> 
                 . 
-                QUIT 
-            </code></pre>
+                QUIT </code></pre>
             <p><strong>POP3</strong></p>
-            <pre><code>
-            telnet <host.domain/ip> 110
+            <pre><code>telnet <host.domain/ip> 110
                 USER <username> <enter> PASS <password> <enter>
                 STAT //will give you number of messages in the inbox and then the size (bytes)
                 LIST //will give you the breakout of these messages and their size (bytes)
                 RETR <#> //will display the mail
-                QUIT
-            </code></pre>
+                QUIT</code></pre>
             <p><strong>IMAP</strong></p>
-            <pre><code>
-            telnet <host.domain/ip> 143
+            <pre><code>telnet <host.domain/ip> 143
 	            a01 LOGIN <user@domain> <password>
-	            a02 logout 
-            </code></pre>
+	            a02 logout</code></pre>
             <br><br>
 
             <h3>Installed, but No EMC / EMS ?</h3>

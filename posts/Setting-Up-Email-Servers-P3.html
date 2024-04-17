@@ -333,9 +333,7 @@ mysql -u root -p roundcubemail < /usr/share/roundcubemail/SQL/mysql.initial.sql
 <h2>Roundcube (WebApp)</h2>
 <h3>Install (With A GUI)</h3>
 Navigate to
-<pre><code>
-http://localhost/roundcubemail/installer
-</code></pre>
+<pre><code>http://localhost/roundcubemail/installer</code></pre>
 <h4>Step 1 - Check preqs</h4>
 <h4>Step 2 - Configure</h4>
 <p>make sure you add the password to the database conf. that’s all you have to do
@@ -345,33 +343,26 @@ download the conf file in step 2 and move it to /var/www/html/roundcube/config/c
 Test your configuration if you are unsure, but you don’t actually have to do this.
 
 <h4>Step 4 - Edit Configuration Files</h4>
-<pre><code>
-vi /etc/roundcubemail/db.inc.php
+<pre><code>vi /etc/roundcubemail/db.inc.php
 $rcmail_config['db_dsnw'] = 'mysql://
-roundcube:password@localhost/roundcubemail';
-</code></pre>
+roundcube:password@localhost/roundcubemail';</code></pre>
 OR
-<pre><code>
-vi /var/www/html/roundcube/config.inc.php
-$config[‘db_dsnw’] = 'mysql://roundcube:password@localhost/roundcubemail';
-</code></pre>
+<pre><code>vi /var/www/html/roundcube/config.inc.php
+$config[‘db_dsnw’] = 'mysql://roundcube:password@localhost/roundcubemail';</code></pre>
 
 <h4>Step 5 - Acquire Mail</h4>
 <pre><code>http://localhost/roundcubemail</code></pre>
 *If you cant login >>
-<pre><code>
-vi /var/www/html/roundcube/config/config.inc.php
+<pre><code>vi /var/www/html/roundcube/config/config.inc.php
 [type] /username_domain
-and comment that line out
-</code></pre>
+and comment that line out</code></pre>
              <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>
 <h2>Troubleshooting</h2>
 <h3>Postfix</h3>
-<pre><code>
-postconf -n # to see current settings
+<pre><code>postconf -n # to see current settings
 postconf -d # to see default values
 
 #what errors?
@@ -405,11 +396,9 @@ postfix reload
 #find networks
 cat /etc/postfix/main.cf | grep “mynetworks”
 cat /etc/postfix/main.cf | grep “mydomain”
-
 </code></pre>
 <h3>Dovecot</h3>
-<pre><code>
-dovecot -n #to see current settings
+<pre><code>dovecot -n #to see current settings
 dovecot -n -c /etc/dovecot/dovecot.conf #to see current settings
 dovecot -n -c /etc/dovecot/dovecot.conf | grep -i ‘ssl’ #to see current settings
 dovecot -n -c /etc/dovecot/dovecot.conf | grep -i ‘auth’ #to see current settings
@@ -431,12 +420,9 @@ vi /var/log/messages | grep ‘:drop_log:’ #if you have logging set up for ipt
     tcpdump -i eth2 ‘port 80’  
 
 #normal httpd.conf
-https://github.com/assistanz247/APACHE/blob/master/httpd.conf
-
-</code></pre>
+https://github.com/assistanz247/APACHE/blob/master/httpd.conf</code></pre>
 <h3>MySQL</h3>
-<pre><code>
-#check the logs
+<pre><code>#check the logs
     tail /var/log/mysqld.log
     tail /var/log/mysql/error.log
 
@@ -449,8 +435,7 @@ https://github.com/assistanz247/APACHE/blob/master/httpd.conf
 #**make sure your fw rules allow for external SQL/ loopback 
 
 #check the firewall logs for dropped External SQL connections (if applicable)
-    vi /var/log/messages | grep ‘:drop_log:’
-                
+    vi /var/log/messages | grep ‘:drop_log:’         
 </code></pre>
              <pre>
 ──────────────────────────────────────────────────────────────────────────────────
@@ -458,8 +443,7 @@ https://github.com/assistanz247/APACHE/blob/master/httpd.conf
             </pre>
 <h2>Hardening</h2>
 <h3>Firewall</h3>
-<pre><code>
-#NOTE: *SASL is for 587, smart host relays (starttls encryption)
+<pre><code>#NOTE: *SASL is for 587, smart host relays (starttls encryption)
 
 #Core Services
 iptables -A INPUT -p tcp -m multiport --dports 25,80,110,143 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -475,8 +459,7 @@ iptables -A OUTPUT -d 172.20.242.200 -p tcp --dport 389 -j ACCEPT
 </code></pre>
 <h3>Logging</h3>
 <h4>Roundcube/Apache</h4>
-<pre><code>
-#In the roundcube config file -- config.inc.php
+<pre><code>#In the roundcube config file -- config.inc.php
 $config['debug_level'] = 1; #System Error Reporting
 $config['sql_debug'] = true; # Log SQL queries
 $config['imap_debug'] = true; #Log IMAP4 conversation
@@ -485,40 +468,33 @@ $config['ldap_debug'] = true; #Log LDAP conversation
 $config['smtp_debug'] = true; #Log SMTP conversation
 </code> </pre>
 <h4>Postfix</h4>
-<pre><code>
-postconf -e smtp_tls_loglevel=1
+<pre><code>postconf -e smtp_tls_loglevel=1
 notify_classes = resource, software, protocol
 </code></pre>
 <h4>Dovecot</h4>
-<pre><code>
-#located: /var/log/maillog or /var/log/mail.info or something similar
+<pre><code>#located: /var/log/maillog or /var/log/mail.info or something similar
 #the postfix mail queue is located in the directory tree /var/spool/postfix and below
 </code></pre>
 <h4>Apache</h4>
-<pre><code>
-#located in /var/log/httpd or /apache2
+<pre><code>#located in /var/log/httpd or /apache2
 </code></pre>
    
 <h3>Backup</h3>
 <h4>Postfix</h4>
-<pre><code>
-tar czf /root/postfix-$(date “+%F”).tar.gz /etc/postfix
+<pre><code>tar czf /root/postfix-$(date “+%F”).tar.gz /etc/postfix
 postconf > /root/postconf-$)date “+%F)
 </code></pre>
 <h4>Dovecot</h4>
-<pre><code>
-tar czf /root/dovecot-$(date “+%F”).tar.gz /etc/dovecot
+<pre><code>tar czf /root/dovecot-$(date “+%F”).tar.gz /etc/dovecot
 </code></pre>
 <h2>Postfix Hardening – Hella ExtraTM</h2>
 <h3>Chroot Jail</h3>
-<pre><code>
-mkdir -p /var/spool/postfix/dev
+<pre><code>mkdir -p /var/spool/postfix/dev
 syslogd -a /var/spool/postfix/dev/log
 vi main.cf
 </code></pre>
 <h3>Domain Restrictions</h3>
-<pre><code>
-*can combine w/ a comma
+<pre><code>*can combine w/ a comma
 smtpd_client_restrictions =reject_non_fqdn_sender, reject_non_fqdn_recipient
 smtpd_client_restrictions = warn_if_reject reject_unknown_client
 smtpd_client_restrictions = check_client_access hash:/etc/postfix/client_access
@@ -530,16 +506,14 @@ smtpd_client_restrictions = check_client_access hash:/etc/postfix/client_access
 	spammer.example.com 		REJECT
 </code></pre>
 <h3>Message Content Checks</h3>
-<pre><code>
-mime_header_checks = /^Content-(Disposition|Type).*name\s*=\s*"?(.*\.( ade|adp|bas|bat|
+<pre><code>mime_header_checks = /^Content-(Disposition|Type).*name\s*=\s*"?(.*\.( ade|adp|bas|bat|
     chm|cmd|com|cpl|crt|dll|exe|hlp|hta|inf|ins|isp|js|jse|lnk|mdb|mde|mdt|
     mdw|ms[cipt]|nws|ops|pcd|pif|prf|reg|sc[frt]|sh[bsm]|swf|vb[esx]?|vxd|
     ws[cfh]))(\?=)?"?\s*(;|$)/x
 REJECT Attachment not allowed. Filename "$2" may not end with ".$3".
 </code></pre>
 <h3>Initial Scan of Postfix</h3>
-<pre><code>
-#check config & resolve any errors
+<pre><code>#check config & resolve any errors
 postfconf 1> /dev/null
 #find version
 dpkg -l postfix OR postconf mail_version | awk -F” = “ ‘{print $2}’

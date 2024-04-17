@@ -77,7 +77,11 @@
                 </ol>
                 <p>There are scripts and tools out there that can be used to automate, or partially automate this process, but for the sake of learning and understanding, we will be doing this mostly manually with gdb in a linux install.</p>
         <img src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture0.png" alt="bof0">
-                <h2>Lets Get Exploiting</h2>    
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>       
+        <h2>Lets Get Exploiting</h2>    
             <p>In the OSCP, usually, you are given an application to start with. In this example, we will be going through a binary vulnerable to BoF, "ctarget" that I originally used in my Systems I class at university. "ctarget" is a program that is vulnerable to code-injection attacks. 
             We know that ctarget reads strings from standard input via the getbuf function</p>
             <pre><code>unsigned getbuf() {
@@ -113,7 +117,10 @@
             <p>With all of these pieces, I ran the exploit string against the target binary, ctarget</p>
             <pre><code>./ctarget < raw-phase1.txt</code></pre> 
             <p>And the application should crash and return the touch1 function!</p>           
-       
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>    
             <h3>Phase 2 - A little bit harder! Code Injection! </h3>
             <p>Summary: Get the buffer size, get the return address of touch2, modify the %rdi register and store our cookie in it.</p>
             <p>In phase 2, we are going to be doing basically the same thing as phase 1, but this time we'll inject a small bit of code to make it look like we are passing a cookie as an argument to the second function, touch2.</p>
@@ -129,8 +136,7 @@
                 objdump -d phase2.o  > phase2.d </code></pre>
             <p>The byte code I generated was </p>
             <pre><code>48 c7 c7 df 1f ee 10
-                c3
-            </code></pre>
+                c3</code></pre>
             <p>Next objective on the dock for this exploit is to get the rsp address in touch 2. In order to do this, I ran the code just until the Gets call.</p>
             <img src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture2.png" alt="bof2">
             <pre><code>until *0x401838</code></pre>
@@ -153,7 +159,10 @@
             <pre><code>./ctarget < raw-phase2.txt</code></pre>
             <p>And the application should crash and return the touch2 function!</p>
             <p>And that's it! You've successfully exploited a buffer overflow! </p>
-            
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>      
             <h3>Phase 3 - Taking it a step further</h3>
             <p>For doing BoF attacks for something such as the OSCP, we can take everything a step further and begin automating our processes, and even create shell code to get a reverse shell and easy command execution on the target.</p>
                 <h4>Step 1- Fuzzing</h4>
@@ -205,7 +214,10 @@
                 </p>
                 <p>Finally, the shellcode should be formatted to be used in the exploit script.</p>
                 <p>And we can use a script such as this one to generate the exploit: <a href="https://github.com/spaceyowie/oscp-bof/blob/main/exploit.py">Exploit.py</a></p>
-            
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>            
             <h2>Conclusion</h2>
             <p>Buffer Overflows are a powerful tool in the arsenal of a pentester, and can be used to exploit a wide variety of applications. By following the steps outlined in this post, you can begin to understand how to perform a buffer overflow attack and exploit vulnerable applications. </p>
             <p>Remember, always ensure you have permission to perform a buffer overflow attack on a target, and never use this knowledge for malicious purposes. </p>

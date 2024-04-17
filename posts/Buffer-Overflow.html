@@ -132,7 +132,7 @@
                 objdump -d phase2.o  > phase2.d </code></pre>
             <p>The byte code I generated was </p>
             <pre><code>48 c7 c7 df 1f ee 10
-                c3</code></pre>
+c3</code></pre>
             <p>Next objective on the dock for this exploit is to get the rsp address in touch 2. In order to do this, I ran the code just until the Gets call.</p>
             <img style="width: 50%;" src="https://kogatana-x.github.io/images/Buffer-Overflow/Picture2.png" alt="bof2">
             <pre><code>until *0x401838</code></pre>

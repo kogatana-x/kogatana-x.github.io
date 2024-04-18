@@ -101,8 +101,8 @@
             <p>If we take a look at the first line, sub $0x28,%rsp, we can see that the buffer size is 0x28, or 40 bytes.
             To find the address the touch1, you need to get the dissasembled code for ctarget executable.</p>
             <pre><code>objdump -d ctarget > ctarget_dump.txt</code></pre>
-            <p>Then, you can search for the touch1 function in the dump file, my touch1 function was at 0x4c1840, youll know as it looks something like this</p>
-            <pre><code>0000000000401760 <touch1>:</code></pre>
+            <p>Then, you can search for the touch1 function in the dump file, my touch1 function was at 0x4c1840, you'll know as it looks something like this</p>
+            <pre><code>00000000004c18840 touch1:</code></pre>
             <p>Now we can use this information to craft our exploit string. When you write the bytes, you need to consider the byte order. My system is a big-endian so the bytes go in order. I put the following into a file called 'phase1.txt'</p> 
             <pre><code>00 00 00 00 00 00 00 00 00   /* buffer - 40 bytes*/
 00 00 00 00 00 00 00 00 00

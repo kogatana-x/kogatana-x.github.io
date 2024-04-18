@@ -22,14 +22,7 @@ body {
     width: 15em;
 
 }
-@media screen and (max-width: 50vw) {
-    .navbar * {
-        display: none;
-    }
-    .navbar:hover * {
-        display: initial;
-    }
-}
+
 .navbar img {
     width: 200px;
     height: 200px;
@@ -50,7 +43,14 @@ body {
 .hiddenlinks a {
     display: none;
 }
-
+@media screen and (max-width: 50vw) {
+    .navbar {
+        display: none;
+    }
+    .navbar:hover {
+        display: initial;
+    }
+}
 .categoryContainer {
     display: flex;
     flex-wrap: wrap;

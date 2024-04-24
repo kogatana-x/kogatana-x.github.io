@@ -180,3 +180,12 @@ time {
     bottom: 0;
     width: 100%;
 }
+@media screen and (max-width: 768px) {
+    .navbar {
+        display: none;
+    }
+    .content {
+        margin-left: 0;
+        width: 100vw;
+    }
+}

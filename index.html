@@ -178,7 +178,7 @@ Promise.all(postUrls.map(fetchPost))
         .catch(error => console.error(error));
     }); 
 
-    document.querySelector('.hamburger-menu').addEventListener('click', function() {
-    document.querySelector('.navbar').classList.toggle('active');
-});
+    $('.hamburger-menu').on('click', function() {
+        $('.navbar').toggleClass('active');
+    });
 </script>

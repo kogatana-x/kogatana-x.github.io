@@ -78,8 +78,6 @@ body {
     margin-left: 13vw;
     width: calc(100% - 13vw); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100%; /* Set the height to the height of the viewport */
-    font-size: calc(1em + 0.5vw);
-
     flex: 1 0 auto;
 }
 

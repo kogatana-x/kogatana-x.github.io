@@ -160,10 +160,10 @@ time {
     display: flex;
     justify-content: space-around;
     padding: 3em;
-    margin-left: 1em;
-    margin-right: 1em;
 }
-
+.social svg {
+    padding: 2em;
+}
 .content table {
     border-collapse: collapse;
     width: 100%;

@@ -5,6 +5,15 @@ body {
     display: flex;
     background-color: #212121;
 }
+.footer p {
+    background-color: #262626;
+    color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    position: relative;
+}
 
 .navbar {
     flex: 1;
@@ -172,12 +181,4 @@ time {
     background-color: #ee4c4f5e; 
 }
 
-.footer p {
-    background-color: #262626;
-    color: #f2f2f2;
-    padding: 10px;
-    text-align: center;
-    bottom: 0;
-    width: 100%;
-    position: relative;
-}
+

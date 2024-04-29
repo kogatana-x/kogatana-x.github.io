@@ -11,7 +11,7 @@ body {
     flex: 1;
     background-color: #333;
     color: #f0f0f0;
-    padding: 1em;
+    padding: 0.25em;
     height: 100%;
     overflow: none;
     display: flex; 
@@ -20,14 +20,14 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 15vw;
+    width: 10vw;
     z-index: 9999;
 
 }
 
 .navbar img {
-    width: 10em;
-    height: 10em;
+    width: 30em;
+    height: 30em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
     margin-left: 0.5em;
@@ -77,8 +77,8 @@ body {
 }
 
 .content {
-    margin-left: 15vw;
-    width: calc(100vw - 15vw); /* Set the width to the width of the viewport minus the width of the navbar */
+    margin-left: 13vw;
+    width: calc(100vw - 13vw); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100%; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */

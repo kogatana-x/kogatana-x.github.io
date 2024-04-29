@@ -22,12 +22,12 @@ body {
     left: 0;
     width: 10vw;
     z-index: 9999;
-    font-size: fit-content;
+    font-size: 1.5em;
 }
 
 .navbar img {
-    width: 5em;
-    height: 5em;
+    width: 20px;
+    height: 20px;
     padding-top: 5em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
@@ -151,7 +151,7 @@ time {
 .social {
     display: flex;
     justify-content: space-around;
-    padding: 1em;
+    padding: 3em;
 }
 
 .content table {

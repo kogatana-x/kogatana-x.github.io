@@ -12,7 +12,7 @@ body {
     text-align: center;
     bottom: 0;
     width: 100%;
-    position: relative;
+    position: absolute;
 }
 
 .navbar {
@@ -87,9 +87,13 @@ body {
     flex: 3;
     margin-left: 17em;
     width: calc(100vw - 20em); /* Set the width to the width of the viewport minus the width of the navbar */
-        height: 100vh; /* Set the height to the height of the viewport */
-        box-sizing: border-box; /* Include padding and border in the element's total width and height */
-        word-wrap: break-word;
+    height: 100vh; /* Set the height to the height of the viewport */
+    font-size: calc(1em + 0.5vw);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    word-wrap: break-word;
+    overflow: auto;
+
+
 }
 
 code{

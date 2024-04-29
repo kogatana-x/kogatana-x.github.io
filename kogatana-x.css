@@ -79,13 +79,12 @@ body {
 
 .content {
     margin-left: 13em;
-    width: calc(90vw - 13em); /* Set the width to the width of the viewport minus the width of the navbar */
+    width: calc(100vw - 13em); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100vh; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     word-wrap: break-word;
     flex: 1 0 auto;
-    min-width: 100vw;
 }
 
 code{

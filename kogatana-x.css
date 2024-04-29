@@ -179,13 +179,4 @@ time {
 }
 
 
-.footer p {
-    background-color: #262626;
-    color: #f2f2f2;
-    padding: 0.5em;
-    text-align: center;
-    bottom: 0;
-    width: 100%;
-    position: absolute;
-    flex-direction: 0;
-}
+

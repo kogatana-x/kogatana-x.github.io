@@ -4,15 +4,8 @@ body {
     padding: 0;
     display: flex;
     background-color: #212121;
-}
-.footer p {
-    background-color: #262626;
-    color: #f2f2f2;
-    padding: 0.5em;
-    text-align: center;
-    bottom: 0;
-    width: 100%;
-    position: absolute;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .navbar {
@@ -86,11 +79,12 @@ body {
 
 .content {
     margin-left: 17em;
-    width: calc(100vw - 20em); /* Set the width to the width of the viewport minus the width of the navbar */
+    width: calc(100vw - 15em); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100vh; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     word-wrap: break-word;
+    flex: 1 0 auto;
 }
 
 code{
@@ -120,6 +114,7 @@ code{
 }
  h2 {
     margin-top: 0;
+    margin-bottom: 0;
     font-size: 2.5em;
     color: #f2f2f2f2;
 }
@@ -183,3 +178,13 @@ time {
 }
 
 
+.footer p {
+    background-color: #262626;
+    color: #f2f2f2;
+    padding: 0.5em;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+    flex-direction: 0;
+}

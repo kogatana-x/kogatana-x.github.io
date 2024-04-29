@@ -27,14 +27,11 @@ body {
 }
 
 .navbar img {
-    width: 30em;
-    height: 30em;
+    width: 20em;
+    height: 20em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    margin-bottom: 0.5em; /* Add some space below the image */
-    margin-top: 3em;
+    padding: 1;
 }
 .navbar p {
     margin: 0;

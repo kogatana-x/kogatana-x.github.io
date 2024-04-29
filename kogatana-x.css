@@ -84,7 +84,6 @@ body {
 }
 
 .content {
-    flex: 3;
     margin-left: 17em;
     width: calc(100vw - 20em); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100vh; /* Set the height to the height of the viewport */

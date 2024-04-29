@@ -19,8 +19,8 @@ body {
     flex: 1;
     background-color: #333;
     color: #f0f0f0;
-    padding: 10px;
-    height: 200vh;
+    padding: 1em;
+    height: 100vh;
     overflow: none;
     display: flex; 
     flex-direction: column; 
@@ -33,14 +33,14 @@ body {
 }
 
 .navbar img {
-    width: 200px;
-    height: 200px;
+    width: 10em;
+    height: 10em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px; /* Add some space below the image */
-    margin-top: 30px;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em; /* Add some space below the image */
+    margin-top: 3em;
 }
 .navbar p {
     margin: 0;
@@ -60,13 +60,13 @@ body {
 }
 
 .categoryBox {
-    flex: 1 0 100px; /* Grow and shrink, basis */
-    margin: 10px;
-    padding: 10px;
+    flex: 1 0 10em; /* Grow and shrink, basis */
+    margin: 1em;
+    padding: 1em;
     box-shadow: none;
     color: #f2f2f2;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 0.5em;
     font-size: 1.5em;
     font-weight: bold;
     background-position: center;
@@ -79,7 +79,7 @@ body {
     transform: scale(1.1);
     background-color: #ee4c4f;
     color: #f2f2f2;
-    box-shadow: 0 0 10px #f2f2f2;
+    box-shadow: 0 0 1em #f2f2f2;
     cursor: pointer;
 }
 
@@ -96,8 +96,8 @@ code{
     font-size: 1.05em;
 }
 .blog-post {
-    margin: 20px auto;
-    padding: 20px;
+    margin: 20em auto;
+    padding: 2em;
     background-color: #2b2b2b;
     box-shadow: none;
     color: #f2f2f2f2;
@@ -105,7 +105,7 @@ code{
 .blog-post img {
     width: 75%;
     height: auto;
-    margin: 20px 0;
+    margin: 20em 0;
     display: block;
     object-fit: cover;
 }
@@ -132,7 +132,7 @@ code{
     color:#f2f2f2;
     font-family: 'Consolas', monospace;
     font-size: 1.25em;
-    padding: 10px;
+    padding: 1em;
     display: block;
     white-space: pre;
 }
@@ -151,21 +151,21 @@ time {
 
 .banner {
     color: #f2f2f2f2;
-    padding: 20px;
-    margin: 20px auto;
+    padding: 2em;
+    margin: 2em auto;
     font-family: monospace;
 }
 .social {
     display: flex;
     justify-content: space-around;
-    width: 100px;
-    padding: 20px;
+    width: 10em;
+    padding: 1em;
 }
 
 .content table {
     border-collapse: collapse;
     width: 100%;
-    margin: 10px auto;
+    margin: 1em auto;
     text-align: auto;
 }
 

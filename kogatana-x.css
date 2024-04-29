@@ -79,8 +79,8 @@ body {
 
 .content {
     margin-left: 15em;
-    width: calc(100vw - 15em); /* Set the width to the width of the viewport minus the width of the navbar */
-    height: 100vh; /* Set the height to the height of the viewport */
+    width: calc(100% - 15em); /* Set the width to the width of the viewport minus the width of the navbar */
+    height: 100%; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     word-wrap: break-word;
@@ -96,7 +96,7 @@ code{
     background-color: #2b2b2b;
     box-shadow: none;
     color: #f2f2f2f2;
-    width: 100%;
+    width: calc(100%-15em);
 }
 .blog-post img {
     width: 75%;

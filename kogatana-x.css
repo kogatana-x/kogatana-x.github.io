@@ -28,9 +28,11 @@ body {
     width: 200px;
     height: 200px;
     padding-top: 5em;
+    padding-bottom: 1em;
+    padding-right: 1em;
+    padding-left: 1em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
-    padding: 1;
 }
 .navbar p {
     margin: 0;

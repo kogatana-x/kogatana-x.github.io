@@ -22,12 +22,11 @@ body {
     left: 0;
     width: 10vw;
     z-index: 9999;
-    font-size: 1.5em;
 }
 
 .navbar img {
-    width: 20px;
-    height: 20px;
+    width: 200px;
+    height: 200px;
     padding-top: 5em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
@@ -39,6 +38,7 @@ body {
     align-items: center;
     text-align: center;
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    overflow: none;
 }
 .hiddenlinks a {
     display: none;

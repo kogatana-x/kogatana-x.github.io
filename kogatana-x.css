@@ -27,14 +27,14 @@ body {
 }
 
 .navbar img {
-    width: 10em;
-    height: 10em;
+    width: 10%;
+    height: 10%;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
     margin-left: 0.5em;
     margin-right: 0.5em;
     margin-bottom: 0.5em; /* Add some space below the image */
-    margin-top: 1em;
+    margin-top: 3em;
 }
 .navbar p {
     margin: 0;
@@ -78,8 +78,8 @@ body {
 }
 
 .content {
-    margin-left: 15em;
-    width: calc(100% - 15em); /* Set the width to the width of the viewport minus the width of the navbar */
+    margin-left: 15%;
+    width: calc(100% - 15%); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100%; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */

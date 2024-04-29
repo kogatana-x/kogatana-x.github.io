@@ -47,7 +47,7 @@ body {
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
 }
 .navbar h2 {
-    font-size: 1em;
+    font-size: 1.5em;
 }
 .hiddenlinks a {
     display: none;
@@ -160,6 +160,8 @@ time {
     display: flex;
     justify-content: space-around;
     padding: 3em;
+    margin-left: 1em;
+    margin-right: 1em;
 }
 
 .content table {

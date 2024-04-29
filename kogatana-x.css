@@ -91,7 +91,6 @@ body {
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     word-wrap: break-word;
-    overflow: auto;
 }
 
 code{

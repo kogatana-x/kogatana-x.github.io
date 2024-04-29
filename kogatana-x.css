@@ -5,7 +5,6 @@ body {
     display: flex;
     background-color: #212121;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 .navbar {
@@ -21,14 +20,14 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 15%;
+    width: 15vw;
     z-index: 9999;
 
 }
 
 .navbar img {
-    width: 10%;
-    height: 10%;
+    width: 10em;
+    height: 10em;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
     margin-left: 0.5em;
@@ -78,8 +77,8 @@ body {
 }
 
 .content {
-    margin-left: 15%;
-    width: calc(100% - 15%); /* Set the width to the width of the viewport minus the width of the navbar */
+    margin-left: 15vw;
+    width: calc(100vw - 15vw); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100%; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */

@@ -98,6 +98,7 @@ code{
     margin: 0.5em 0;
     display: block;
     object-fit: cover;
+    padding: 0.5em;
 }
 
 .blog-post h3 {

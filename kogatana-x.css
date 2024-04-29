@@ -74,7 +74,7 @@ body {
 
 .content {
     margin-left: 13vw;
-    width: calc(100vw - 13vw); /* Set the width to the width of the viewport minus the width of the navbar */
+    width: calc(100% - 13vw); /* Set the width to the width of the viewport minus the width of the navbar */
     height: 100%; /* Set the height to the height of the viewport */
     font-size: calc(1em + 0.5vw);
     box-sizing: border-box; /* Include padding and border in the element's total width and height */

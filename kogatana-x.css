@@ -27,7 +27,7 @@ body {
 .navbar img {
     width: 10vw;
     max-height: auto;
-    margin-top: 5em;
+    margin-top: 5vh;
     border-radius: 50%; /* Make the image circular */
     object-fit: cover; /* Ensure the image covers the entire area */
 }

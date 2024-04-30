@@ -89,6 +89,9 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
             const metaCategory = doc.querySelector('meta[name="category"]').getAttribute('content');
             return metaCategory === category;
         });
+        if (category === '*'){
+            filteredPosts = posts;
+        } 
         if(category.length === 0 || filteredPosts.length === 0){
                     const noposts = document.createElement('h3');
                     noposts.textContent = 'Nice try, please select a valid category.';
@@ -96,9 +99,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
                     noposts.style.margin = '1em';
                     blogContainer.appendChild(noposts);
         } else {
-        if (category === '*'){
-            filteredPosts = posts;
-        } 
+        
         // Create a post element for each post in the filtered list
         const blogContainer = document.querySelector('#blogContainer');
         filteredPosts.forEach(post => {

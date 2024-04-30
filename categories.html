@@ -162,7 +162,12 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
                 });
 
                 // Create a category box for each unique category
-                categories.forEach(category => {
+                if(category.length === 0){
+                    const noposts = document.createElement('p');
+                    noposts.textContent = 'Nice try, please select a valid category.';
+                    blogContainer.appendChild(noposts);
+                } else{
+                    categories.forEach(category => {
                     var categoryBox = document.createElement('div');
                     categoryBox.className = 'categoryBox';
                     categoryBox.textContent = category;
@@ -172,6 +177,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
 
                     document.querySelector('#categoryContainer').appendChild(categoryBox);
                 });
+            }
 
                 // When a category box is clicked, navigate to a new page that displays posts with the same category
                 document.querySelectorAll('.categoryBox').forEach(box => {

@@ -155,6 +155,7 @@ Promise.all(postUrls.map(fetchPost))
                         categories.push(category);
                     }
                 });
+                categories.push('*'); // Add a wildcard category
 
                 // Create a category box for each unique category
                 categories.forEach(category => {
@@ -179,7 +180,4 @@ Promise.all(postUrls.map(fetchPost))
         .catch(error => console.error(error));
     }); 
 
-    $('.hamburger-menu').on('click', function() {
-        $('.navbar').toggleClass('active');
-    });
 </script>

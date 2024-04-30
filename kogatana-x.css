@@ -48,7 +48,7 @@ body {
     align-items: center;
     text-align: center;
     font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1vw;
+    font-size: 0.75vw;
     object-fit: contain;
 }
 .navbar h2 {

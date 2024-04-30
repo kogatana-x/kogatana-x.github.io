@@ -32,8 +32,11 @@ body {
     object-fit: cover; /* Ensure the image covers the entire area */
     transition: transform 0.3s ease;
 }
+.navbar svg{
+    transition: transform 0.3s ease;
+}
 
-.navbar img:hover{
+.navbar img:hover, .navbar svg:hover {
     transform: scale(1.01);
     box-shadow: 0 0 0.5em #f2f2f2;
     cursor: pointer;

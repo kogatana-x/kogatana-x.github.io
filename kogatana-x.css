@@ -37,7 +37,7 @@ body {
 }
 .navbar svg:hover {
     transform: scale(1.01);
-    filter: drop-shadow(0 0 0.5em #f2f2f2);
+    filter: drop-shadow(0 0 0.1em #f2f2f2);
     cursor: pointer;
 }
 

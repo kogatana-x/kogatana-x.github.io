@@ -84,7 +84,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
 
         // Filter the posts by category
         const parser = new DOMParser();
-        const filteredPosts = posts.filter(post => {
+        filteredPosts = posts.filter(post => {
             const doc = parser.parseFromString(post.html, 'text/html');
             const metaCategory = doc.querySelector('meta[name="category"]').getAttribute('content');
             return metaCategory === category;

@@ -95,7 +95,10 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
                     noposts.style.color = '#ee4c4f';
                     noposts.style.margin = '1em';
                     blogContainer.appendChild(noposts);
-        } else{
+        } else {
+        if (category === '*'){
+            filteredPosts = posts;
+        } 
         // Create a post element for each post in the filtered list
         const blogContainer = document.querySelector('#blogContainer');
         filteredPosts.forEach(post => {

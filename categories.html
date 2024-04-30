@@ -92,6 +92,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
         if(category.length === 0 || filteredPosts.length === 0){
                     const noposts = document.createElement('h3');
                     noposts.textContent = 'Nice try, please select a valid category.';
+                    noposts.style.color = 'f2f2f2';
                     blogContainer.appendChild(noposts);
         } else{
         // Create a post element for each post in the filtered list

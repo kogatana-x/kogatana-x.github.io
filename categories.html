@@ -90,7 +90,7 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
             return metaCategory === category;
         });
         if(category.length === 0 || filteredPosts.length === 0){
-                    const noposts = document.createElement('h4');
+                    const noposts = document.createElement('h3');
                     noposts.textContent = 'Nice try, please select a valid category.';
                     blogContainer.appendChild(noposts);
         } else{

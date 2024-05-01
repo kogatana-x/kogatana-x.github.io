@@ -6,7 +6,7 @@ body {
     background-color: #212121;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+    width: 90%;
 }
 
 .navbar {
@@ -182,7 +182,7 @@ time {
     padding: 0.5em;
     margin: 0.5em auto;
     font-family: monospace;
-    font-size: 1em;
+    font-size: 1.15em;
     height: auto;
 }
 .social {

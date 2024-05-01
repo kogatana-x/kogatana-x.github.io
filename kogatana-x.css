@@ -5,7 +5,6 @@ body {
     display: flex;
     background-color: #212121;
     flex-direction: column;
-    overflow-x: hidden;
 }
 
 .navbar {
@@ -26,7 +25,7 @@ body {
 }
 
 .navbar img {
-    width: 9.5vw;
+    width: 10vw;
     max-height: auto;
     margin-top: 5vh;
     border-radius: 50%; /* Make the image circular */
@@ -106,6 +105,8 @@ code{
 }
 
 .blog-post {
+    margin: 0.5em auto;
+    padding: 0.5em;
     background-color: #2b2b2b;
     box-shadow: none;
     color: #f2f2f2f2;
@@ -129,13 +130,10 @@ code{
     object-fit: cover;
     padding: 0.5em;
 }
-.blog-post p, .blog-post ul {
-    line-height: 1.25;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow: none;
-    word-wrap: break-word;
-}
+
 .blog-post h3 {
+    margin: 1;
+    margin: 0.25em;
     font-size: 2.2em;
     color: #ee4c4f;
 
@@ -161,7 +159,13 @@ code{
     white-space: pre;
 }
 
-
+.blog-post p, .blog-post ul {
+    line-height: 1.25;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: none;
+    word-wrap: break-word;
+    margin-left: 1em;
+}
 
 time {
     margin: 0;

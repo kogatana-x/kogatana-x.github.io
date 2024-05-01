@@ -177,8 +177,7 @@ time {
     padding: 0.5em;
     margin: 0.5em auto;
     font-family: monospace;
-    font-size: 2em;
-    width: calc(100vw-13vw);
+    font-size: 1em;
     height: auto;
 }
 .social {

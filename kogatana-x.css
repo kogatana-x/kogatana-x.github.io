@@ -5,8 +5,6 @@ body {
     display: flex;
     background-color: #212121;
     flex-direction: column;
-    height: 100%;
-    width: 90%;
 }
 
 .navbar {
@@ -97,7 +95,7 @@ body {
 
 .content {
     margin-left: 13vw;
-    width: calc(100vw - 13vw); /* Set the width to the width of the viewport minus the width of the navbar */
+    width: calc(100vw - 15vw); /* Set the width to the width of the viewport minus the width of the navbar */
     min-width: 200px;
     height: 100%; /* Set the height to the height of the viewport */
     flex: 1 0 auto;

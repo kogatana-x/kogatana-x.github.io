@@ -79,6 +79,8 @@
             <p><b>Blob: </b>the actual data stored in the container</p>
             <p>    There are three types of blob data: Block, Append, and Page. Block is the one we care about and will be targetting and this simply stores text and binary data, much like we are accustomed to.</p>
                 <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/2-Azure-Blob-Storage-Structure.png" alt="Azure Blob Storage Hierarchy">
+                        <pre>
+──────────────────────────────────────────────────────────────────────────────────</pre>
             
             <h2 id="Attacking-Storage-Blobs">Attacking Storage Blobs</h2>
             <p>I believe the best defenders are good attackers, and good defenders make for better red teamers and pentesters, so we will be covering both sides in this post, starting with attack.</p>
@@ -103,12 +105,10 @@
             <pre><code>http://bonzibuddy.blob.core.windows.net/peedy-pictures/flexing.png</code></pre>
             <p>We can also get a bit fancier and use the Azure Storage REST API, Azure PowerShell, Azure CLI, and any other client library that supports it.</p>
             <p>The operations we use to access the blob using the REST API is mapped to the operations we are used to graphically -</p>
-            <pre><code>
-                Get Container Properties
-                List Containers (in a storage account) 
-                List Blobs (in a container)
-                Get Blob  (retrieve data)
-            </code></pre>
+            <pre><code> Get Container Properties
+ List Containers (in a storage account) 
+ List Blobs (in a container)
+ Get Blob  (retrieve data)</code></pre>
 
             <h3 id="Finding-a-Target">Finding a Target</h3>
             <p>Much like finding any other public-facing web page on the internet, we can use some more traditional tactics such as Google Dorking and DNS Enumeration.</p>
@@ -127,10 +127,40 @@
 
             <h3 id="Blob-Storage-Permissions">Blob Storage Permissions</h3>
             <p>The results we saw in our open reconnaissance were only available to us because they had either "Blob" or "Container" level permissions set.</p>
+            <p><b>Blob:</b> public read access for blobs only.
+                  Blobs => anonymous read
+                  Container data => access via authorized request.
+            </p>
+            <p><b>Container:</b> public read access for containers and blobs.
+                  Container and blob data => anonymous read
+                  (excluding container permission settings/metadata)
+            </p>
+            <p><b>Private:</b> no public read access.
+                  Blobs and containers => access via authorized request.
+                  This means we'd need a shared key from a storage account, or a Shared Access Signature (SAS) URI generated to view the data.
+            </p>
+            <p>TLDR; only containers with the Public read access will allow unauthorized requests. This would mean an attacker needs to know the full URL of the blob to access blob data with Blob level permissions configured.</p>              
+
+            <h3 id="Enumeration">Not-so-Stealthy Enumeration</h3>
+            <p>Assuming we had identified a storage account named "bonzibuddy" in the previous step, we can move right along in finding the rest of the information.</p>
+            <h4>Step #2 - Enumeration</h4>
+            <p>Like any other webpage, there are attackers out there that like to throw scans at the wall that is the internet and hope something sticks. These attackers might have a bit of a tough time due to some anti-scanning measures Microsoft built in to Azure Storage.</p>
+            <p>Although, making a wordlist is easy - there really aren't any restrictions for what the URL can or cannot have beyond properly escaping some special characters and not exceeding a reasonable amount of characters.</p>
+            <p>An attacker can use a page enumeration tool such as gobuster to identify container names and blob names using a wordlist.</p>
+            <pre><code>gobuster dir -u http://bonzibuddy.blob.core.windows.net -w wordlist.txt
+gobuster dir -u bonzibuddy.blob.core.windows.net -w /usr/share/wordlists/dirb/big.txt -x xlsx,png</code></pre>
+                <p>When an empty container is hit, the page would return a 400 error, and when a container with blob permissions is hit, it would return a 404 error, making identifying good targets harder.</p>
+            <p>As we know, enumerating this method is not stealthy, the web server will be flooded with requests.</p>
+
+            <h3 id="Enumerating-AZCLI">Enumerating the Target</h3>
+            <p>Let's imagine we have access to a tool like Azure CLI and want to blend in with the environment a bit more.</p>
+            <p>Using the Azure CLI, we can list all the containers in a storage account with the following command:</p>
+            
 
 
 
-
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────</pre>
         </div>
     </div>
     <div class="footer">

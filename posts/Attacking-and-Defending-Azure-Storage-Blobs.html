@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Attacking and Defending Azure Storage Blobs</title> 
+    <meta name="description" content="As more organizations adopt cloud technologies, more attackers recognize the value of data stored in these environments. However, many organizations fail to realize just how important the security of their data is...until they find it on the dark web! 
+    This blog will present a scenario from start to finish of how not* to abuse your Azure storage blobs. ">  
+    <meta name="author" content="kogatana-x">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv='content-language' content='en-us'> 
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
+    
+    <meta property="og:title" content="Attacking and Defending Azure Storage Blobs">
+    <meta name="category" content="offensive">
+    <meta name="category" content="defensive">
+
+    <link rel="canonical" href="https://kogatana-x.github.io/posts/Attacking-and-Defending-Azure-Storage-Blobs.html" />  <!--TODO-->
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="https://kogatana-x.github.io/images/22989723.png" alt="Profile"> 
+        </a>
+        <h2>kogatana-x</h2>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>LinkedIn</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h1>Attacking and Defending Azure Storage Blobs</h1> 
+            <time datetime="2025-01-23T20:19:55">January 23th, 2025</time> 
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────</pre>
+            <p><i>As more organizations adopt cloud technologies, more attackers recognize the value of data stored in these environments. However, many organizations fail to realize just how important the security of their data is...until they find it on the dark web! 
+                This blog will present a scenario from start to finish of how not* to abuse your Azure storage blobs. </i></p>
+            <h2>Introduction</h2>
+            <p>Before we get into the meat and potatoes, we should probably establish what cloud storage actually is. To put it simply, much like the rest of the cloud, cloud storage is just someone else's computers that has the data you store at any given time. So when you purchase an Azure Storage Blob from Microsoft, they'd store that data on one, or a few of their servers depending on your region and availability tier you select. </p>
+            <p>Azure has two (well three if we are getting technical) types of storage you can purchase. Blob, and General Purchase (which contains Blob and a few other types: File, Queue, and Table). We are only going to care about Blob Storage for this blog, but they all function similarly enough on the front-end.</p>
+            <p>Blob Storage is, at its core, designed to store massive amounts of unstructured data. In traditional file systems, we are used to seeing documents, images, and executables - blob storage can include those, but is more intended for data that doesnt have a defined type such as archives, log files, banking information, health information, etc.</p>
+            <p>Below is an image of what blob storage looks like in the Azure Portal.</p>
+                <img src="https://kogatana-x.github.io/images/1-Azure-Blob-Containers.png" alt="Azure Blob Storage">
+            <h2>Attacking Storage Blobs</h2>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2021 kogatana-x</p>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
+</html>

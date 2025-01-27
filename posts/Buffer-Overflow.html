@@ -2,7 +2,7 @@
 <html lang="en-US">
 <head>
     <title>Buffer Overflows - Braindead Overview</title> 
-    <meta name="description" content="A braindead pentester's guide to exploitation and easy points on the OSCP">
+    <meta name="description" content="A braindead pentester's guide to exploitation and getting cool hacker points">
     <meta name="author" content="kogatana-x">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv='content-language' content='en-us'> 
@@ -66,7 +66,7 @@
 
             </pre>
             <h2>Introduction</h2>
-                <p>Buffer Overflows nowadays seem more like a mysterious witchcraft exploit, than a simple entryway into binary exploitation. In this post, I want to demystify how to perform a buffer overflow attack thats easy enough for the most braindead students to understand. </p>
+                <p>Buffer Overflows (BoF) nowadays seem more like a mysterious witchcraft exploit, than a simple entryway into binary exploitation. In this post, I want to demystify how to perform a buffer overflow attack thats easy enough for the most braindead students to understand. </p>
                 <p>There are six general steps that you can take to perform this attack, and we will go over them in depth in the subsequent post. </p>
                 <ol>
                     <li>Crash the Application / Trigger the BoF</li>
@@ -83,7 +83,7 @@
 
             </pre>       
         <h2>Lets Get Exploiting</h2>    
-            <p>In the OSCP, usually, you are given an application to start with. In this example, we will be going through a binary vulnerable to BoF, "ctarget" that I originally used in my Systems I class at university. "ctarget" is a program that is vulnerable to code-injection attacks. 
+            <p>In this example, we will be going through a binary vulnerable to BoF, "ctarget" that I originally used in my Systems I class at university. "ctarget" is a program that is vulnerable to code-injection attacks. 
             We know that ctarget reads strings from standard input via the getbuf function</p>
             <pre><code>unsigned getbuf() {
     char buf[BUFFER_SIZE];
@@ -159,7 +159,7 @@ c3</code></pre>
 
             </pre>      
             <h3>Phase 3 - Taking it a step further</h3>
-            <p>For doing BoF attacks for something such as the OSCP, we can take everything a step further and begin automating our processes, and even create shell code to get a reverse shell and easy command execution on the target.</p>
+            <p>For doing BoF attacks, we can take everything a step further and begin automating our processes, and even create shell code to get a reverse shell and easy command execution on the target.</p>
                 <h4>Step 1- Fuzzing</h4>
                 <p>Like we demonstrated earlier, we need to send enough data at once to the target to trigger the overflow and crash the application. We can use fuzzing to our advantage, by sending increasing payloads with different characters within a debugger
                 Tools we can use to monitor the target include Immunity Debugger, Ollydbg, WinDbg, and GDB.

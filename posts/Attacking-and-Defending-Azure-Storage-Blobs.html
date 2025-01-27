@@ -95,7 +95,23 @@
             <p>We went over what those are in <a href="#Anatomy-of-Blob-Storage">Anatomy of Blob Storage</a>. Three things sound easy enough!</p>
 
             <h3 id="#Accessing-the-Target">Accessing the Target</h3>
-            <p></p>
+            <p>In file systems we are accustomed to, like the File Explorer in Windows, we open the application, click on the folder that stores our document, then open the file we want to see. If we have something like a NAS, we first, make sure to point the folder we open to the computer that is hosting that data. Accessing Azure Storage Blobs is very similar to that. </p>
+            <p>All we need is a URL that is unique to the blob we want to access, and plop it in a browser such as Chrome, Firefox, Safari, etc.</p>
+            <p>This endpoint is comprised of the three components we need to identify.</p>
+            <pre><code>http://{storage-account}.[blob|file|table|queue].core.windows.net/{container}/{file}</code></pre>
+            <p>So if our storage account name is "bonzibuddy", the container we want to access is "peedy-pictures", and the blob we want to target is "flexing.png", our URL would look like this:</p>
+            <pre><code>http://bonzibuddy.blob.core.windows.net/peedy-pictures/flexing.png</code></pre>
+            <p>We can also get a bit fancier and use the Azure Storage REST API, Azure PowerShell, Azure CLI, and any other client library that supports it.</p>
+            <p>The operations we use to access the blob using the REST API is mapped to the operations we are used to graphically -</p>
+            <pre><code>
+                Get Container Properties
+                List Containers (in a storage account) 
+                List Blobs (in a container)
+                Get Blob  (retrieve data)
+            </code></pre>
+
+            <h3 id="#Finding-a-Target">Finding a Target</h3>
+            
 
         </div>
     </div>

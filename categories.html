@@ -186,16 +186,16 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
 
                 // Create a category box for each unique category
                 categories.forEach(category => {
-                    var categoryBox = document.createElement('td');
-                    categoryBox.style.width = '20%';
-                    categoryBox = document.createElement('div');
+                    var td = document.createElement('td');
+                    td.style.width = '20%';
+                    var categoryBox = document.createElement('div');
                     categoryBox.className = 'categoryBox';
                     categoryBox.textContent = category;
 
                     var categoryImage = categoryImages[category]; // Get the image URL
                     categoryBox.style.backgroundImage = `url(${categoryImage})`; // Set the background image
 
-                    document.querySelector('#categoryContainer').appendChild(categoryBox);
+                    document.querySelector('#categoryContainer').appendChild(td).appendChild(categoryBox);
                 });
 
                 // When a category box is clicked, navigate to a new page that displays posts with the same category

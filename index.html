@@ -69,8 +69,15 @@
     </div>
     <div id="blogContainer"></div>
     <h2 style="padding:10px;">Categories</h2>
-    <div id="categoryContainer"></div>
-    <div class="footer">
+    <div >
+        <table>
+            <tbody>
+                <tr id="categoryContainer">
+
+                </tr>
+            </tbody>
+        </table>
+    </div>    <div class="footer">
         <p>© 2021 kogatana-x</p>
     </div>
 </body>
@@ -159,7 +166,9 @@ Promise.all(postUrls.map(fetchPost))
 
                 // Create a category box for each unique category
                 categories.forEach(category => {
-                    var categoryBox = document.createElement('div');
+                    var categoryBox = document.createElement('td');
+                    categoryBox.style.width = '20%';
+                    categoryBox = document.createElement('div');
                     categoryBox.className = 'categoryBox';
                     categoryBox.textContent = category;
 

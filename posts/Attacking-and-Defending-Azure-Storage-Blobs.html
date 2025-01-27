@@ -59,30 +59,44 @@
             </pre>
         </div>       
         <div class="blog-post">   
-            <h1>Attacking and Defending Azure Storage Blobs</h1> 
+            <h1 id="#Attacking-and-Defending-Azure-Storage-Blobs">Attacking and Defending Azure Storage Blobs</h1> 
             <time datetime="2025-01-23T20:19:55">January 23th, 2025</time> 
             <pre>
 ──────────────────────────────────────────────────────────────────────────────────</pre>
             <p><i>As more organizations adopt cloud technologies, more attackers recognize the value of data stored in these environments. However, many organizations fail to realize just how important the security of their data is...until they find it on the dark web! 
                 This blog will present a scenario from start to finish of how not* to abuse your Azure storage blobs. </i></p>
-            <h2>Introduction</h2>
+            <h2 id="#Introduction">Introduction</h2>
             <p>Before we get into the meat and potatoes, we should probably establish what cloud storage actually is. To put it simply, much like the rest of the cloud, cloud storage is just someone else's computers that has the data you store at any given time. So when you purchase an Azure Storage Blob from Microsoft, they'd store that data on one, or a few of their servers depending on your region and availability tier you select. </p>
             <p>Azure has two (well three if we are getting technical) types of storage you can purchase. Blob, and General Purchase (which contains Blob and a few other types: File, Queue, and Table). We are only going to care about Blob Storage for this blog, but they all function similarly enough on the front-end.</p>
             <p>Blob Storage is, at its core, designed to store massive amounts of unstructured data. In traditional file systems, we are used to seeing documents, images, and executables - blob storage can include those, but is more intended for data that doesnt have a defined type such as archives, log files, banking information, health information, etc.</p>
             <p>Below is an image of what blob storage looks like in the Azure Portal.</p>
                 <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/1-Azure-Blob-Containers.png" alt="Azure Blob Storage">
-            <h2>Attacking Storage Blobs</h2>
+            
+            <h3 id="#Anatomy-of-Blob-Storage">Anatomy of Blob Storage</h3>
+            <p>To understand the absolute minimum needed for a theoretical attacker to target a storage blob, they'd only have to need to collect a storage account, a container, and blob name in order to access data.</p>
+            <p><b>Storage Account: </b>basically a username. this is also the thing that has authorization to access blobs</p>
+            <p><b>Container: </b>think of this as a folder that has the blobs</p>
+            <p><b>Blob: </b>the actual data stored in the container</p>
+            <p>    There are three types of blob data: Block, Append, and Page. Block is the one we care about and will be targetting and this simply stores text and binary data, much like we are accustomed to.</p>
+                <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/2-Azure-Blob-Storage-Structure.png" alt="Azure Blob Storage Hierarchy">
+            
+            <h2 id="#Attacking-Storage-Blobs">Attacking Storage Blobs</h2>
             <p>I believe the best defenders are good attackers, and good defenders make for better red teamers and pentesters, so we will be covering both sides in this post, starting with attack.</p>
             <p>And as an attacker, there always has to be some sort of thing that motivates them to put in the effort. So, why would an attacker care about Azure Storage Blobs?</p>
             <p>Attackers can abuse public-facing blobs as an easy target for data exfiltration, or gathering credentials or information that can be used to gain entry into a network, or piviot from within. More commonly, attackers can gain access to particularly, juicy, sensitive data as more of a late-stage objective, once they have already gained access to the internal network and have recovered credentials. This is when financially-motivated attackers are likely to ransom data, and even sell it on the dark web to the highest bidder. Some other threat actors even take over blob storage as a hosting domain for their evil infrastructure and malwares. Vigilantes with the right permissions and the wrong incentives can even delete all of the data stored in the blob. </p>
             <p>Moreover, storage blobs are valuable targets that threat actors frequently target and exploit their way into.</p>
 
-            <h3>Finding a Target</h3>
+            <h3 id="#Finding-a-Target">Finding a Target</h3>
             <p>*Obvious Disclaimer
                 Ensure you have proper authorization before doing any non-passive reconnaissance and other testing. Don't do illegal things!
             </p>
-            <h4>Step #1 - Reconnissance</h4>
+            <h4 id="#Reconnissance">Step #1 - Reconnissance</h4>
+            <p>An attacker performing reconnissance to identify vulnerable target blobs needs to find three things: a storage account, a container, and a blob name. </p>
+            <p>We went over what those are in <a href="#Anatomy-of-Blob-Storage">Anatomy of Blob Storage</a>. Three things sound easy enough!</p>
+
+            <h3 id="#Accessing-the-Target">Accessing the Target</h3>
             <p></p>
+
         </div>
     </div>
     <div class="footer">

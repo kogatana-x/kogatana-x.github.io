@@ -194,7 +194,7 @@ DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 
             
             <p>In Azure we can leverage the Activity logs contained in the Monitor portal that are configured by default. The extent these go to document events around storage blobs is...limited. </p>
                 <p>For instance, in the attacks we just completed in our example, the only events that are logged by default is the "List Storage Account Keys" event.</p>
-                <img width="70%" src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/11-List-Keys.png" alt="Defending Azure Storage Blobs">
+                <img width="60%" src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/11-List-Keys.png" alt="Defending Azure Storage Blobs">
                 <p>If we pay close attention, we can identify the source, time, and effected storage account, however making a concrete assertion that the activity was bad is difficult with this information alone.</p>
                 <p>As we poke around the portal a bit more, we can stumble into the 'Failure Insights' page, which suprisingly gives us some solid logs to piviot off of. We can gather the full request URI, the authentication type (anonymous or if an account was used), operation performed against the blobs, as well as time and source.</p>
                 <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/6-Failure-Insights-EX.png" alt="Defending Azure Storage Blobs">

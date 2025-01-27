@@ -70,7 +70,7 @@
             <p>Azure has two (well three if we are getting technical) types of storage you can purchase. Blob, and General Purchase (which contains Blob and a few other types: File, Queue, and Table). We are only going to care about Blob Storage for this blog, but they all function similarly enough on the front-end.</p>
             <p>Blob Storage is, at its core, designed to store massive amounts of unstructured data. In traditional file systems, we are used to seeing documents, images, and executables - blob storage can include those, but is more intended for data that doesnt have a defined type such as archives, log files, banking information, health information, etc.</p>
             <p>Below is an image of what blob storage looks like in the Azure Portal.</p>
-                <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/1-Azure-Blob-Containers.png" alt="Azure Blob Storage">
+                <img style="width:80%"  src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/1-Azure-Blob-Containers.png" alt="Azure Blob Storage">
             
             <h3 id="Anatomy-of-Blob-Storage">Anatomy of Blob Storage</h3>
             <p>To understand the absolute minimum needed for a theoretical attacker to target a storage blob, they'd only have to need to collect a storage account, a container, and blob name in order to access data.</p>
@@ -78,7 +78,7 @@
             <p><b>Container: </b>think of this as a folder that has the blobs</p>
             <p><b>Blob: </b>the actual data stored in the container</p>
             <p>    There are three types of blob data: Block, Append, and Page. Block is the one we care about and will be targetting and this simply stores text and binary data, much like we are accustomed to.</p>
-                <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/2-Azure-Blob-Storage-Structure.png" alt="Azure Blob Storage Hierarchy">
+                <img style="width:80%"  src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/2-Azure-Blob-Storage-Structure.png" alt="Azure Blob Storage Hierarchy">
                         <pre>
 ──────────────────────────────────────────────────────────────────────────────────</pre>
             
@@ -176,7 +176,7 @@ gobuster dir -u bonzibuddy.blob.core.windows.net -w /usr/share/wordlists/dirb/bi
             <p>If we had downloaded a bunch of bulk data, we can use a tool like DumpsterDiver to find some more juicy bits like keys and sensitive information.</p>
             <pre><code>DumpsterDiver.py -p [PATH_TO_FOLDER] --min-key 66 --max-key 66 --entropy 5.1
 DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 8</code></pre>
-            <p>There is also always good ole grep ;)</p>
+            <p>There is also always good ole grep</p>
 
             <p>And that's it! That is all an attacker needs to do to "attack" an Azure Storage Blob. </p>
             <video controls width="65%">
@@ -194,10 +194,10 @@ DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 
             
             <p>In Azure we can leverage the Activity logs contained in the Monitor portal that are configured by default. The extent these go to document events around storage blobs is...limited. </p>
                 <p>For instance, in the attacks we just completed in our example, the only events that are logged by default is the "List Storage Account Keys" event.</p>
-                <img width="50%" src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/11-List-Keys.png" alt="Defending Azure Storage Blobs">
+                <img style="width:50%"  src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/11-List-Keys.png" alt="Defending Azure Storage Blobs">
                 <p>If we pay close attention, we can identify the source, time, and effected storage account, however making a concrete assertion that the activity was bad is difficult with this information alone.</p>
                 <p>As we poke around the portal a bit more, we can stumble into the 'Failure Insights' page, which suprisingly gives us some solid logs to piviot off of. We can gather the full request URI, the authentication type (anonymous or if an account was used), operation performed against the blobs, as well as time and source.</p>
-                <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/6-Failure-Insights-EX.png" alt="Defending Azure Storage Blobs">
+                <img style="width:80%" src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/6-Failure-Insights-EX.png" alt="Defending Azure Storage Blobs">
                 <p>Like the name implies, only failed events are logged, so this may require a stroke of luck. Likewise, logs roll quickly without some type of intervention, so it may be difficult to properly investigate later down the line.</p>
             
 
@@ -216,9 +216,9 @@ DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 
             </video>
 
             <p>Since this was a lot, to summarize, we need to configure, at a minimum these settings:</p>
-            <img width="100" height="50" src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/8-Storage-Settings.png" alt="Defending Azure Storage Blobs">
+            <img style="width:40%"  src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/8-Storage-Settings.png" alt="Defending Azure Storage Blobs">
             <p>In order to get these types of logs:</p>
-            <img width="40%" src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/9-Blob-Log.png" alt="Defending Azure Storage Blobs">
+            <img style="width:40%"  src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/9-Blob-Log.png" alt="Defending Azure Storage Blobs">
             
 
             <h3 id="Microsoft-Defender-for-Storage">Microsoft Defender for Storage/Cloud</h3>

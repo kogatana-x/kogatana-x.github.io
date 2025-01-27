@@ -148,31 +148,23 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
             'offensive': 'https://kogatana-x.github.io/images/Categories/offensive.jpg',
             'defensive': 'https://kogatana-x.github.io/images/Categories/defensive.jpg',
             'sysadmin': 'https://kogatana-x.github.io/images/Categories/sysadmin.jpg',
-            'programming': 'https://kogatana-x.github.io/images/Categories/programming.jpg'
+            'programming': 'https://kogatana-x.github.io/images/Categories/programming.jpg',
+            '*': 'https://kogatana-x.github.io/images/Categories/everything.jpg'
         };
 
         // Fetch all posts and add them to the page
-        fetch('https://kogatana-x.github.io/posts/posts.json')
-            .then(response => response.json())
-            .then(postUrls => {
-                // Fetch the HTML of each post
-                return Promise.all(postUrls.map(url => fetch(url).then(response => response.text())))
-                    .then(postsHtml => [postUrls, postsHtml]);
-            })
-            .then(([postUrls, postsHtml]) => {
-                const parser = new DOMParser();
-                postsHtml.forEach((html, index) => {
-                    // Parse the HTML
-                    const doc = parser.parseFromString(html, 'text/html');
-
+        Promise.all(postUrls.map(fetchPost))
+            .then(posts => {
+                posts.forEach((post, index) => {
                     // Fetch the category from the post's meta tag
-                    const category = doc.querySelector('meta[name="category"]').getAttribute('content');
+                    const category = post.doc.querySelector('meta[name="category"]').content;
 
                     // Add the category to the categories array if it's not already in it
                     if (categories.indexOf(category) === -1) {
                         categories.push(category);
                     }
                 });
+                categories.push('*'); // Add a wildcard category
 
                 // Create a category box for each unique category
                 categories.forEach(category => {

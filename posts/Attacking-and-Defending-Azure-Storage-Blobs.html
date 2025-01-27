@@ -209,12 +209,17 @@ DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 
                 <source src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/7-Configuring-Blob-Logs.mp4" type="video/mp4">
                 This would be a video, if your browser supported it.
             </video>
-            <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/8-Storage-Settings.png" alt="Defending Azure Storage Blobs">
-            <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/9-Blob-Log.png" alt="Defending Azure Storage Blobs">
+            <p>Once we have the logs enabled, we actually can view them in the blob itself from the "$log" container. This will give us a more detailed view of the activity on our storage blobs, including the source IP, the time of the activity, the operation performed, and even the User Agent used, regardless of result (success/fail).</p>
             <video controls width="65%">
                 <source src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/10-Log-Location.mp4" type="video/mp4">
                 This would be a video, if your browser supported it.
             </video>
+
+            <p>Since this was a lot, to summarize, we need to configure, at a minimum these settings:</p>
+            <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/8-Storage-Settings.png" alt="Defending Azure Storage Blobs">
+            <p>In order to get these types of logs:</p>
+            <img src="https://kogatana-x.github.io/images/Attacking-and-Defending-Azure-Storage-Blobs/9-Blob-Log.png" alt="Defending Azure Storage Blobs">
+            
 
             <h3 id="Microsoft-Defender-for-Storage">Microsoft Defender for Storage/Cloud</h3>
             <p>Microsoft Defender for Storage and Cloud make it easier to detect and respond to threats in Azure Storage Blobs. While this costs a pretty penny and may be out of reach for small-size entities, the anomaly and rule-based detections are still worth mentioning for those that employ them.</p>

@@ -186,7 +186,9 @@ fetch('https://kogatana-x.github.io/posts/posts.json')
 
                 // Create a category box for each unique category
                 categories.forEach(category => {
-                    var categoryBox = document.createElement('div');
+                    var categoryBox = document.createElement('td');
+                    categoryBox.style = 'width:20%';
+                    categoryBox = document.createElement('div');
                     categoryBox.className = 'categoryBox';
                     categoryBox.textContent = category;
 

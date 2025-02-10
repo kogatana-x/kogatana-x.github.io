@@ -221,6 +221,7 @@ time {
 
 #Recommended-Post {
     padding: 20px; /* Add padding to the entire section */
+    background-color: #434343; /* Set a background color */
 }
 
 #Recommended-Post h2 {

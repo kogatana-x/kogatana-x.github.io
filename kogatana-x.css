@@ -245,10 +245,15 @@ time {
 
 #Recommended-Post a h3 {
     margin: 0 0 10px 0; /* Add some space below the subtitle */
+    font-size: 1.5em; /* Increase the font size */
+    color: #ee4c4f; /* Change the text color */
 }
 
 #Recommended-Post a p {
     margin: 0; /* Remove default margin */
+    font-size: 1em; /* Set the font size */
+    color: #f2f2f2; /* Change the text color */
+    font-style: italic;
 }
 
 #Recommended-Post {

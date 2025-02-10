@@ -218,3 +218,41 @@ time {
     color: #f2f2f2;
     text-align: center;
 }
+
+#Recommended-Post {
+    padding: 20px; /* Add padding to the entire section */
+}
+
+#Recommended-Post h2 {
+    margin-bottom: 20px; /* Add some space below the title */
+}
+
+#Recommended-Post a {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start (left) */
+    padding: 10px; /* Add padding to each post container */
+    margin-right: 20px; /* Add some space between the containers */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    width: 300px; /* Set a fixed width for each container */
+}
+
+#Recommended-Post a {
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit color from parent */
+}
+
+#Recommended-Post a h3 {
+    margin: 0 0 10px 0; /* Add some space below the subtitle */
+}
+
+#Recommended-Post a p {
+    margin: 0; /* Remove default margin */
+}
+
+#Recommended-Post {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+}

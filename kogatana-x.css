@@ -225,6 +225,7 @@ time {
 
 #Recommended-Post h2 {
     margin-bottom: 20px; /* Add some space below the title */
+    line-break: normal;
 }
 
 #Recommended-Post a {
@@ -237,9 +238,9 @@ time {
     border-radius: 5px; /* Optional: Add rounded corners */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
     width: 300px; /* Set a fixed width for each container */
-    
+
     text-decoration: none; /* Remove underline from links */
-    color: inherit; /* Inherit color from parent */
+    color: #f2f2f2;
 }
 
 #Recommended-Post a h3 {

@@ -222,11 +222,13 @@ time {
 #Recommended-Post {
     padding: 20px; /* Add padding to the entire section */
     background-color: #2b2b2b; /* Set a background color */
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap;
+
 }
 
 #Recommended-Post h2 {
     margin-bottom: 20px; /* Add some space below the title */
-    line-break: normal;
 }
 
 #Recommended-Post a {

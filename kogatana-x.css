@@ -225,11 +225,7 @@ time {
 }
 
 #Recommended-Post h2 {
-    margin-bottom: 20px; /* Add some space below the title */
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap;
-    margin: 1em;
-    padding: 1em;
+    display:block;
 }
 
 #Recommended-Post a {

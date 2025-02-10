@@ -228,12 +228,12 @@ time {
 }
 
 #Recommended-Post h2 {
-    margin-bottom: 1em; /* Add some space below the title */
+    margin-bottom: 0.5em; /* Add some space below the title */
 }
 
 #Recommended-Post a {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start; /* Align items to the start (left) */
     padding: 10px; /* Add padding to each post container */
     margin-right: 20px; /* Add some space between the containers */
@@ -244,6 +244,7 @@ time {
 
     text-decoration: none; /* Remove underline from links */
     color: #f2f2f2;
+    margin: 0.5em;
 }
 
 #Recommended-Post a h3 {

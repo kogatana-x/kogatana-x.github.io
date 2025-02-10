@@ -231,6 +231,7 @@ time {
     display: flex; /* Use flexbox for layout */
     flex-wrap: wrap;
     margin: 1em;
+    padding: 1em;
 }
 
 #Recommended-Post a {

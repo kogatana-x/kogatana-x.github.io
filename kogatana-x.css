@@ -315,7 +315,7 @@ time {
         width: 100vw; /* Adjust content width */
     }
     .banner { 
-        font-size: 0.75em;
+        font-size: 0.em;
     }
     .categoryBox {
         font-size: 0.75em;

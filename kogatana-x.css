@@ -231,8 +231,6 @@ time {
 .posts {
     display: flex;
     flex-wrap: wrap; /* Wrap the items to the next line */
-    justify-content: space-between; /* Add space between the items */
-    flex: row;
 }
 #Recommended-Post a {
     display: flex;

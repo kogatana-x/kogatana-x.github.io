@@ -319,6 +319,7 @@ time {
     }
     .categoryContainer {
         width: 95vw;
+        margin: 0.2em;
     }
 
 }

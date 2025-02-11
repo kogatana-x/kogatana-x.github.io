@@ -268,8 +268,16 @@ time {
     cursor: pointer;
 }
 
+/* Hamburger Menu */
+/*  add to each page below nav and above content
+    <div class="hamburger-menu">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+*/
 
-.hamburger-menu {
+.hamburger-menu {  /* deprecated */
     display: none;
     flex-direction: column;
     justify-content: space-around;
@@ -282,7 +290,7 @@ time {
     cursor: pointer;
 }
 
-.hamburger-menu div {
+.hamburger-menu div {  /* deprecated */
     width: 2rem;
     height: 0.25rem;
     background-color: #f2f2f2;
@@ -295,7 +303,7 @@ time {
     }
 
     .hamburger-menu {
-        display: flex; /* Show hamburger menu on mobile */
+        display: flex; /* deprecated */
     }
 
     .content {
@@ -304,5 +312,12 @@ time {
     }
     .banner { 
         font-size: 0.5em;
+    }
+    .categoryContainer{
+        margin-left: 13vw;
+        width: calc(100vw - 15vw); /* Set the width to the width of the viewport minus the width of the navbar */
+        min-width: 400px;
+        height: 100%; /* Set the height to the height of the viewport */
+        flex: 1 0 auto;
     }
 }

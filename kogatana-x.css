@@ -315,7 +315,7 @@ time {
         width: 100vw; /* Adjust content width */
     }
     .body{
-        overflow-x: hidden;
+        overflow: none;
     }
     .banner { 
         font-size: 0.em;

@@ -315,6 +315,8 @@ time {
     }
     .categoryBox {
         font-size: 0.75em;
+        padding: 0.2em;
+        margin: 0.2em;
     }
 
 }

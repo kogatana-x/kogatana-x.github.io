@@ -259,3 +259,8 @@ time {
     color: #f2f2f2; /* Change the text color */
     font-style: italic;
 }
+#Recommended-Post a:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 0.5em #f2f2f2;
+    cursor: pointer;
+}

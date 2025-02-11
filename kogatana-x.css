@@ -214,7 +214,7 @@ time {
     border: 0.05em solid #f2f2f2; 
 }
 .content table tr .categoryContainer {
-    border: 0em  #f2f2f2;
+    border: none;
 }
 
 .content table tr:nth-child(even) {

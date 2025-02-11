@@ -318,7 +318,7 @@ time {
         font-size: 0.75em;
         margin: 0.2em;
     }
-    .categoryContainer {
+    table .categoryContainer {
         margin-left: 13vw;
     }
 

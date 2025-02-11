@@ -213,7 +213,7 @@ time {
 .content table tr {
     border: 0.05em solid #f2f2f2; 
 }
-.content table tr .categoryContainer {
+.content table .categoryContainer {
     border: none;
 }
 

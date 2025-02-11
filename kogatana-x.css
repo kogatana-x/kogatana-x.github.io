@@ -239,7 +239,6 @@ time {
     border: 1px solid #ccc; /* Optional: Add a border for better visibility */
     border-radius: 5px; /* Optional: Add rounded corners */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-    width: 300px; /* Set a fixed width for each container */
 
     text-decoration: none; /* Remove underline from links */
     color: #f2f2f2;

@@ -17,7 +17,7 @@ body {
     color: #f0f0f0;
     padding: 0.5em;
     height: 100%;
-    overflow: none;
+    overflow: hidden;
     display: flex; 
     flex-direction: column; 
     align-items: center; 

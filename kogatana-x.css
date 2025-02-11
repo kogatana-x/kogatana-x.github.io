@@ -71,6 +71,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    margin-left: 13vw;
 }
 
 .categoryBox {
@@ -202,7 +203,7 @@ time {
     border-collapse: collapse;
     width: 100%;
     margin: 1em auto;
-    text-align: auto;
+    text-align: center;
 }
 
 .content table th {
@@ -318,8 +319,7 @@ time {
         margin: 0.2em;
     }
     .categoryContainer {
-        width: 95vw;
-        margin: 0.2em;
+        margin-left: 13vw;
     }
 
 }

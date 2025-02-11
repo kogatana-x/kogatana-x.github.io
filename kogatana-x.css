@@ -312,7 +312,8 @@ time {
 
     .content {
         margin-left: 0;
-        width: 100vw; /* Adjust content width */
+        width: 100vw; 
+        overflow: hidden;
     }
     .body{
         overflow: hidden;

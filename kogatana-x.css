@@ -7,6 +7,10 @@ body {
     flex-direction: column;
 }
 
+.navbar.active {
+    display: flex; 
+}
+
 .navbar {
     flex: 1;
     background-color: #333;
@@ -262,4 +266,40 @@ time {
     transform: scale(1.01);
     box-shadow: 0 0 0.5em #f2f2f2;
     cursor: pointer;
+}
+
+
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.hamburger-menu div {
+    width: 2rem;
+    height: 0.25rem;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        display: none; /* Hide navbar on mobile */
+    }
+
+    .hamburger-menu {
+        display: flex; /* Show hamburger menu on mobile */
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100vw; /* Adjust content width */
+    }
 }

@@ -44,6 +44,12 @@
         </div>
     </div>
 
+    <div class="hamburger-menu">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    
     <div class="content">
         <a href="https://kogatana-x.github.io/" style="text-decoration: none;">
             <div class="banner">
@@ -268,5 +274,8 @@ DumpsterDiver.py -p [PATH_TO_FOLDER] --min-pass 10 --max-pass 15 --pass-complex 
     hljs.highlightElement(block);
   });
 });
+document.querySelector('.hamburger-menu').addEventListener('click', function() {
+            document.querySelector('.navbar').classList.toggle('active');
+        });
 </script>
 </html>

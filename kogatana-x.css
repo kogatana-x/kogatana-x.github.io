@@ -243,8 +243,8 @@ time {
 
     text-decoration: none; /* Remove underline from links */
     color: #f2f2f2;
-    margin: 0.5em;
-    padding: 0.5em;
+    margin: 1em;
+    padding: 1em;
 }
 
 #Recommended-Post a h3 {

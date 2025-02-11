@@ -302,4 +302,8 @@ time {
         margin-left: 0;
         width: 100vw; /* Adjust content width */
     }
+    .banner { 
+        font-size: 0.5em;
+    }
+    
 }

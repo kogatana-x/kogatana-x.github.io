@@ -213,6 +213,9 @@ time {
 .content table tr {
     border: 0.05em solid #f2f2f2; 
 }
+.content table tr .categoryContainer {
+    border: 0em  #f2f2f2;
+}
 
 .content table tr:nth-child(even) {
     background-color: #ee4c4f5e; 
@@ -318,7 +321,7 @@ time {
         font-size: 0.75em;
         margin: 0.2em;
     }
-    table .categoryContainer {
+    .content table {
         margin-left: 13vw;
     }
 

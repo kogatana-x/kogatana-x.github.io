@@ -318,7 +318,7 @@ time {
         overflow: none;
     }
     .banner { 
-        font-size: 0.em;
+        font-size: 0.5 em;
     }
     .categoryBox {
         font-size: 0.75em;

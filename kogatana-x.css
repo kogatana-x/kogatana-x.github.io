@@ -205,7 +205,6 @@ time {
     margin: 1em auto;
     text-align: center;
     margin-left: 3vw;
-    overflow-x: auto; 
 }
 
 .content table th {
@@ -317,6 +316,9 @@ time {
     }
     .body{
         overflow: hidden;
+    }
+    .content table {
+            overflow-x: auto; 
     }
     .banner { 
         font-size: 0.6em;

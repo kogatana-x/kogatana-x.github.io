@@ -204,17 +204,15 @@ time {
     width: 100%;
     margin: 1em auto;
     text-align: center;
+    margin-left: 3vw;
 }
 
 .content table th {
     background-color: #ee4c4f; 
 }
 
-.content table .categoryContainer {
-    border: 0.01em solid #2b2b2b;
-}
 .content table tr {
-    border: 0.05em solid #f2f2f2; 
+    border: 0.05em solid #2b2b2b; 
 }
 
 
@@ -325,9 +323,6 @@ time {
     .categoryBox {
         font-size: 0.75em;
         margin: 0.2em;
-    }
-    .content table {
-        margin-left: 3vw;
     }
 
 }

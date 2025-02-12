@@ -210,12 +210,13 @@ time {
     background-color: #ee4c4f; 
 }
 
+.content table tr .categoryContainer {
+    border: 0.01em solid #2b2b2b;
+}
 .content table tr {
     border: 0.05em solid #f2f2f2; 
 }
-.content table .categoryContainer {
-    border: 0.01em solid #2b2b2b;
-}
+
 
 .content table tr:nth-child(even) {
     background-color: #ee4c4f5e; 

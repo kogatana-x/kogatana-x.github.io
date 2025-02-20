@@ -188,6 +188,9 @@ time {
     font-family: monospace;
     font-size: 1.15em;
     height: auto;
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
 }
 .social {
     display: flex;
@@ -322,6 +325,10 @@ time {
     }
     .banner { 
         font-size: 0.6em;
+        height: auto;
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
     }
     .categoryBox {
         font-size: 0.75em;

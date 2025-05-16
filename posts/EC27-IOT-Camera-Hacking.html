@@ -143,34 +143,33 @@ cat /dev/mtd6 > mtd6.bin</code></pre>
             <h2>The Upload Vulnerability</h2>
             <p>Security researchers found this "feature" in the cameras that allow for updates to be fed to the device via a micro-sd card automatically on boot-up. This is processed at a root level, so anyone with physical access to the camera and its power supply can execute custom code. So, please only do this for cameras you are authorized to use.</p>
             <p>Update files must be named "update.tar", placed in a folder named "update" in the root of your microsd card, and contain squash archive files of the /usr/ and /etc/ directories along with any other changes that need to be fed to the system, with each directory being its own squash file. </p>
-                <pre><code>
-SD Card Root - 
+                <pre><code>SD Card Root - 
     update /
         update.tar 
             fw_version  #must be your exact firmware version
             root.sqsh4  #contains your etc/ and bin/ 
-            usr.sqsh4   #contains your usr/
-                </code></pre>
+            usr.sqsh4   #contains your usr/</code></pre>
            <p>This <a>Github <href>https://github.com/MuhammedKalkan/Anyka-Camera-Firmware/releases/download/1.0.4/update.tar</href></a> has good pre-made firmware, I wound up using for my camera. 
             
             <h3>Create Custom Update Files</h3>
             To create your own squash files (at your own risk):</p>
-            <pre><code>
-mkdir camera-root
-mv backups/etc/camera-root
-mv backups/bin/camera-root
-mksquashfs camera-root root.sqsh4 -comp xz -Xdict-size 100%
+            <pre><code>#root.sqsh4:
+ mkdir camera-root
+ mv backups/etc/camera-root
+ mv backups/bin/camera-root
+ mksquashfs camera-root root.sqsh4 -comp xz -Xdict-size 100%
 
-mkdir camera-usr
-mv backups/usr/camera-usr
-mksquashfs camera-usr usr.sqsh4 -comp xz -Xdict-size 100%
+#usr.sqsh4:
+ mkdir camera-usr
+ mv backups/usr/camera-usr
+ mksquashfs camera-usr usr.sqsh4 -comp xz -Xdict-size 100%
 
-mkdir update
-mv root.sqsh4 update
-mv usr.sqsh4 update
-mv fw_version update
-tar -cvf update.tar update
-</code></pre> 
+#update.tar:
+ mkdir update
+ mv root.sqsh4 update
+ mv usr.sqsh4 update
+ mv fw_version update
+ tar -cvf update.tar update</code></pre> 
             <h3>Sending the Hack</h3>
             <p>Once we have the SD card prepped with the update.tar file, go ahead and power off your camera, put the card in, and power it on again. Upon startup, you should hear something along the lines of "Update in progress" and then a "System update complete". After this, remove the sd card, to avoid forgetting about it later and re-updating the same file later.
             The update process removes the "/etc/jffs2/isp_xxx.conf file to prevent update loops, so you will have to copy this file you made sure to save earlier, back to its rightful location via telnet, then restart the camera again!"</p>

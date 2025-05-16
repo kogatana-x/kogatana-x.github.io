@@ -88,7 +88,8 @@
 ──────────────────────────────────────────────────────────────────────────────────
                 
             </pre>
-            <h2>Configure WiFi</h2>
+            <h2>Set-up</h2>
+            <h3>Configure WiFi</h3>
             <p>Make sure your camera is connected to your home wifi before proceeding. This is achievable through either the app your camera comes with, or with the more advanced serial port -> static file configuration method. Instructions for this are specific to your device, so follow the manufacters guide you get. I attempted both methods, and recommend the static connect to wifi router method if available. When the device is powered off and you start the hack, you may lose your connection and soft brick your device. I tried the 'make your camera its own AP setting' and it didnt work at all for this. The app is more annoying, but if you use a specialty spam-filter email, so that once its setup you can delete it after!</p>
             <p>Before you delete your camera app; however, make sure to grab its IP address! To do this, open the app and go to the settings. You should see a list of devices connected to your network. Find your camera and note down its IP address.</p>
             
@@ -109,7 +110,7 @@
                 
             </pre>
 
-            <h2>Backups</h2>
+            <h3>Backups</h3>
             <p>Now that we have telnet enabled, we are able to access the dev partitions to backup! Open up your terminal and type in the following command:</p>
                 <pre><code>telnet youripaddress</code></pre>
              <p>Feel free to go nuts with the file backups, the camera itself doesnt have a lot of storage, but if you want to be selective with your backups you need at a minimum /usr and /etc/jffs2, especially the /etc/jffs2/isp_xxx.conf file. </p>
@@ -135,7 +136,10 @@ cat /dev/mtd6 > mtd6.bin</code></pre>
                         <li>ssv6x5x</li>
                     </ul>
              <p>If these drivers do not match, you will have to put together your own custom hack with these drivers.</p>
-
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                
+            </pre>
             <h2>The Upload Vulnerability</h2>
             <p>Security researchers found this "feature" in the cameras that allow for updates to be fed to the device via a micro-sd card automatically on boot-up. This is processed at a root level, so anyone with physical access to the camera and its power supply can execute custom code. So, please only do this for cameras you are authorized to use.</p>
             <p>Update files must be named "update.tar", placed in a folder named "update" in the root of your microsd card, and contain squash archive files of the /usr/ and /etc/ directories along with any other changes that need to be fed to the system, with each directory being its own squash file. </p>
@@ -148,6 +152,8 @@ SD Card Root -
             usr.sqsh4   #contains your usr/
                 </code></pre>
            <p>This <a>Github <href>https://github.com/MuhammedKalkan/Anyka-Camera-Firmware/releases/download/1.0.4/update.tar</href></a> has good pre-made firmware, I wound up using for my camera. 
+            
+            <h3>Create Custom Update Files</h3>
             To create your own squash files (at your own risk):</p>
             <pre><code>
 mkdir camera-root
@@ -164,11 +170,14 @@ mv root.sqsh4 update
 mv usr.sqsh4 update
 mv fw_version update
 tar -cvf update.tar update
-
-            </code></pre> 
+</code></pre> 
+            <h3>Sending the Hack</h3>
             <p>Once we have the SD card prepped with the update.tar file, go ahead and power off your camera, put the card in, and power it on again. Upon startup, you should hear something along the lines of "Update in progress" and then a "System update complete". After this, remove the sd card, to avoid forgetting about it later and re-updating the same file later.
             The update process removes the "/etc/jffs2/isp_xxx.conf file to prevent update loops, so you will have to copy this file you made sure to save earlier, back to its rightful location via telnet, then restart the camera again!"</p>
-            
+             <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                
+            </pre>           
             <h2>New Camera Features</h2>
             <p>That should be it as far as hacking goes! The firmware I chose to use enables RTSP feeds (high-res and low-res, respectively) at:</p>
                 <pre><code>rtsp://ipaddress:554/vs0 and rtsp://ipaddress:554/vs1</code></pre>
@@ -177,7 +186,10 @@ tar -cvf update.tar update
             <p>To access the RTSP streams, you can use something like VLC Media viewer (compatible both on windows and linux).   
             </p>
             <p>From here you can do some cool stuff like integrate this into Smart Homes, monitoring apps like BlueIris, or anything else under the sun that supports these feeds. I didn't get that fancy, but I definitley want to see all the cool stuff you all can do.</p>
-
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+                
+            </pre>
             <h2>Advanced Method - Serial Port (rx-tx ports)</h2>
             <p>If you are a super hacker, want full and absolute access to the underlying firmware there are Rx Tx ports on the circuit board you can solder to and access from your computer. 
                 As many of you know, with great experience comes trial and error. I was very opposed to setting up the YI IOT app that you are supposed to use to set the device up, so I figured sending the update with the wifi-data pre-baked would work... It did not!!

@@ -95,14 +95,14 @@
             
             <h2>Access Your Camera</h2>
             <p>Once your device is connected to WiFi, open up your computer and get your ftp client ready. You can use something like FireZilla, WinSCP, or vsftpd, depending on your comfort level.</p>
-            <p>Your FTP parameters, may likely be: with a blank/empty password. If this doesnt work, a quick Google for "<your camera name> + default ftp credentials" should do the trick. </p>
+            <p>Your FTP parameters, may likely be the following with a blank/empty password. If this doesnt work, a quick Google for "<your camera name> + default ftp credentials" should do the trick. </p>
                 <pre><code>ftp root@youripaddress</code></pre>
             <p>Once you are in, you should see a list of files and folders if in the GUI (or execute "ls" if you chose the command line varient). We want to backup some of our files, but to override system locks, we need to access our device another way. I chose to enable telnet.</p>
             <p>But hold up, how are we going to enable telnet when we only have access to FTP?! Good question dillegent reader, there is a file containing a script on the camera called  /etc/jffs2/time_zone.sh that executes at device start up. We have permission to modify this!</p>
             <p>All we have to do is open the file up and add & telnetd to the bottom. If you are using the GUI method, you may be able to modify the file directly from your FTP client, or you can just copy the file to your local system, edit it, and then reupload it.</p>
             <p>Mine looks like this:</p>
                 <pre><code>export TZ=GMT+05:00
-                    telnetd &</code></pre>
+telnetd &</code></pre>
             
             <p>Once that file has been modified, feel free to restart your camera by turning it on and off again.</p>
             <pre>

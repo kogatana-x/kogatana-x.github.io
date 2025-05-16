@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Hacking EC27 IOT Bulb Cameras</title> 
+    <meta name="description" content="Revamp your light bulb security camera with custom firmware, and get rid of the need for a certain IOT app">  
+    <meta name="author" content="kogatana-x">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv='content-language' content='en-us'> 
+    <meta name="keywords" content="kogatana-x, offensive security, defensive security, sysadmin, programming">
+    
+    <meta property="og:title" content="Hacking EC27 IOT Bulb Camera">
+    <meta name="category" content="offensive">
+
+    <link rel="canonical" href="https://kogatana-x.github.io/posts/EC27-IOT-Camera-Hacking.html" />  
+    <link rel="icon" href="https://kogatana-x.github.io/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://kogatana-x.github.io/kogatana-x.css">
+
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/javascript.min.js"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="https://kogatana-x.github.io/">
+            <img src="https://kogatana-x.github.io/images/22989723.png" alt="Profile"> 
+        </a>
+        <h2>kogatana-x</h2>
+        <p>Offensive//Defensive Security</p>
+        <div class="social">
+            <a href="https://github.com/kogatana-x" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+                    <title>Github</title>
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/anna-andler" target="_blank" rel="noreferrer noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ee4c4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+                    <title>LinkedIn</title>
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="banner">
+            <pre>
+
+██╗  ██╗ ██████╗  ██████╗  █████╗ ████████╗ █████╗ ███╗   ██╗ █████╗      ██╗  ██╗
+██║ ██╔╝██╔═══██╗██╔════╝ ██╔══██╗╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗     ╚██╗██╔╝
+█████╔╝ ██║   ██║██║  ███╗███████║   ██║   ███████║██╔██╗ ██║███████║█████╗╚███╔╝ 
+██╔═██╗ ██║   ██║██║   ██║██╔══██║   ██║   ██╔══██║██║╚██╗██║██╔══██║╚════╝██╔██╗ 
+██║  ██╗╚██████╔╝╚██████╔╝██║  ██║   ██║   ██║  ██║██║ ╚████║██║  ██║     ██╔╝ ██╗
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝     ╚═╝  ╚═╝                                                                                 
+
+──────────────────────────────────────────────────────────────────────────────────
+            </pre>
+        </div>       
+        <div class="blog-post">   
+            <h1>Hacking EC27 IOT Bulb Cameras</h1>
+            <time datetime="2025-05-16T13:25:42">May 16th, 2025</time>
+            <pre>
+──────────────────────────────────────────────────────────────────────────────────
+
+            </pre>
+            <h2>Introduction</h2>
+            <p>I bought a very cheap IOT camera that fits right in a light bulb socket years ago, but hadn't actually set it up, especially not connect it to the Internet. 
+                I wasnt about to be the person that gets their camera hacked by some random dude, or have another government surveilling me through my camera. 
+                But the other day I came across this thread - <a>https://github.com/e27-camera-hack/E27-Camera-Hack/discussions/1</a> that had me doom scrolling through my commute.
+            </p>
+
+            <p>Most out of box IOT camera apps are paywall blocked, so you'll have to shell out a lot of money to get streaming services, or live monitoring alerts, not to mention them having recordings of you and your family's daily lives.</p>
+
+            <p>Fortunately, depending on the chipset, there are already open source firmware and (hacks) available online from people much smarter than I. If you open your camera up, you can easily identify the chip manufacturer, and the MCU. My chip is an Anyka v200, so please only follow this guide if yours matches (v300s and v330s should also be supported)! Follow this guide at your own risk, by proceeding you accept responsibility of any damage to yourself and your devices.</p>
+
+            <p> To follow this guide you'll need:
+                <ul>
+                    <li>EC27 Security Camera - Anyka Chipset</li>
+                    <li>WiFi Connection</li>
+                    <li>YI IOT App</li>
+                    <li>Micro SD Card (and adapter) - you only need one regardless of how many cameras you have</li>
+                    <li>Computer with FTP client and telnet client installed</li>
+                    <li>(optionally) soldering iron, serial UART adapter and power supply</li>
+                </ul>
+            </p>
+
+            <h2>Configure WiFi</h2>
+            <p>Make sure your camera is connected to your home wifi before proceeding. This is achievable through either the app your camera comes with, or with the more advanced serial port -> static file configuration method. Instructions for this are specific to your device, so follow the manufacters guide you get. I attempted both methods, and recommend the static connect to wifi router method if available. When the device is powered off and you start the hack, you may lose your connection and soft brick your device. I tried the 'make your camera its own AP setting' and it didnt work at all for this. The app is more annoying, but if you use a specialty spam-filter email, so that once its setup you can delete it after!</p>
+            <p>Before you delete your camera app; however, make sure to grab its IP address!</p>
+            <p>To do this, open the app and go to the settings. You should see a list of devices connected to your network. Find your camera and note down its IP address.</p>
+            
+            <h2>Access Your Camera</h2>
+            <p>Once your device is connected to WiFi, open up your computer and get your ftp client ready. You can use something like FireZilla, WinSCP, or vsftpd, depending on your comfort level.</p>
+            <p>Your FTP parameters, may likely be: 
+                <pre><code>ftp root@youripaddress</code></pre>
+            with a blank/empty password. If this doesnt work, a quick Google for "<your camera name> + default ftp credentials" should do the trick. </p>
+            <p>Once you are in, you should see a list of files and folders if in the GUI (or execute "ls" if you chose the command line varient). We want to backup some of our files, but to override system locks, we need to access our device another way. I chose to enable telnet.</p>
+            <p>But hold up, how are we going to enable telnet when we only have access to FTP?! Good question dillegent reader, there is a file containing a script on the camera called  /etc/jffs2/time_zone.sh that executes at device start up. We have permission to modify this!</p>
+            <p>All we have to do is open the file up and add & telnetd to the bottom. If you are using the GUI method, you may be able to modify the file directly from your FTP client, or you can just copy the file to your local system, edit it, and then reupload it.</p>
+            <p>Mine looks like this:
+                <pre><code>export TZ=GMT+05:00
+                    telnetd &</code></pre>
+            </p>
+            <p>Once that file has been modified, feel free to restart your camera by turning it on and off again.</p>
+
+
+            <h2>Backups</h2>
+            <p>Now that we have telnet enabled, we are able to access the dev partitions to backup! Open up your terminal and type in the following command:
+                <pre><code>telnet youripaddress</code></pre>
+                Feel free to go nuts with the file backups, the camera itself doesnt have a lot of storage, but if you want to be selective with your backups you need at a minimum /usr and /etc/jffs2, especially the /etc/jffs2/isp_xxx.conf file. 
+                To copy the dev partitions, first save them to a local file, then copy them to your computer:
+                <pre><code>
+                    cat /dev/mtd0 > mtd0.bin
+                    cat /dev/mtd1 > mtd1.bin
+                    # until
+                    cat /dev/mtd6 > mtd6.bin
+                </code></pre>
+            These files will take a bit, but will be worth it in case something gets messed up.</p>
+                <p>While we are still logged in, double check that your drivers in /usr/modules/ are included in the list below. These files end in .ko 
+                    <p>Camera Sensors:</p>
+                    <ul>
+                        <li>H62</li>
+                        <li>H63</li>
+                        <li>gc1034</li>
+                        <li>gc1054</li>
+                        <li>gc1084</li>
+                    </ul>
+                    <p>WiFi Sensors:</p>
+                    <ul>
+                        <li>atbm603x_wifi_usb</li>
+                        <li>rtl8188fu</li>
+                        <li>ssv6x5x</li>
+                    </ul>
+                If these drivers do not match, you will have to put together your own custom hack with these drivers.</p>
+
+            <h2>The Upload Vulnerability</h2>
+            <p>Security researchers found this "feature" in the cameras that allow for updates to be fed to the device via a micro-sd card automatically on boot-up. This is processed at a root level, so anyone with physical access to the camera and its power supply can execute custom code. So, please only do this for cameras you are authorized to use.</p>
+            <p>Update files must be named "update.tar", placed in a folder named "update" in the root of your microsd card, and contain squash archive files of the /usr/ and /etc/ directories along with any other changes that need to be fed to the system, with each directory being its own squash file. 
+                <pre><code>
+SD Card Root - 
+    update /
+        update.tar 
+            fw_version  #must be your exact firmware version
+            root.sqsh4  #contains your etc/ and bin/ 
+            usr.sqsh4   #contains your usr/
+                </code></pre>
+            This <a>Github <href>https://github.com/MuhammedKalkan/Anyka-Camera-Firmware/releases/download/1.0.4/update.tar</href></a> has good pre-made firmware, I wound up using for my camera. 
+            To create your own squash files (at your own risk):
+            <pre><code>
+mkdir camera-root
+mv backups/etc/camera-root
+mv backups/bin/camera-root
+mksquashfs camera-root root.sqsh4 -comp xz -Xdict-size 100%
+
+mkdir camera-usr
+mv backups/usr/camera-usr
+mksquashfs camera-usr usr.sqsh4 -comp xz -Xdict-size 100%
+
+mkdir update
+mv root.sqsh4 update
+mv usr.sqsh4 update
+mv fw_version update
+tar -cvf update.tar update
+
+            </code></pre> 
+            Once we have the SD card prepped with the update.tar file, go ahead and power off your camera, put the card in, and power it on again. Upon startup, you should hear something along the lines of "Update in progress" and then a "System update complete". After this, remove the sd card, to avoid forgetting about it later and re-updating the same file later.
+            The update process removes the "/etc/jffs2/isp_xxx.conf file to prevent update loops, so you will have to copy this file you made sure to save earlier, back to its rightful location via telnet, then restart the camera again!"</p>
+            
+            <h2>New Camera Features</h2>
+            <p>That should be it as far as hacking goes! The firmware I chose to use enables RTSP feeds (high-res and low-res, respectively) at
+                <pre><code>rtsp://ipaddress:554/vs0 and rtsp://ipaddress:554/vs1</code></pre>
+                and camera Web UI controls at:
+                <pre><code>http://ipaddress:8080</code></pre>
+            </p>
+            <p>To access the RTSP streams, you can use something like VLC Media viewer (compatible both on windows and linux).   
+            </p>
+            <p>From here you can do some cool stuff like integrate this into Smart Homes, monitoring apps like BlueIris, or anything else under the sun that supports these feeds. I didn't get that fancy, but I definitley want to see all the cool stuff you all can do.</p>
+
+            <h2>Advanced Method - Serial Port (rx-tx ports)</h2>
+            <p>If you are a super hacker, want full and absolute access to the underlying firmware there are Rx Tx ports on the circuit board you can solder to and access from your computer. 
+                As many of you know, with great experience comes trial and error. I was very opposed to setting up the YI IOT app that you are supposed to use to set the device up, so I figured sending the update with the wifi-data pre-baked would work... It did not!!
+                TLDR; I bricked the first camera I got so, I tried this method! But I am not nearly advanced enough to solder to a very cheap circuit board as such lol my poor soldering job snapped clean off and broke the copper around the board along with it, so  all my hopes and dreams were crushed but this is how I would have done it, if I was better!
+                I could go into l33t h4ck3r mode and enlist my boyfriend to hold the wires to the board while I add the wifi configuration (contained in /etc/jffs2/anyka_conf.ini) manually, but I will update that if that ever happens!
+            </p>
+            <p>
+
+            </p>
+            <h2>Conclusion</h2>
+            <p>So now you can use the cheap camera you definitley didnt get off Ali-Express without having to worry too much about the men spying on you and your family or your data being sold off to the abyss. Hopefully this makes your hardware hacking experience much easier than mine was ! lol</p>
+
+        </div>
+
+        <div id="Recommended-Post">
+            <h2 id="Recommended-Posts">Recommended Posts</h2>
+            <div class="posts">
+
+            <a href="https://kogatana-x.github.io/posts/Attacking-and-Defending-Azure-Storage-Blobs.html">
+                <h3>Attacking and Defending Azure Storage Blobs</h3>
+                <p>Learn how an attacker exploits Azure Storage Blobs and how to defend them</p>
+            </a>
+            <a href="https://kogatana-x.github.io/posts/Reversing-C2.html">
+                <h3>Reversing Sliver C2</h3>
+                <p>Learn how to reverse engineer a C2 server and understand how it works</p>
+            </a>
+        </div>
+    </div>
+    </div>
+    <div class="footer">
+        <p>© 2021 kogatana-x</p>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightElement(block);
+  });
+});
+</script>
+</html>

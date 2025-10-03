@@ -133,7 +133,8 @@ code{
 
 .banner pre:hover {
     transform: scale(1.01);
-    box-shadow: 0 0 0.25em #f2f2f2;
+    box-shadow: none; 
+    text-shadow: 0 0 0.25em #f2f2f2;
     cursor: pointer; 
 }
 

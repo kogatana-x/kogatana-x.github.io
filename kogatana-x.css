@@ -200,6 +200,9 @@ time {
     width: 100%;
     box-sizing: border-box;
 }
+.banner pre {
+    text-shadow: #ccc;
+}
 .social {
     display: flex;
     justify-content: space-around;

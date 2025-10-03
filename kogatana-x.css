@@ -135,6 +135,7 @@ code{
     transform: scale(1.01);
     box-shadow: none; 
     text-shadow: 0 0 0.5em #cccc;
+    color:#ee4c4f;
     cursor: pointer; 
 }
 

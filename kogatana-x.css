@@ -131,6 +131,12 @@ code{
     cursor: pointer;
 }
 
+.banner:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 0.5em #f2f2f2;
+    cursor: pointer; 
+}
+
 .blog-post img {
     width: 75%;
     height: auto;
@@ -329,6 +335,7 @@ time {
         display: flex;
         width: 100%;
         box-sizing: border-box;
+        
     }
     .categoryBox {
         font-size: 0.75em;

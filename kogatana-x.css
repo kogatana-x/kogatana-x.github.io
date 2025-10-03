@@ -201,7 +201,7 @@ time {
     box-sizing: border-box;
 }
 .banner pre {
-    text-shadow: #ccc;
+    text-shadow: #666;
 }
 .social {
     display: flex;
